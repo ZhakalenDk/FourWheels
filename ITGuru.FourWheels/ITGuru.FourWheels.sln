@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITGuru.FourWheels.Data", "ITGuru.FourWheels.Data\ITGuru.FourWheels.Data.csproj", "{990718E6-84D2-48AB-8303-EF853264B905}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITGuru.FourWheels.Service", "ITGuru.FourWheels.Service\ITGuru.FourWheels.Service.csproj", "{A55FC097-B337-4563-9134-B97F195FF350}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITGuru.FourWheels.Web", "ITGuru.FourWheels.Web\ITGuru.FourWheels.Web.csproj", "{7A6DE969-F992-4634-B96A-B2CD93F72344}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FCB1A239-8B32-4D93-9C32-76137BD6BCAD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITGuru.FourWheels.Tests", "ITGuru.FourWheels.Tests\ITGuru.FourWheels.Tests.csproj", "{4F465FB9-A9E8-455F-9DF3-B2696177B468}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{990718E6-84D2-48AB-8303-EF853264B905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990718E6-84D2-48AB-8303-EF853264B905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990718E6-84D2-48AB-8303-EF853264B905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990718E6-84D2-48AB-8303-EF853264B905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55FC097-B337-4563-9134-B97F195FF350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55FC097-B337-4563-9134-B97F195FF350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55FC097-B337-4563-9134-B97F195FF350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55FC097-B337-4563-9134-B97F195FF350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A6DE969-F992-4634-B96A-B2CD93F72344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A6DE969-F992-4634-B96A-B2CD93F72344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A6DE969-F992-4634-B96A-B2CD93F72344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A6DE969-F992-4634-B96A-B2CD93F72344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F465FB9-A9E8-455F-9DF3-B2696177B468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F465FB9-A9E8-455F-9DF3-B2696177B468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F465FB9-A9E8-455F-9DF3-B2696177B468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F465FB9-A9E8-455F-9DF3-B2696177B468}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EAB5816A-7DA0-4643-9441-433BA8978033}
+	EndGlobalSection
+EndGlobal
