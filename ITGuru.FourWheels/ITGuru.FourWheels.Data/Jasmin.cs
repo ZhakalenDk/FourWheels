@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data
 {
-    public class Jasmin
+    public class Person
     {
+        public uint Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Age { get; set; }
+        public uint Age { get; set; }
     }
 }
