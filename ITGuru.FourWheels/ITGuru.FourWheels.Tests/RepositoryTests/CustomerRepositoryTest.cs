@@ -7,10 +7,9 @@ using System.Xml;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
-    public class UnitTest1
+    public class CustomerRepositoryTests
     {
-        private CustomerDTO _DEFAULT_CUSTOMER = new CustomerDTO
-        {
+        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO {
             Id = Guid.NewGuid(),
             FirstName = "Test",
             LastName = "Customer",
@@ -32,8 +31,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
-            Assert.False(addResult.Succeeded);
-
+            Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
             Assert.Equal(createdCustomer.Id, createdCustomer.Id);
             Assert.Equal(createdCustomer.FirstName, createdCustomer.FirstName);
@@ -50,10 +48,11 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var customerRepository = GetCustomerRepository();
 
             // Act
-            customerRepository.Add(_DEFAULT_CUSTOMER);
+            var addResult = customerRepository.Add(_DEFAULT_CUSTOMER);
             var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
+            Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
             Assert.Equal(_DEFAULT_CUSTOMER.Id, createdCustomer.Id);
             Assert.Equal(_DEFAULT_CUSTOMER.FirstName, createdCustomer.FirstName);
@@ -67,8 +66,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var deletedCustomer = customerRepository.GetById(createdCustomer.Id);
 
             // Assert
+            Assert.True(removeResult.Succeeded);
             Assert.Null(deletedCustomer);
-            Assert.False(removeResult.Succeeded);
         }
 
         [Fact]
@@ -101,6 +100,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var createdCustomer = customerRepository.GetById(createCustomer.Id);
 
             // Assert
+            Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
             Assert.Equal(createCustomer.Id, createdCustomer.Id);
             Assert.Equal(createCustomer.FirstName, createdCustomer.FirstName);
@@ -114,9 +114,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var editedCustomer = customerRepository.GetById(createdCustomer.Id);
 
             // Assert
-            Assert.True(addResult.Succeeded);
             Assert.True(updateResult.Succeeded);
-
             Assert.NotNull(editedCustomer);
             Assert.Equal(editCustomer.Id, editedCustomer.Id);
             Assert.Equal(editCustomer.FirstName, editedCustomer.FirstName);
