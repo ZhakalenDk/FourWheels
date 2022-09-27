@@ -11,6 +11,6 @@ namespace ITGuru.FourWheels.Data
         public uint Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public uint Age { get; set; }
+        public ushort Age { get; set; }
     }
 }
