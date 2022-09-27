@@ -1,3 +1,6 @@
+using ITGuru.FourWheels.Data.Interfaces;
+using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.Service;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
@@ -6,35 +9,37 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class UnitTest1
     {
+        private CustomerDTO _DEFAULT_CUSTOMER = new CustomerDTO
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Test",
+            LastName = "Customer",
+            Phone = "12345678",
+            Email = "test@itguru.com"
+        };
+
         [Fact]
         public void CreateAndGetCustomerTest()
         {
             // Arrange
             var customerRepository = GetCustomerRepository();
 
-            var customerToCreate = new CreateCustomerDTO
-            {
-                Id = new Guid(),
-                FirstName = "Test",
-                LastName = "Customer",
-                Phone = "12345678",
-                EmailAddress = "test@itguru.com"
-            };
-
             // Act
             // Save customer in repository.
-            customerRepository.CreateCustomer(customerToCreate);
+            var addResult = customerRepository.Add(_DEFAULT_CUSTOMER);
 
             // Retrieve the newly created customer from the repository.
-            var createdCustomer = customerRepository.GetCustomerById(customerToCreate.Id);
+            var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
+            Assert.False(addResult.Succeeded);
+
             Assert.NotNull(createdCustomer);
             Assert.Equal(createdCustomer.Id, createdCustomer.Id);
             Assert.Equal(createdCustomer.FirstName, createdCustomer.FirstName);
             Assert.Equal(createdCustomer.LastName, createdCustomer.LastName);
             Assert.Equal(createdCustomer.Phone, createdCustomer.Phone);
-            Assert.Equal(createdCustomer.EmailAddress, createdCustomer.EmailAddress);
+            Assert.Equal(createdCustomer.Email, createdCustomer.Email);
         }
 
         [Fact]
@@ -44,34 +49,26 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Arrange
             var customerRepository = GetCustomerRepository();
 
-            var customerToCreate = new CreateCustomerDTO
-            {
-                Id = new Guid(),
-                FirstName = "Test",
-                LastName = "Customer",
-                Phone = "12345678",
-                EmailAddress = "test@itguru.com"
-            };
-
             // Act
-            customerRepository.CreateCustomer(customerToCreate);
-            var createdCustomer = customerRepository.GetCustomer(customerToCreate.Id);
+            customerRepository.Add(_DEFAULT_CUSTOMER);
+            var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.NotNull(createdCustomer);
-            Assert.Equal(customerToCreate.Id, createdCustomer.Id);
-            Assert.Equal(customerToCreate.FirstName, createdCustomer.FirstName);
-            Assert.Equal(customerToCreate.LastName, createdCustomer.LastName);
-            Assert.Equal(customerToCreate.Phone, createdCustomer.Phone);
-            Assert.Equal(customerToCreate.EmailAddress, createdCustomer.EmailAddress);
+            Assert.Equal(_DEFAULT_CUSTOMER.Id, createdCustomer.Id);
+            Assert.Equal(_DEFAULT_CUSTOMER.FirstName, createdCustomer.FirstName);
+            Assert.Equal(_DEFAULT_CUSTOMER.LastName, createdCustomer.LastName);
+            Assert.Equal(_DEFAULT_CUSTOMER.Phone, createdCustomer.Phone);
+            Assert.Equal(_DEFAULT_CUSTOMER.Email, createdCustomer.Email);
 
             // 2. Delete
             // Act
-            customerRepository.DeleteCustomer(createdCustomer.Id);
-            var deletedCustomer = customerRepository.GetCustomer(createdCustomer.Id);
+            var removeResult = customerRepository.Remove(createdCustomer);
+            var deletedCustomer = customerRepository.GetById(createdCustomer.Id);
 
             // Assert
             Assert.Null(deletedCustomer);
+            Assert.False(removeResult.Succeeded);
         }
 
         [Fact]
@@ -81,27 +78,27 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Arrange
             var customerRepository = GetCustomerRepository();
 
-            var customerIdentity = new Guid();
-            var createCustomer = new CreateCustomerDTO
+            var customerIdentity = Guid.NewGuid();
+            var createCustomer = new CustomerDTO
             {
                 Id = customerIdentity,
                 FirstName = "Created",
                 LastName = "cu$t oMer",
                 Phone = "99999999",
-                EmailAddress = "test@itguru.com"
+                Email = "test@itguru.com"
             };
-            var editCustomer = new EditCustomerDTO
+            var editCustomer = new CustomerDTO
             {
                 Id = customerIdentity,
                 FirstName = "Edited",
                 LastName = "Customer",
                 Phone = "11111111",
-                EmailAddress = "test@itguru.dk"
+                Email = "test@itguru.dk"
             };
 
             // Act
-            customerRepository.CreateCustomer(createCustomer);
-            var createdCustomer = customerRepository.GetCustomer(createCustomer.Id);
+            var addResult = customerRepository.Add(createCustomer);
+            var createdCustomer = customerRepository.GetById(createCustomer.Id);
 
             // Assert
             Assert.NotNull(createdCustomer);
@@ -109,20 +106,23 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             Assert.Equal(createCustomer.FirstName, createdCustomer.FirstName);
             Assert.Equal(createCustomer.LastName, createdCustomer.LastName);
             Assert.Equal(createCustomer.Phone, createdCustomer.Phone);
-            Assert.Equal(createCustomer.EmailAddress, createdCustomer.EmailAddress);
+            Assert.Equal(createCustomer.Email, createdCustomer.Email);
 
             // 2. Update
             // Act
-            customerRepository.UpdateCustomer(editCustomer);
-            var editedCustomer = customerRepository.GetCustomer(createdCustomer.Id);
+            var updateResult = customerRepository.Update(editCustomer);
+            var editedCustomer = customerRepository.GetById(createdCustomer.Id);
 
             // Assert
+            Assert.True(addResult.Succeeded);
+            Assert.True(updateResult.Succeeded);
+
             Assert.NotNull(editedCustomer);
             Assert.Equal(editCustomer.Id, editedCustomer.Id);
             Assert.Equal(editCustomer.FirstName, editedCustomer.FirstName);
             Assert.Equal(editCustomer.LastName, editedCustomer.LastName);
             Assert.Equal(editCustomer.Phone, editedCustomer.Phone);
-            Assert.Equal(editCustomer.EmailAddress, editedCustomer.EmailAddress);
+            Assert.Equal(editCustomer.Email, editedCustomer.Email);
         }
 
         [Fact]
@@ -132,63 +132,99 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Arrange
             var customerRepository = GetCustomerRepository();
 
-            var customersToCreate = new List<CreateCustomerDTO>()
+            var customersToCreate = new List<CustomerDTO>()
             {
-                new CreateCustomerDTO
+                new CustomerDTO
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     FirstName = "Customer",
                     LastName = "One",
                     Phone = "11111111",
-                    EmailAddress = "test1@itguru.com"
+                    Email = "test1@itguru.com"
                 },
-                new CreateCustomerDTO
+                new CustomerDTO
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     FirstName = "Customer",
                     LastName = "Two",
                     Phone = "22222222",
-                    EmailAddress = "test2@itguru.com"
+                    Email = "test2@itguru.com"
                 },
-                new CreateCustomerDTO
+                new CustomerDTO
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     FirstName = "Customer",
                     LastName = "Three",
                     Phone = "33333333",
-                    EmailAddress = "test3@itguru.com"
+                    Email = "test3@itguru.com"
                 }
             };
 
+            bool addAllSuccess = true;
             foreach (var customer in customersToCreate)
             {
-                customerRepository.CreateCustomer(customer);
+                addAllSuccess = customerRepository.Add(customer).Succeeded && addAllSuccess;
             }
 
             // Act
-            var allCustomers = customerRepository.GetAllCustomers();
+            var retrievedCustomers = customerRepository.GetAll();
 
             // Assert
+            Assert.True(addAllSuccess);
+
             foreach (var customer in customersToCreate)
             {
                 // Assert: Customer is present and data is correct.
-                var createdCustomer = allCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();
-                Assert.NotNull(createdCustomer);
-                Assert.Equal(createdCustomer.Id, customer.Id);
-                Assert.Equal(createdCustomer.FirstName, customer.FirstName);
-                Assert.Equal(createdCustomer.LastName, customer.LastName);
-                Assert.Equal(createdCustomer.Phone, customer.Phone);
-                Assert.Equal(createdCustomer.EmailAddress, customer.EmailAddress);
+                var retrievedCustomer = retrievedCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();
+                Assert.NotNull(retrievedCustomer);
+                Assert.Equal(customer.Id, retrievedCustomer.Id);
+                Assert.Equal(customer.FirstName, retrievedCustomer.FirstName);
+                Assert.Equal(customer.LastName, retrievedCustomer.LastName);
+                Assert.Equal(customer.Phone, retrievedCustomer.Phone);
+                Assert.Equal(customer.Email, retrievedCustomer.Email);
 
                 // Assert: Customer is present once only.
-                Assert.Equal(1, allCustomers.Where(c => c.Id == customer.Id).Count());
+                Assert.Equal(1, retrievedCustomers.Where(c => c.Id == customer.Id).Count());
             }
         }
 
-        private CustomerRepository GetCustomerRepository()
+        [Fact]
+        public void AddDublicateCustomerTest()
         {
-            // Simple class
-            return new CustomerRepository();
+            // Arrange
+            var customerRepository = GetCustomerRepository();
+
+            // Act
+            customerRepository.Add(_DEFAULT_CUSTOMER);
+            customerRepository.Add(_DEFAULT_CUSTOMER);
+            customerRepository.Add(_DEFAULT_CUSTOMER);
+
+            var allCustomers = customerRepository.GetAll();
+
+            // Assert
+            var customersWithId = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id).FirstOrDefault();
+            Assert.NotNull(customersWithId);
+            Assert.Equal(1, allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id).Count());
+        }
+
+        [Fact]
+        public void DeleteNonExistingCustomerTest()
+        {
+            // Arrange
+            var customerRepository = GetCustomerRepository();
+
+            // Act
+            var result = customerRepository.Remove(_DEFAULT_CUSTOMER);
+
+            // Assert
+            Assert.False(result.Succeeded);
+        }
+
+        private CustomerService GetCustomerRepository()
+        {
+            // Simple class instance
+            IData data = new ITGuru.FourWheels.Data.Data();
+            return new CustomerService(data);
 
             // EF Core
 
