@@ -15,9 +15,12 @@ _Add bullet points with the initial features that defines the core of the applic
 
 ## Change Log
 _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the project WiKi Page._
- - **[v0.0.0](LinkToGitHubTag)**
+ - **[v0.1.0](LinkToGitHubTag)**
    - **Added**
-     - _List the features added with this version_
+     - Customer class
+     - Person Class
+     - IData Interface
+     - Data Class
    - **Modified**
      - _List the areas that were altered in any way in this version_
    - **Fixed**
