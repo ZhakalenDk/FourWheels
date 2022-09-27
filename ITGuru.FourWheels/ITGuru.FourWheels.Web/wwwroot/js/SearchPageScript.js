@@ -1,4 +1,15 @@
-﻿function Search() {
+﻿let stay = 30000;
+let fadeOut = 1000;
+$(document).ready(Disappear);
+
+// Function deciding how long the messagebox will be shown when performing a registration.
+function Disappear() {
+    $('#PopupBox').fadeTo(stay, fadeOut).slideUp(fadeOut, function () {
+        $('#PopupBox').slideUp(fadeOut);
+    });
+}
+
+function Search() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("SearchInput");
@@ -20,15 +31,6 @@
     }
 }
 
-// This is to ensure that the modal won't close, if the validation isn't valid.
-$("btnCreate").click(function (e) {
-    e.preventDefault();
-});
+$("createForm").validate({
 
-$("btnUpdate").click(function (e) {
-    e.preventDefault();
-});
-
-$("btnDelete").click(function (e) {
-    e.preventDefault();
-});
+})

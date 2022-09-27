@@ -1,39 +1,52 @@
 ﻿@page
 @model ITGuru.FourWheels.Web.Pages.Administration.SearchPageModel
+@using ITGuru.FourWheels.Web.Enums;
 
 <div>
-    <div class="row">
-        <div class="col-8">
+    <div class="row mb-2">
+        @if (TempData.Peek("Message") != null)
+        {
+            Model.Message = TempData["Message"].ToString();
+            Model.MessageStatus = (MessageStatus)TempData["MessageStatus"];
+
+            @if (Model.MessageStatus == MessageStatus.Success)
+            {
+                <div class="alert alert-success rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+            else if (Model.MessageStatus == MessageStatus.Failed)
+            {
+                <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+
+            
+        }
+    </div>
+    <div class="row mb-2">
+        <div class="col-9">
             <input class="form-control" type="text" id="SearchInput" onkeyup="Search()" placeholder="Search for names..">
         </div>
-        <div class="col-2">
+        <div class="col-1">
             <button type="button" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-plus"></i> New customer</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createCustomer"><i class="fa-solid fa-plus"></i> New customer</button>
         </div>
     </div>
     <div>
         <table class="table table-striped" id="SearchTable">
             <tr class="header">
-                <th class="col-1">#</th>
                 <th class="col-4">Name</th>
                 <th class="col-2">Phone</th>
-                <th class="col-3">Email</th>
+                <th class="col-4">Email</th>
                 <th class="col-2">Options</th>
             </tr>
-            @foreach (object customer in Model.Customers)
+            @foreach (var customer in Model.Customers)
             {
-                //TODO: Implement Customer object
                 <tr>
-                    <td>@customer.ToString()</td>
-                    <td>@customer.ToString()</td>
-                    <td>@customer.ToString()</td>
-                    <td>@customer.ToString()</td>
+                    <td>@customer.FirstName @customer.LastName</td>
+                    <td>@customer.Phone</td>
+                    <td>@customer.Email</td>
                     <td>
-                        @{
-                            //TODO: Implement Button functions for Edit & Delete Customer
-                        }
                         <div class="row">
                             <div class="col-6">
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCustomer"><i class="fa-solid fa-pen-to-square"></i>Update</button>
@@ -50,7 +63,7 @@
 </div>
 
 <!-- #region Modals -->
-<form method="post" asp-page-handler="CreateCustomer">
+<form method="post" asp-page-handler="CreateCustomer" id="createForm">
     <div class="modal fade" id="createCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createCustomerLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -59,8 +72,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 @{
-                    // TODO: Out comment the asp-validation-for and asp-for below.
-                    // TODO: Test that the modal doesn't close if the validation isn't valid (see JS).
+                    // TODO: Modal stays open if validation is invalid.
                 }
                 <div class="modal-body">
                     <div class="row mb-2">
@@ -68,9 +80,8 @@
                             <label>First name:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.FirstName"*@ type="text" placeholder="Enter customers first name..." />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.FirstName" class="text-danger"></span>*@
+                            <input class="form-control" asp-for="@Model.Customer.FirstName" type="text" placeholder="Enter customers first name..." />
+                            <span class="text-danger" asp-validation-for="@Model.Customer.FirstName"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -78,9 +89,8 @@
                             <label>Last name:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.LastName"*@ type="text" placeholder="Enter customers last name..." />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.LastName" class="text-danger"></span>*@
+                            <input class="form-control" asp-for="@Model.Customer.LastName" type="text" placeholder="Enter customers last name..." />
+                            <span class="text-danger" asp-validation-for="@Model.Customer.LastName"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -88,9 +98,8 @@
                             <label>Phone:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.Phone"*@ type="text" placeholder="Enter customers phone number..." />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.Phone" class="text-danger"></span>*@
+                            <input class="form-control" asp-for="@Model.Customer.Phone" type="text" placeholder="Enter customers phone number..." />
+                            <span class="text-danger" asp-validation-for="@Model.Customer.Phone"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -98,9 +107,8 @@
                             <label>Email:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.Email"*@ type="text" placeholder="Enter customers email..." />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.Email" class="text-danger"></span>*@
+                            <input class="form-control" asp-for="@Model.Customer.Email" type="text" placeholder="Enter customers email..." />
+                            <span class="text-danger" asp-validation-for="@Model.Customer.Email"></span>
                         </div>
                     </div>
                 </div>
