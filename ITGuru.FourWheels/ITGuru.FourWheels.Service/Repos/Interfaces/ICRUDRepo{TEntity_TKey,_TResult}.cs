@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ITGuru.FourWheels.Service
 {
     /// <summary>
-    /// Serves as an <see langword="async"/> CRUD repository pattern
+    /// Serves as a CRUD repository pattern
     /// </summary>
     /// <typeparam name="TEntity">The type of entity to operate on</typeparam>
     /// <typeparam name="TKey">The type the <typeparamref name="TEntity"/> uses as identifier</typeparam>

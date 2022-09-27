@@ -1,10 +1,4 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
-using ITGuru.FourWheels.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ITGuru.FourWheels.Data.Interfaces;
 
 namespace ITGuru.FourWheels.Service
 {
@@ -30,23 +24,50 @@ namespace ITGuru.FourWheels.Service
 
         public RepoResult Add(ICustomer entity)
         {
-            _context.AddCustomer(entity.MapToInternal());
+            RepoResult result = new RepoResult(string.Empty);
+            try
+            {
+                _context.AddCustomer(entity.MapToInternal());
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+                result.Message = e.Message;
+            }
 
-            return new RepoResult("???");
+            return result;
         }
 
         public RepoResult Update(ICustomer entity)
         {
-            _context.UpdateCustomer(entity.MapToInternal());
+            RepoResult result = new RepoResult(string.Empty);
+            try
+            {
+                _context.UpdateCustomer(entity.MapToInternal());
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+                result.Message = e.Message;
+            }
 
-            return new RepoResult("???");
+            return result;
         }
 
         public RepoResult Remove(ICustomer entity)
         {
-            _context.DeleteCustomer(entity.Id);
+            RepoResult result = new RepoResult(string.Empty);
+            try
+            {
+                _context.DeleteCustomer(entity.Id);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+                result.Message = e.Message;
+            }
 
-            return new RepoResult("???");
+            return result;
         }
     }
 }
