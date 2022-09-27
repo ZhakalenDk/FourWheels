@@ -10,7 +10,12 @@ namespace ITGuru.FourWheels.Data
 {
     public class Data : IData
     {
-        private List<Customer> Customers { get; set; } = new();
+        private List<Customer> _customers;
+
+        public List<Customer> Customers
+        {
+            get { return _customers; }
+        }
 
         public Data()
         {
@@ -80,9 +85,29 @@ namespace ITGuru.FourWheels.Data
             return Customers.ToList();
         }
 
-        public void SaveCustomerList(List<Customer> customers)
+        public void AddCustomer(Customer customer)
         {
-            Customers = customers;
+            Customers.Add(customer);
+        }
+
+        public void UpdateCustomer(Customer changed_customer)
+        {
+            Customer customer = Customers.Where(x => x.Id == changed_customer.Id).FirstOrDefault();
+            
+            if (customer != null)
+            {
+                customer.FirstName = changed_customer.FirstName;
+                customer.LastName = changed_customer.LastName;
+                customer.Email = changed_customer.Email;
+                customer.Phone = changed_customer.Phone;
+                customer.Deleted = changed_customer.Deleted;
+            }
+        }
+
+        public void DeleteCustomer(Guid customerID)
+        {
+            int index = Customers.FindIndex(x => x.Id == customerID);
+            Customers.RemoveAt(index);
         }
     }
 }

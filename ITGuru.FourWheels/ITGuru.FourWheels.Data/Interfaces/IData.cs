@@ -1,6 +1,7 @@
 ﻿using ITGuru.FourWheels.Data.DataModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace ITGuru.FourWheels.Data.Interfaces
     {
         void GenerateList();
         List<Customer> GetAllCustomers();
-        void SaveCustomerList(List<Customer> customers);
+        void AddCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
+        void DeleteCustomer(Guid customerID);
     }
 }
