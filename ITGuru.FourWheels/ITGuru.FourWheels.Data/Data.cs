@@ -1,4 +1,5 @@
 ﻿using ITGuru.FourWheels.Data.DataModels;
+using ITGuru.FourWheels.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data
 {
-    public class Data
+    public class Data : IData
     {
-        List<Customer> customers = new();
+        private List<Customer> Customers { get; set; } = new();
 
         public Data()
         {
@@ -27,7 +28,7 @@ namespace ITGuru.FourWheels.Data
                 Email = "jensneergaard@hotmail.com",
                 Phone = "12345678"
             };
-            customers.Add(customer);
+            Customers.Add(customer);
 
             Guid g2 = Guid.NewGuid();
             Customer customer2 = new Customer()
@@ -38,8 +39,7 @@ namespace ITGuru.FourWheels.Data
                 Email = "MikeMortensen@hotmail.com",
                 Phone = "23456789"
             };
-
-            customers.Add(customer2);
+            Customers.Add(customer2);
 
             Guid g3 = Guid.NewGuid();
             Customer customer3 = new Customer()
@@ -50,7 +50,7 @@ namespace ITGuru.FourWheels.Data
                 Email = "LukasPederson@hotmail.com",
                 Phone = "34567890"
             };
-            customers.Add(customer3);
+            Customers.Add(customer3);
 
             Guid g4 = Guid.NewGuid();
             Customer customer4 = new Customer()
@@ -61,7 +61,7 @@ namespace ITGuru.FourWheels.Data
                 Email = "SimonAndreassen@hotmail.com",
                 Phone = "23456789"
             };
-            customers.Add(customer4);
+            Customers.Add(customer4);
 
             Guid g5 = Guid.NewGuid();
             Customer customer5 = new Customer()
@@ -72,8 +72,17 @@ namespace ITGuru.FourWheels.Data
                 Email = "JasminNielsen@hotmail.com",
                 Phone = "23456789"
             };
-            customers.Add(customer5);
+            Customers.Add(customer5);
         }
 
+        public List<Customer> GetAllCustomers()
+        {
+            return Customers.ToList();
+        }
+
+        public void SaveCustomerList(List<Customer> customers)
+        {
+            Customers = customers;
+        }
     }
 }
