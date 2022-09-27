@@ -14,10 +14,10 @@ namespace ITGuru.FourWheels.Service
     /// <typeparam name="TResult">The type of result the repository should return when performing CRUD operations</typeparam>
     public interface ICRUDRepo<TEntity, TKey, TResult>
     {
-        Task<IReadOnlyList<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(TKey key);
-        Task<TResult> AddAsync(TEntity entity);
-        Task<TResult> UpdateAsync(TEntity entity);
-        Task<TResult> RemoveAsync(TEntity entity);
+        IReadOnlyList<TEntity> GetAll();
+        TEntity GetById(TKey key);
+        TResult Add(TEntity entity);
+        TResult Update(TEntity entity);
+        TResult Remove(TEntity entity);
     }
 }

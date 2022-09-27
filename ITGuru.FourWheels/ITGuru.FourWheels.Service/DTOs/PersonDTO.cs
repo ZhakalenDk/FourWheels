@@ -9,6 +9,7 @@ namespace ITGuru.FourWheels.Service
 {
     public abstract class PersonDTO : IPerson
     {
+        internal PersonDTO() { /*Restrictive Constructor*/ }
         /// <summary>
         /// Initialize a new instance of type <see cref="PersonDTO"/> with a <paramref name="firstName"/> and <paramref name="lastName"/>.
         /// <br/>
@@ -36,8 +37,8 @@ namespace ITGuru.FourWheels.Service
             LastName = lastName;
         }
 
-        public Guid Id { get; }
-        public string FirstName { get; }
-        public string LastName { get; }
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

@@ -11,7 +11,5 @@ namespace ITGuru.FourWheels.Service
     {
         string Phone { get; }
         string Email { get; }
-
-        //  TODO: Implement vehicle collection
     }
 }

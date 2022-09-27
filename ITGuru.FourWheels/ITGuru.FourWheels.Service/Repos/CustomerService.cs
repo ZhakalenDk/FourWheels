@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ITGuru.FourWheels.Data.DataModels;
+using ITGuru.FourWheels.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,31 +8,45 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Service
 {
-    public class CustomerService : RepositoryBase<Customer>, ICustomerService
+    public class CustomerService : ICustomerService
     {
-        public async Task<RepoResult> AddAsync(ICustomer entity)
+        public CustomerService(IData context)
         {
-            return await base.AddAsync(entity.MapToInternal());
+            _context = context;
         }
 
-        public async Task<RepoResult> RemoveAsync(ICustomer entity)
+        private readonly IData _context;
+
+        public IReadOnlyList<ICustomer> GetAll()
         {
-            return await base.RemoveAsync(entity.MapToInternal());
+            return _context.GetAllCustomers().MapToPublic()
+                .ToList();
         }
 
-        public async Task<RepoResult> UpdateAsync(ICustomer entity)
+        public ICustomer GetById(Guid key)
         {
-            return await base.UpdateAsync(entity.MapToInternal());
+            return GetAll().FirstOrDefault(c => c.Id == key);
         }
 
-        async Task<IReadOnlyList<ICustomer>> ICRUDRepo<ICustomer, Guid, RepoResult>.GetAllAsync()
+        public RepoResult Add(ICustomer entity)
         {
-            return await (base.GetAllAsync()).MapToPublic();
+            _context.AddCustomer(entity.MapToInternal());
+
+            return new RepoResult("???");
         }
 
-        async Task<ICustomer> ICRUDRepo<ICustomer, Guid, RepoResult>.GetByIdAsync(Guid key)
+        public RepoResult Update(ICustomer entity)
         {
-            return (await base.GetByIdAsync(key)).MapToPublic();
+            _context.UpdateCustomer(entity.MapToInternal());
+
+            return new RepoResult("???");
+        }
+
+        public RepoResult Remove(ICustomer entity)
+        {
+            _context.DeleteCustomer(entity.Id);
+
+            return new RepoResult("???");
         }
     }
 }

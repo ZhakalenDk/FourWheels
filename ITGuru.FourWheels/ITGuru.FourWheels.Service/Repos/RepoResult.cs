@@ -2,14 +2,13 @@
 {
     public class RepoResult
     {
-        public RepoResult(Exception? exception, string? message = null)
+        public RepoResult(string message)
         {
             Message = message;
-            Exception = exception;
         }
-        public string? Message { get; }
+        public string Message { get; }
 
-        public Exception? Exception { get; }
+        public Exception Exception { get; }
 
         public bool Succeeded => Exception != null;
     }
