@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,55 @@
+﻿@page
+@model ITGuru.FourWheels.Web.Pages.Administration.SearchPageModel
+
+<div>
+    <div class="row">
+        <div class="col-8">
+            <input class="form-control" type="text" id="SearchInput" onkeyup="Search()" placeholder="Search for names..">
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-plus"></i> New customer</button>
+        </div>
+    </div>
+    <div>
+        <table class="table" id="SearchTable">
+            <tr class="header">
+                <th class="col-1">#</th>
+                <th class="col-4">Name</th>
+                <th class="col-2">Phone</th>
+                <th class="col-3">Email</th>
+                <th class="col-2">Options</th>
+            </tr>
+            @foreach (object customer in Model.Customers)
+            {
+                //TODO: Implement User object
+                <tr>
+                    <td>@customer.ToString()</td>
+                    <td>@customer.ToString()</td>
+                    <td>@customer.ToString()</td>
+                    <td>@customer.ToString()</td>
+                    <td>
+                        @{
+                            //TODO: Implement Button functions for Edit & Delete Customer
+                        }
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCustomer"><i class="fa-solid fa-pen-to-square"></i>Update</button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCustomer"><i class="fa-solid fa-trash"></i>Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/SearchPageScript.js"></script>
+}
