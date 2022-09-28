@@ -1,5 +1,4 @@
 ﻿using ITGuru.FourWheels.Data.DataModels;
-using ITGuru.FourWheels.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data
 {
-    public class Data : IData
+    public class DataLayer : IDataLayer
     {
-        private List<Customer> _customers;
+        private List<Customer> _customers = new();
 
         public List<Customer> Customers
         {
             get { return _customers; }
         }
 
-        public Data()
+        public DataLayer()
         {
             GenerateList();
         }
@@ -85,12 +84,14 @@ namespace ITGuru.FourWheels.Data
             return Customers.ToList();
         }
 
-        public void AddCustomer(Customer customer)
+        public bool AddCustomer(Customer customer)
         {
+
             Customers.Add(customer);
+            return true;
         }
 
-        public void UpdateCustomer(Customer changed_customer)
+        public bool UpdateCustomer(Customer changed_customer)
         {
             Customer customer = Customers.Where(x => x.Id == changed_customer.Id).FirstOrDefault();
             
@@ -102,12 +103,50 @@ namespace ITGuru.FourWheels.Data
                 customer.Phone = changed_customer.Phone;
                 customer.Deleted = changed_customer.Deleted;
             }
+            return true;
         }
 
-        public void DeleteCustomer(Guid customerID)
+        public bool HardDeleteCustomer(Guid customerID)
         {
             int index = Customers.FindIndex(x => x.Id == customerID);
             Customers.RemoveAt(index);
+            return true;
+        }
+
+        public bool SoftDeleteCustomer(Guid customerID)
+        {
+            Customer customer = Customers.Where(x => x.Id == customerID).FirstOrDefault();
+
+            if (customer != null)
+            {
+                customer.Deleted = true;
+            }
+            return true;
+        }
+
+        public List<Vehicle> GetAllVehicles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddVehicle(Vehicle vehicle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateVehicle(Vehicle vehicle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HardDeleteVehicle(Guid vehicleID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SoftDeleteVehicle(Guid vehicleID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

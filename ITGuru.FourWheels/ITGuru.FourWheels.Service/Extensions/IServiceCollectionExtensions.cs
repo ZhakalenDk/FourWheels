@@ -6,13 +6,13 @@ namespace ITGuru.FourWheels.Service
     public static class IServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds the <see cref="IData"/> as a <strong>Singleton</strong> instance
+        /// Adds the <see cref="IDataLayer"/> as a <strong>Singleton</strong> instance
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
-            return services.AddSingleton<IData, Data.Data>();
+            return services.AddSingleton<IDataLayer, Data.DataLayer>();
         }
     }
 }

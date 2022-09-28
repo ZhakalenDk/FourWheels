@@ -15,10 +15,13 @@ _Add bullet points with the initial features that defines the core of the applic
 
 ## Change Log
 _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the project WiKi Page._
- - **[v0.0.0](LinkToGitHubTag)**
+ - **[v0.1.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.0-Dev)**: Administration af kundder
    - **Added**
-     - _List the features added with this version_
+     - Add customer
+     - Update Customer
+     - Hard/Soft Delete customer
+     - Get a list of all customers
    - **Modified**
-     - _List the areas that were altered in any way in this version_
+     - Nothing
    - **Fixed**
-     - _List the bugs that were fixed in this version_
+     - Nothing
