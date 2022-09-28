@@ -10,7 +10,7 @@ namespace ITGuru.FourWheels.Service
         [Required]
         [MaxLength(11)]
         public string Phone { get; set; }
-        [Required]
+        [Required, MaxLength(256)]
         public string Email { get; set; }
     }
 }

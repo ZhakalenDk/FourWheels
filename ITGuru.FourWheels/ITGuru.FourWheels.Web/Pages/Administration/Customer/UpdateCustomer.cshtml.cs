@@ -13,7 +13,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Customer
         }
 
         private readonly ICustomerService _customerService;
-        
+
         [BindProperty]
         public CustomerDTO Customer { get; set; }
 
@@ -23,7 +23,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Customer
         public MessageStatus MessageStatus { get; set; }
 
         public void OnGet(string CustomerId)
-        {            
+        {
             Customer = _customerService.GetById(new Guid(CustomerId)) as CustomerDTO;
         }
 
@@ -54,7 +54,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Customer
                 return RedirectToPage("/Administration/SearchPage");
             }
             else
-            {                
+            {
                 return Page();
             }
         }

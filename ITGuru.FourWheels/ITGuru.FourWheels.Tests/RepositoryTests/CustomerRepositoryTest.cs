@@ -1,14 +1,12 @@
 using ITGuru.FourWheels.Data;
 using ITGuru.FourWheels.Service;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System.ComponentModel.DataAnnotations;
-using System.Xml;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class CustomerRepositoryTests
     {
-        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO {
+        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+        {
             Id = Guid.NewGuid(),
             FirstName = "Test",
             LastName = "Customer",
