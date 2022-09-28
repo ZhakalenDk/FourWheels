@@ -22,7 +22,20 @@ namespace ITGuru.FourWheels.Data
         {
             GenerateList();
         }
-
+        public void GenerateVehicleList(Guid customerID, string brand, string model, string licensePlate)
+        {
+            Guid guid = Guid.NewGuid();
+            Vehicle vehicle = new()
+            {
+                Id = guid,
+                LicensePlate = licensePlate,
+                Brand = brand,
+                Model = model,
+                CustomerId = customerID,
+                IsDeleted = false
+            };
+            Vehicles.Add(vehicle);
+        }
         public void GenerateList()
         {
             Guid g = Guid.NewGuid();
@@ -34,6 +47,7 @@ namespace ITGuru.FourWheels.Data
                 Email = "jensneergaard@hotmail.com",
                 Phone = "12345678"
             };
+            GenerateVehicleList(g, "Rolls-Royce", "Rolls-Royce Spectre (electric)", "RR66449");
             Customers.Add(customer);
 
             Guid g2 = Guid.NewGuid();
@@ -45,6 +59,8 @@ namespace ITGuru.FourWheels.Data
                 Email = "MikeMortensen@hotmail.com",
                 Phone = "23456789"
             };
+            GenerateVehicleList(g2, "Volkswagen", "GOLF", "VW45697");
+            GenerateVehicleList(g2, "Cadilac", "XT5", "CC12345");
             Customers.Add(customer2);
 
             Guid g3 = Guid.NewGuid();
@@ -56,6 +72,8 @@ namespace ITGuru.FourWheels.Data
                 Email = "LukasPederson@hotmail.com",
                 Phone = "34567890"
             };
+            GenerateVehicleList(g3, "BMW", "1 Series (F52)", "The Boss 2");
+            GenerateVehicleList(g3, "BMW", "5 Series", "The Boss");
             Customers.Add(customer3);
 
             Guid g4 = Guid.NewGuid();
@@ -67,6 +85,9 @@ namespace ITGuru.FourWheels.Data
                 Email = "SimonAndreassen@hotmail.com",
                 Phone = "23456789"
             };
+            GenerateVehicleList(g4, "Cadilac", "XT6", "CC34598");
+            GenerateVehicleList(g4, "Cadilac", "CT4", "CC23584");
+            GenerateVehicleList(g4, "Cadilac", "ESCALADE ESV", "CC98765");
             Customers.Add(customer4);
 
             Guid g5 = Guid.NewGuid();
