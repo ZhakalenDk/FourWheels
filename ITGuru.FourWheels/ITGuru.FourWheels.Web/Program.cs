@@ -1,5 +1,4 @@
 using ITGuru.FourWheels.Service;
-using ITGuru.FourWheels.Service.Repos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddContext();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
