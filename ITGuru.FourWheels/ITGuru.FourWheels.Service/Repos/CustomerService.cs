@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.Data.Interfaces;
+﻿using ITGuru.FourWheels.Data;
 
 namespace ITGuru.FourWheels.Service
 {

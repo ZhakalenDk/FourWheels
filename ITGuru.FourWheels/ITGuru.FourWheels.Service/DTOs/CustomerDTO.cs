@@ -1,19 +1,11 @@
-﻿using ITGuru.FourWheels.Service.DTOs.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ITGuru.FourWheels.Service
 {
     public class CustomerDTO : PersonDTO, ICustomer
     {
-        public CustomerDTO() { }
-        public CustomerDTO(Guid id, string firstName, string lastName) : base(id, firstName, lastName)
-        {
-        }
+        public CustomerDTO() { /*Empty*/ }
+        public CustomerDTO(Guid id, string firstName, string lastName) : base(id, firstName, lastName) { /*Empty*/ }
 
         [Required]
         [MaxLength(11)]
