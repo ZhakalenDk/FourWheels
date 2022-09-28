@@ -182,7 +182,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
                 Assert.Equal(customer.Email, retrievedCustomer.Email);
 
                 // Assert: Customer is present once only.
-                Assert.Equal(1, retrievedCustomers.Where(c => c.Id == customer.Id).Count());
+                Assert.Single(retrievedCustomers.Where(c => c.Id == customer.Id));
             }
         }
 
@@ -202,7 +202,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             var customersWithId = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id).FirstOrDefault();
             Assert.NotNull(customersWithId);
-            Assert.Equal(1, allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id).Count());
+            Assert.Single(allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id));
         }
 
         [Fact]
