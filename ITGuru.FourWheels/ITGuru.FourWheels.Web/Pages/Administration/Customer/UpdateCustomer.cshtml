@@ -1,4 +1,74 @@
-﻿@page
+﻿@page "{CustomerId}"
 @model ITGuru.FourWheels.Web.Pages.Administration.Customer.UpdateCustomerModel
 @{
+
 }
+
+<div class="container">
+    <h3 class="text-center">You are about to edit: <b>@Model.Customer.FirstName @Model.Customer.LastName</b></h3>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <form method="post" class="card border col-md-6 form-bg-color">
+            <input type="hidden" asp-for="@Model.Customer.Id" />
+            <div class="row">
+                <div>
+                    <div class="input-group mt-4">
+                        <div class="input-group-prepend col-md-3">
+                            <span class="input-group-text">First name: </span>
+                        </div>
+                        <input type="text" asp-for="@Model.Customer.FirstName" class="form-control col-md-9" placeholder="@Model.Customer.FirstName" />
+                        <br />
+                        <span class="text-danger" asp-validation-for="@Model.Customer.FirstName"></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-group mt-4">
+                        <div class="input-group-prepend col-md-3">
+                            <span class="input-group-text">Last name: </span>
+                        </div>
+                        <input type="text" asp-for="@Model.Customer.LastName" class="form-control col-md-9" placeholder="@Model.Customer.LastName" />
+                        <br />
+                        <span class="text-danger" asp-validation-for="@Model.Customer.LastName"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div>
+                    <div class="input-group mt-4">
+                        <div class="input-group-prepend col-md-3">
+                            <span class="input-group-text">Phone: </span>
+                        </div>
+                        <input type="text" asp-for="@Model.Customer.Phone" class="form-control col-md-9" placeholder="@Model.Customer.Phone" />
+                        <br />
+                        <span class="text-danger" asp-validation-for="@Model.Customer.Phone"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <div class="input-group mt-4">
+                        <div class="input-group-prepend col-md-3">
+                            <span class="input-group-text">Email: </span>
+                        </div>
+                        <input type="text" asp-for="@Model.Customer.Email" class="form-control col-md-9" placeholder="@Model.Customer.Email" />
+                        <br />
+                        <span class="text-danger" asp-validation-for="@Model.Customer.Email"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <hr />
+            </div>
+            <div class="row mb-3">
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="me-4">
+                        <button type="submit" name="editTodo" class="btn btn-success" value="true">Edit</button>                        
+                    </div>
+                    <div class="ms-4">
+                        <a class="btn btn-warning" asp-page="/Administration/SearchPage">Return</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
