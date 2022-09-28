@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data.Interfaces
 {
-    public interface IData
+    public interface IDataLayer
     {
         void GenerateList();
         List<Customer> GetAllCustomers();
-        void AddCustomer(Customer customer);
-        void UpdateCustomer(Customer customer);
-        void DeleteCustomer(Guid customerID);
+        bool AddCustomer(Customer customer);
+        bool UpdateCustomer(Customer customer);
+        bool HardDeleteCustomer(Guid customerID);
+        bool SoftDeleteCustomer(Guid customerID);
     }
 }

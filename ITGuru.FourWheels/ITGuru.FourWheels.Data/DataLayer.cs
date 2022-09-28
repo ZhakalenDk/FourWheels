@@ -8,24 +8,21 @@ using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data
 {
-    public class Data : IData
+    public class DataLayer : IDataLayer
     {
-        private List<Customer> _customers;
-
+        private List<Customer> _customers = new();
         public List<Customer> Customers
         {
             get { return _customers; }
         }
-
-        public Data()
+        public DataLayer()
         {
             GenerateList();
         }
-
         public void GenerateList()
         {
             Guid g = Guid.NewGuid();
-            Customer customer = new Customer()
+            Customer customer = new()
             {
                 Id = g,
                 FirstName = "jens",
@@ -36,7 +33,7 @@ namespace ITGuru.FourWheels.Data
             Customers.Add(customer);
 
             Guid g2 = Guid.NewGuid();
-            Customer customer2 = new Customer()
+            Customer customer2 = new()
             {
                 Id = g2,
                 FirstName = "Mike",
@@ -47,7 +44,7 @@ namespace ITGuru.FourWheels.Data
             Customers.Add(customer2);
 
             Guid g3 = Guid.NewGuid();
-            Customer customer3 = new Customer()
+            Customer customer3 = new()
             {
                 Id = g3,
                 FirstName = "Lukas",
@@ -58,7 +55,7 @@ namespace ITGuru.FourWheels.Data
             Customers.Add(customer3);
 
             Guid g4 = Guid.NewGuid();
-            Customer customer4 = new Customer()
+            Customer customer4 = new()
             {
                 Id = g4,
                 FirstName = "Simon",
@@ -69,7 +66,7 @@ namespace ITGuru.FourWheels.Data
             Customers.Add(customer4);
 
             Guid g5 = Guid.NewGuid();
-            Customer customer5 = new Customer()
+            Customer customer5 = new()
             {
                 Id = g5,
                 FirstName = "Jasmin",
@@ -79,18 +76,31 @@ namespace ITGuru.FourWheels.Data
             };
             Customers.Add(customer5);
         }
-
         public List<Customer> GetAllCustomers()
         {
             return Customers.ToList();
         }
-
-        public void AddCustomer(Customer customer)
+        /// <summary>
+        /// Adds a single customer
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Return true if Added without a dublecate</returns>
+        public bool AddCustomer(Customer customer)
         {
-            Customers.Add(customer);
+            int index = Customers.IndexOf(customer);
+            if (index >= 0)
+            {
+                Customers.Add(customer);
+                return true;
+            }
+            return false;
         }
-
-        public void UpdateCustomer(Customer changed_customer)
+        /// <summary>
+        /// Updates a single customer
+        /// </summary>
+        /// <param name="changed_customer"></param>
+        /// <returns> return true if customer is there and updated</returns>
+        public bool UpdateCustomer(Customer changed_customer)
         {
             Customer customer = Customers.Where(x => x.Id == changed_customer.Id).FirstOrDefault();
             
@@ -101,13 +111,41 @@ namespace ITGuru.FourWheels.Data
                 customer.Email = changed_customer.Email;
                 customer.Phone = changed_customer.Phone;
                 customer.Deleted = changed_customer.Deleted;
+                return true;
             }
+            return false;
         }
-
-        public void DeleteCustomer(Guid customerID)
+        /// <summary>
+        /// Removes a single customer
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns> Return true if customer is deleted PERMAMENTLY</returns>
+        public bool HardDeleteCustomer(Guid customerID)
         {
             int index = Customers.FindIndex(x => x.Id == customerID);
-            Customers.RemoveAt(index);
+            if (index >= 0)
+            {
+                Customers.RemoveAt(index);  
+                return true;
+            }
+            return false;
+        } 
+        /// <summary>
+          /// SoftDelete a single customer
+          /// </summary>
+          /// <param name="customerID"></param>
+          /// <returns> Return true if customer is soft deleted</returns>
+        public bool SoftDeleteCustomer(Guid customerID)
+        {
+            Customer customer = Customers.Where(x => x.Id == customerID).FirstOrDefault();
+
+            if (customer != null)
+            {
+                customer.Deleted = true;
+                return true;
+            }
+            return false;
         }
+
     }
 }
