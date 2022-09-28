@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITGuru.FourWheels.Service
+﻿namespace ITGuru.FourWheels.Service
 {
     /// <summary>
     /// A generic mapping tool that can map properties between <typeparamref name="TFrom"/> and <typeparamref name="TTo"/>
