@@ -33,10 +33,11 @@ namespace ITGuru.FourWheels.Service
             LastName = lastName;
         }
 
+        [Required]
         public Guid Id { get; set; }
-        [Required]
+        [Required, MaxLength(50)]
         public string FirstName { get; set; }
-        [Required]
+        [Required, MaxLength(25)]
         public string LastName { get; set; }
     }
 }
