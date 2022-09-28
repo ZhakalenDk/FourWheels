@@ -24,15 +24,20 @@ namespace ITGuru.FourWheels.Service
 
         public RepoResult Add(ICustomer entity)
         {
-            RepoResult result = new RepoResult(string.Empty);
+            RepoResult result = new RepoResult("Customer Added");
             try
             {
-                _context.AddCustomer(entity.MapToInternal());
+                if (!_context.AddCustomer(entity.MapToInternal()))
+                {
+                    result.Succeeded = false;
+                    result.Message = "Customer couldn't be added";
+                }
             }
             catch (Exception e)
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;
@@ -40,15 +45,20 @@ namespace ITGuru.FourWheels.Service
 
         public RepoResult Update(ICustomer entity)
         {
-            RepoResult result = new RepoResult(string.Empty);
+            RepoResult result = new RepoResult("Customer Updated");
             try
             {
-                _context.UpdateCustomer(entity.MapToInternal());
+                if (!_context.UpdateCustomer(entity.MapToInternal()))
+                {
+                    result.Succeeded = false;
+                    result.Message = "Customer couldn't be updated";
+                }
             }
             catch (Exception e)
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;
@@ -56,15 +66,20 @@ namespace ITGuru.FourWheels.Service
 
         public RepoResult Remove(ICustomer entity)
         {
-            RepoResult result = new RepoResult(string.Empty);
+            RepoResult result = new RepoResult("Customer Removed");
             try
             {
-                _context.SoftDeleteCustomer(entity.Id);
+                if (!_context.SoftDeleteCustomer(entity.Id))
+                {
+                    result.Succeeded = false;
+                    result.Message = "Customer couldn't be removed";
+                }
             }
             catch (Exception e)
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;

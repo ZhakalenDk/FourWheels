@@ -10,7 +10,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class CustomerRepositoryTests
     {
-        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
         {
             Id = Guid.NewGuid(),
             FirstName = "Test",
