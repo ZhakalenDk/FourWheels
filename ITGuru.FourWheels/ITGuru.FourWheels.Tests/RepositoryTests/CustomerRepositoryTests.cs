@@ -4,6 +4,7 @@ using ITGuru.FourWheels.Service;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
+using ITGuru.FourWheels.Data.DataModels;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
@@ -33,11 +34,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
-            Assert.Equal(createdCustomer.Id, createdCustomer.Id);
-            Assert.Equal(createdCustomer.FirstName, createdCustomer.FirstName);
-            Assert.Equal(createdCustomer.LastName, createdCustomer.LastName);
-            Assert.Equal(createdCustomer.Phone, createdCustomer.Phone);
-            Assert.Equal(createdCustomer.Email, createdCustomer.Email);
+            AssertAllCustomerProperties(_DEFAULT_CUSTOMER, createdCustomer);
         }
 
         [Fact]
@@ -54,11 +51,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
-            Assert.Equal(_DEFAULT_CUSTOMER.Id, createdCustomer.Id);
-            Assert.Equal(_DEFAULT_CUSTOMER.FirstName, createdCustomer.FirstName);
-            Assert.Equal(_DEFAULT_CUSTOMER.LastName, createdCustomer.LastName);
-            Assert.Equal(_DEFAULT_CUSTOMER.Phone, createdCustomer.Phone);
-            Assert.Equal(_DEFAULT_CUSTOMER.Email, createdCustomer.Email);
+            AssertAllCustomerProperties(_DEFAULT_CUSTOMER, createdCustomer);
 
             // 2. Delete
             // Act
@@ -102,11 +95,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(createdCustomer);
-            Assert.Equal(createCustomer.Id, createdCustomer.Id);
-            Assert.Equal(createCustomer.FirstName, createdCustomer.FirstName);
-            Assert.Equal(createCustomer.LastName, createdCustomer.LastName);
-            Assert.Equal(createCustomer.Phone, createdCustomer.Phone);
-            Assert.Equal(createCustomer.Email, createdCustomer.Email);
+            AssertAllCustomerProperties(createCustomer, createdCustomer);
 
             // 2. Update
             // Act
@@ -116,11 +105,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedCustomer);
-            Assert.Equal(editCustomer.Id, editedCustomer.Id);
-            Assert.Equal(editCustomer.FirstName, editedCustomer.FirstName);
-            Assert.Equal(editCustomer.LastName, editedCustomer.LastName);
-            Assert.Equal(editCustomer.Phone, editedCustomer.Phone);
-            Assert.Equal(editCustomer.Email, editedCustomer.Email);
+            AssertAllCustomerProperties(editCustomer, editedCustomer);
         }
 
         [Fact]
@@ -175,11 +160,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
                 // Assert: Customer is present and data is correct.
                 var retrievedCustomer = retrievedCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();
                 Assert.NotNull(retrievedCustomer);
-                Assert.Equal(customer.Id, retrievedCustomer.Id);
-                Assert.Equal(customer.FirstName, retrievedCustomer.FirstName);
-                Assert.Equal(customer.LastName, retrievedCustomer.LastName);
-                Assert.Equal(customer.Phone, retrievedCustomer.Phone);
-                Assert.Equal(customer.Email, retrievedCustomer.Email);
+                AssertAllCustomerProperties(customer, retrievedCustomer);
 
                 // Assert: Customer is present once only.
                 Assert.Single(retrievedCustomers.Where(c => c.Id == customer.Id));
@@ -200,9 +181,9 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var allCustomers = customerRepository.GetAll();
 
             // Assert
-            var customersWithId = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id).FirstOrDefault();
-            Assert.NotNull(customersWithId);
-            Assert.Single(allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id));
+            var returnedCustomers = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id);
+            Assert.NotNull(returnedCustomers.FirstOrDefault());
+            Assert.Single(returnedCustomers);
         }
 
         [Fact]
@@ -216,6 +197,15 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
             // Assert
             Assert.False(result.Succeeded);
+        }
+
+        private void AssertAllCustomerProperties(ICustomer exptectedCustomer, ICustomer actualCustomer)
+        {
+            Assert.Equal(exptectedCustomer.Id, actualCustomer.Id);
+            Assert.Equal(exptectedCustomer.FirstName, actualCustomer.FirstName);
+            Assert.Equal(exptectedCustomer.LastName, actualCustomer.LastName);
+            Assert.Equal(exptectedCustomer.Phone, actualCustomer.Phone);
+            Assert.Equal(exptectedCustomer.Email, actualCustomer.Email);
         }
 
         private CustomerService GetCustomerRepository()
