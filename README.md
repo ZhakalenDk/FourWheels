@@ -25,9 +25,9 @@ _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the pro
      - Nothing
    - **Fixed**
      - Nothing
- - **[v0.1.3-dev]https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.2-Dev)**: Interface construction and sharing
+ - **[v0.1.3-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.2-Dev)**: Interface construction and sharing
    - **Added**
-     - Ctreaed Vehice Class
+     - Created Vehice Class
      - Created VehicleDTO class
      - Created IVehicle Interface
      - Created IVehicleService Interface
@@ -35,3 +35,14 @@ _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the pro
      - Changed MapToPublic
    - **Fixed**
      - Updateded IDataLayer
+ - **[v0.2.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.2.0-Dev)**: Vehicle adminitration Implementation
+   - **Added**
+     - Created VehiclesDTO class and interface
+     - Created IVehicle Class And Interface
+     - Created Vehicles administration pages
+     - Created Vehicle Administration Tests
+   - **Modified**
+     - Refactoring of Services
+     - Refactoring of Customer tests
+   - **Fixed**
+     - Fixed wrong checking variable (multi) on tests
