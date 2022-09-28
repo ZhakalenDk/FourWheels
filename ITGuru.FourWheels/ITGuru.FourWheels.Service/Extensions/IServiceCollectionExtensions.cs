@@ -12,7 +12,8 @@ namespace ITGuru.FourWheels.Service
         /// <returns></returns>
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
-            return services.AddSingleton<IDataLayer, Data.DataLayer>();
+            IDataLayer data = new DataLayer();
+            return services.AddSingleton<IDataLayer>(data);
         }
 
         /// <summary>

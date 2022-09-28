@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddContext();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddServices();
 
 var app = builder.Build();
 

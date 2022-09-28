@@ -16,17 +16,13 @@
             else if (Model.MessageStatus == MessageStatus.Failed)
             {
                 <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
-            }
-
-            
+            }            
         }
     </div>
+    <h3 class="text-center">List of Customers:</h3>
     <div class="row mb-2">
-        <div class="col-9">
+        <div class="col-10">
             <input class="form-control" type="text" id="SearchInput" onkeyup="Search()" placeholder="Search for names..">
-        </div>
-        <div class="col-1">
-            <button type="button" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </div>
         <div class="col-2">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createCustomer"><i class="fa-solid fa-plus"></i> New customer</button>
@@ -43,7 +39,7 @@
             @foreach (var customer in Model.Customers)
             {
                 <tr>
-                    <td>@customer.FirstName @customer.LastName</td>
+                    <td><a asp-page="/Administration/Vehicle/CustomerVehicles" asp-route-CustomerId="@customer.Id">@customer.FirstName @customer.LastName</a></td>
                     <td>@customer.Phone</td>
                     <td>@customer.Email</td>
                     <td>
@@ -111,6 +107,35 @@
                             <span class="text-danger" asp-validation-for="@Model.Customer.Email"></span>
                         </div>
                     </div>
+                    <h5 class="modal-title">Vehicle information:</h5>
+                    <hr />
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>License plate:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.LicensePlate" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.LicensePlate"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Brand:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.Brand" type="text" placeholder="Enter vehicle's brand..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Brand"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Model:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.Model" type="text" placeholder="Enter vehicle's model..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Model"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
@@ -120,11 +145,8 @@
         </div>
     </div>
 </form>
-
-
-
-
 <!-- #endregion -->
+
 @section Scripts{
     <script src="~/js/SearchPageScript.js"></script>
 }
