@@ -20,7 +20,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
         public IReadOnlyList<IVehicle> Vehicles { get; set; }
 
         [BindProperty]
-        public ICustomer Customer { get; set; }
+        public CustomerDTO Customer { get; set; }
 
         [BindProperty]
         public VehicleDTO Vehicle { get; set; }

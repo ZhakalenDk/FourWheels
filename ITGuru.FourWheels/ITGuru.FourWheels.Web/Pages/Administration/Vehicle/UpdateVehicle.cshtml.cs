@@ -40,7 +40,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
                         MessageStatus = MessageStatus.Success;
                         TempData["Message"] = Message;
                         TempData["MessageStatus"] = MessageStatus;
-                        return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                        return Redirect($"/Administration/Vehicle/CustomerVehicles/{Vehicle.CustomerId}");
                     }
                     else
                     {
@@ -48,10 +48,10 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
                         MessageStatus = MessageStatus.Failed;
                         TempData["Message"] = Message;
                         TempData["MessageStatus"] = MessageStatus;
-                        return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                        return Redirect($"/Administration/Vehicle/CustomerVehicles/{Vehicle.CustomerId}");
                     }
                 }
-                return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                return Redirect($"/Administration/Vehicle/CustomerVehicles/{Vehicle.CustomerId}");
             }
             else
             {

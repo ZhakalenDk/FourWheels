@@ -25,7 +25,7 @@
             <h3>List of @Model.Customer.FirstName @Model.Customer.LastName vehicles:</h3>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createVehicle"><i class="fa-solid fa-plus"></i> New customer</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createVehicle"><i class="fa-solid fa-plus"></i> New vehicle</button>
         </div>
     </div>
     <div class="row mb-2">
@@ -47,10 +47,10 @@
                     <td>
                         <div class="row">
                             <div class="col-6">
-                                <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
+                                <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-VehicleId="@vehicle.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
                             </div>
                             <div class="col-6">
-                                <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-trash"></i>Delete</a>
+                                <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-VehicleId="@vehicle.Id"><i class="fa-solid fa-trash"></i>Delete</a>
                             </div>
                         </div>
                     </td>
@@ -61,7 +61,8 @@
 </div>
 
 <!-- #region Modals -->
-<form method="post" asp-page-handler="createVehicle" id="createForm">
+<form method="post" id="createForm">
+    <input type="hidden" asp-for="@Model.Customer" />
     <div class="modal fade" id="createVehicle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createVehicleLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

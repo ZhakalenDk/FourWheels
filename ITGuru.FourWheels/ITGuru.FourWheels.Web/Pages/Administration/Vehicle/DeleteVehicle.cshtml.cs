@@ -27,13 +27,13 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
             {
                 TempData["Message"] = $"Successfully delete the vehicle {Vehicle.Brand} {Vehicle.Model}";
                 TempData["MessageStatus"] = MessageStatus.Success;
-                return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                return Redirect($"/Administration/Vehicle/CustomerVehicles/{Vehicle.CustomerId}");
             }
             else
             {
                 TempData["Message"] = $"Couldn't delete vehicle {Vehicle.Brand} {Vehicle.Model}";
                 TempData["MessageStatus"] = MessageStatus.Failed;
-                return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                return Redirect($"/Administration/Vehicle/CustomerVehicles/{Vehicle.CustomerId}");
             }
         }
     }
