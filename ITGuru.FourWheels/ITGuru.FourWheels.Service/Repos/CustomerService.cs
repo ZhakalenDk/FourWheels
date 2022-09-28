@@ -4,12 +4,12 @@ namespace ITGuru.FourWheels.Service
 {
     public class CustomerService : ICustomerService
     {
-        public CustomerService(IData context)
+        public CustomerService(IDataLayer context)
         {
             _context = context;
         }
 
-        private readonly IData _context;
+        private readonly IDataLayer _context;
 
         public IReadOnlyList<ICustomer> GetAll()
         {
