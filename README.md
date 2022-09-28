@@ -15,7 +15,7 @@ _Add bullet points with the initial features that defines the core of the applic
 
 ## Change Log
 _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the project WiKi Page._
- - **[v0.1.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.0-Dev)** Administration af kundder
+ - **[v0.1.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.0-Dev)**: Administration af kundder
    - **Added**
      - Add customer
      - Update Customer
