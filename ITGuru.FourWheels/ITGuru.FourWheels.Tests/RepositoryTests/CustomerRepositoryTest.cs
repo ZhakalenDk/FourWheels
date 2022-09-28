@@ -1,4 +1,3 @@
-using ITGuru.FourWheels.Data.Interfaces;
 using ITGuru.FourWheels.Data;
 using ITGuru.FourWheels.Service;
 using Microsoft.VisualStudio.TestPlatform.TestHost;

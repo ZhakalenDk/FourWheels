@@ -59,7 +59,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult(string.Empty);
             try
             {
-                _context.DeleteCustomer(entity.Id);
+                _context.SoftDeleteCustomer(entity.Id);
             }
             catch (Exception e)
             {
