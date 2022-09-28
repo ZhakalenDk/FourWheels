@@ -1,9 +1,5 @@
-﻿using ITGuru.FourWheels.DataLayer.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ITGuru.FourWheels.Data.DataModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Service
 {
@@ -33,26 +29,34 @@ namespace ITGuru.FourWheels.Service
         });
         #endregion
 
-        public static Customer MapToInternal(this ICustomer customer)
+        internal static Customer MapToInternal(this ICustomer customer)
         {
             return _internalMapper.FromSingle(customer);
         }
 
-        public static ICustomer MapToPublic(this Customer customer)
+        internal static ICustomer MapToPublic(this Customer customer)
         {
             return _publicMapper.FromSingle(customer);
         }
 
-        public static IEnumerable<ICustomer> MapToPublic(this IEnumerable<Customer> customers)
+        internal static IEnumerable<ICustomer> MapToPublic(this IEnumerable<Customer> customers)
         {
             return _publicMapper.FromCollection(customers);
         }
 
+        /// <summary>
+        /// Retrieves the vehicles associated with <paramref name="customer"/>
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>The retrieved <see cref="IReadOnlyList{T}"/> containing the associated <see cref="IVehicle"/> <see langword="object"/></returns>
         public static IReadOnlyList<IVehicle> GetVehicles(this ICustomer customer)
         {
-            //  TODO: Implement vehicle retrieval
+            var service = ServiceDefinitions.Services.GetService<IVehicleService>();
 
-            return new List<IVehicle>();
+            var customerVehicles = service.GetAll().Where(v => v.CustomerId == customer.Id)
+                .ToList();
+
+            return customerVehicles;
         }
     }
 }

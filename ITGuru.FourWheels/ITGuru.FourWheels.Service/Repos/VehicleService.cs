@@ -1,46 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ITGuru.FourWheels.Data;
 
-namespace ITGuru.FourWheels.Service.Repos
+namespace ITGuru.FourWheels.Service
 {
     public class VehicleService : IVehicleService
     {
+        public VehicleService(IDataLayer context)
+        {
+            _context = context;
+        }
+
+        private readonly IDataLayer _context;
+
         public RepoResult Add(IVehicle entity)
         {
-            //  TODO: Implement Add functionality
+            RepoResult result = new RepoResult("Vehicle added");
+            try
+            {
+                if (!_context.AddVehicle(entity.MapToInternal()))
+                {
+                    result.Message = "Vehicle couldn't be added";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Exception = e;
+            }
 
-            return new RepoResult("Test Result");
+            return result;
         }
 
         public IReadOnlyList<IVehicle> GetAll()
         {
-            //  TODO: Implement GetAll functionality
-
-            return new List<IVehicle>();
+            return _context.GetAllVehicles()
+                .MapToPublic()
+                .ToList();
         }
 
         public IVehicle GetById(Guid key)
         {
-            //  TODO: Implement Add functionality
-
-            return new VehicleDTO();
+            return GetAll().FirstOrDefault(v => v.Id == key);
         }
 
         public RepoResult Remove(IVehicle entity)
         {
-            //  TODO: Implement Remove functionality
+            RepoResult result = new RepoResult("Vehicle Removed");
+            try
+            {
+                if (!_context.SoftDeleteVehicle(entity.Id))
+                {
+                    result.Message = "Vehicle couldn't be removed";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Exception = e;
+            }
 
-            return new RepoResult("Test Result");
+            return result;
         }
 
         public RepoResult Update(IVehicle entity)
         {
-            //  TODO: Implement Update functionality
+            RepoResult result = new RepoResult("Vehicle Updated");
+            try
+            {
+                if (!_context.UpdateVehicle(entity.MapToInternal()))
+                {
+                    result.Message = "Vehicle couldn't be updated";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Exception = e;
+            }
 
-            return new RepoResult("Test Result");
+            return result;
         }
     }
 }

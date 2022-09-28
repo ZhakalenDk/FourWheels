@@ -1,10 +1,10 @@
-﻿using ITGuru.FourWheels.DataLayer;
+﻿using ITGuru.FourWheels.Data;
 using ITGuru.FourWheels.Service;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
-using ITGuru.FourWheels.DataLayer.DataModels;
-using ITGuru.FourWheels.Service.Repos;
+using ITGuru.FourWheels.Data.DataModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
@@ -73,7 +73,13 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
         public VehicleRepositoryTests()
         {
-            _vehicleRepository = GetVehicleRepository();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddContext();
+            serviceCollection.AddServices();
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            _vehicleRepository = serviceProvider.GetService<IVehicleService>() as VehicleService;
         }
 
         [Fact]
@@ -238,11 +244,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         private void AssertAllVehicleProperties(IVehicle exptectedVehicle, IVehicle actualVehicle)
         {
             Assert.Equal(exptectedVehicle.Id, actualVehicle.Id);
-        }
-
-        private VehicleService GetVehicleRepository()
-        {
-            return new VehicleService();
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿@page "{CustomerId}"
+@model ITGuru.FourWheels.Web.Pages.Administration.Customer.DeleteCustomerModel
+
+<form method="post">
+    <div class="" id="deleteCustomer" aria-hidden="true">
+        <input type="hidden" asp-for="@Model.Customer.Id"/>
+        <div class="">
+            <div class="">
+                <div class="">
+                    <h5 class="" id="deleteCustomerLabel">
+                        Delete @Model.Customer.FirstName @Model.Customer.LastName
+                    </h5>
+                </div>
+                <div class="">
+                    <div class="row mb-2">
+                        <p>Are you sure you want to delete @Model.Customer.FirstName @Model.Customer.LastName from the list?</p>
+                    </div>
+                </div>
+                <div class="footer">
+                    <a asp-page="/Administration/SearchPage" class="btn btn-success">Cancel</a>
+                    <button type="submit" class="btn btn-danger" id="btnDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@{
+}

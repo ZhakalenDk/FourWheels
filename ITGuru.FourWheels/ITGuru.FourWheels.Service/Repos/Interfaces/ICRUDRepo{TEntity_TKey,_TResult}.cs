@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITGuru.FourWheels.Service
+﻿namespace ITGuru.FourWheels.Service
 {
     /// <summary>
     /// Serves as a CRUD repository pattern

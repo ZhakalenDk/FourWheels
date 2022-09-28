@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.DataLayer;
+﻿using ITGuru.FourWheels.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Service
@@ -12,7 +12,22 @@ namespace ITGuru.FourWheels.Service
         /// <returns></returns>
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
-            return services.AddSingleton<IDataLayer, DataLayer.DataLayer>();
+            return services.AddSingleton<IDataLayer, Data.DataLayer>();
+        }
+
+        /// <summary>
+        /// Add <see cref="ICustomerService"/> and <see cref="IVehicleService"/> as <strong>scoped</strong> services
+        /// </summary>
+        /// <param name="service"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddServices(this IServiceCollection service)
+        {
+            service.AddScoped<ICustomerService, CustomerService>();
+            service.AddScoped<IVehicleService, VehicleService>();
+
+            ServiceDefinitions.Services = service.BuildServiceProvider();   //  Collecting provider for use in non-service access points
+
+            return service;
         }
     }
 }

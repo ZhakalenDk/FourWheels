@@ -1,9 +1,10 @@
-using ITGuru.FourWheels.DataLayer;
+using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.Data.DataModels;
 using ITGuru.FourWheels.Service;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
-using ITGuru.FourWheels.DataLayer.DataModels;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
@@ -22,7 +23,13 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
         public CustomerRepositoryTests()
         {
-            _customerRepository = GetCustomerRepository();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddContext();
+            serviceCollection.AddServices();
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            _customerRepository = serviceProvider.GetService<ICustomerService>() as CustomerService;
         }
 
         [Fact]
@@ -204,22 +211,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             Assert.Equal(exptectedCustomer.LastName, actualCustomer.LastName);
             Assert.Equal(exptectedCustomer.Phone, actualCustomer.Phone);
             Assert.Equal(exptectedCustomer.Email, actualCustomer.Email);
-        }
-
-        private CustomerService GetCustomerRepository()
-        {
-            // Simple class instance
-            IDataLayer data = new ITGuru.FourWheels.DataLayer.DataLayer();
-            return new CustomerService(data);
-
-            // EF Core
-
-
-            // API
-            //await using var application = new WebApplicationFactory<Program>();
-            //using var client = application.CreateClient();
-            //client.BaseAddress = new Uri(_BASE_URI_STR);
-            // Then use client to POST, GET etc.
         }
     }
 }

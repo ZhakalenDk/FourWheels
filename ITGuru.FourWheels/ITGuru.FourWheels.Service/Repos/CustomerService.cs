@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.DataLayer;
+﻿using ITGuru.FourWheels.Data;
 
 namespace ITGuru.FourWheels.Service
 {
