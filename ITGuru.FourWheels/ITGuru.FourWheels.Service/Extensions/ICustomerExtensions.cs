@@ -47,5 +47,12 @@ namespace ITGuru.FourWheels.Service
         {
             return _publicMapper.FromCollection(customers);
         }
+
+        public static IReadOnlyList<IVehicle> GetVehicles(this ICustomer customer)
+        {
+            //  TODO: Implement vehicle retrieval
+
+            return new List<IVehicle>();
+        }
     }
 }
