@@ -49,10 +49,10 @@
                     <td>
                         <div class="row">
                             <div class="col-6">
-                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCustomer"><i class="fa-solid fa-pen-to-square"></i>Update</button>
+                                <a class="btn btn-warning" asp-page="/Administration/Customer/UpdateCustomer" asp-route-CustomerId="@customer.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
                             </div>
                             <div class="col-6">
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCustomer"><i class="fa-solid fa-trash"></i>Delete</button>
+                                <a class="btn btn-danger" asp-page="/Administration/Customer/DeleteCustomer" asp-route-CustomerId="@customer.Id" ><i class="fa-solid fa-trash"></i>Delete</a>
                             </div>
                         </div>
                     </td>
@@ -121,96 +121,9 @@
     </div>
 </form>
 
-<form method="post" asp-page-handler="UpdateCustomer">
-    <div class="modal fade" id="updateCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateCustomerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateCustomerLabel">Editing @*@Model.Customer.FirstName*@</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                @{
-                    // TODO: Out comment the asp-validation-for and asp-for below.
-                    // TODO: Test that the modal doesn't close if the validation isn't valid (see JS).
-                }
-                <div class="modal-body">
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label>First name:</label>
-                        </div>
-                        <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.FirstName"*@ type="text" @*placeholder="@Model.Customer.FirstName"*@ />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.FirstName" class="text-danger"></span>*@
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label>Last name:</label>
-                        </div>
-                        <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.LastName"*@ type="text" @*placeholder="@Model.Customer.LastName"*@ />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.LastName" class="text-danger"></span>*@
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label>Phone:</label>
-                        </div>
-                        <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.Phone"*@ type="text" @*placeholder="@Model.Customer.Phone"*@ />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.Phone" class="text-danger"></span>*@
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label>Email:</label>
-                        </div>
-                        <div class="col-8">
-                            <input class="form-control" @*asp-for="@Model.Customer.Email"*@ type="text" @*placeholder="@Model.Customer.Email"*@ />
-                            <br />
-                            @*<span asp-validation-for="@Model.Customer.Email" class="text-danger"></span>*@
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-warning" id="btnUpdate">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 
-<form method="post" asp-page-handler="DeleteCustomer">
-    <div class="modal fade" id="deleteCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteCustomerLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteCustomerLabel">
-                        Delete @*@Model.Customer.FirstName @Model.Customer.LastName*@
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                @{
-                    // TODO: Out comment the asp-validation-for and asp-for below.
-                    // TODO: Test that the modal doesn't close if the validation isn't valid (see JS).
-                }
-                <div class="modal-body">
-                    <div class="row mb-2">
-                        <p>Are you sure you want to delete @*@Model.Customer.FirstName @Model.Customer.LastName*@ from the list?</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger" id="btnDelete">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+
+
 <!-- #endregion -->
 @section Scripts{
     <script src="~/js/SearchPageScript.js"></script>
