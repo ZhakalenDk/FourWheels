@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
+﻿using ITGuru.FourWheels.DataLayer.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

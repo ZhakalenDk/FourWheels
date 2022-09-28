@@ -1,4 +1,4 @@
-﻿namespace ITGuru.FourWheels.Data.DataModels
+﻿namespace ITGuru.FourWheels.DataLayer.DataModels
 {
     public class Person
     {

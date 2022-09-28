@@ -1,11 +1,11 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
+﻿using ITGuru.FourWheels.DataLayer.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITGuru.FourWheels.Data
+namespace ITGuru.FourWheels.DataLayer
 {
     public class DataLayer : IDataLayer
     {

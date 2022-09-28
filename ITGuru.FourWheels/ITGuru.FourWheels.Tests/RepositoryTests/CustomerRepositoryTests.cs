@@ -1,10 +1,9 @@
-using ITGuru.FourWheels.Data.Interfaces;
-using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.DataLayer;
 using ITGuru.FourWheels.Service;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
-using ITGuru.FourWheels.Data.DataModels;
+using ITGuru.FourWheels.DataLayer.DataModels;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
@@ -211,7 +210,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         private CustomerService GetCustomerRepository()
         {
             // Simple class instance
-            IDataLayer data = new ITGuru.FourWheels.Data.DataLayer();
+            IDataLayer data = new ITGuru.FourWheels.DataLayer.DataLayer();
             return new CustomerService(data);
 
             // EF Core

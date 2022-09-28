@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.Data.Interfaces;
+﻿using ITGuru.FourWheels.DataLayer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Service
@@ -12,7 +12,7 @@ namespace ITGuru.FourWheels.Service
         /// <returns></returns>
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
-            return services.AddSingleton<IDataLayer, Data.DataLayer>();
+            return services.AddSingleton<IDataLayer, DataLayer.DataLayer>();
         }
     }
 }

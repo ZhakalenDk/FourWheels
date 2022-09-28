@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
+﻿using ITGuru.FourWheels.DataLayer.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITGuru.FourWheels.Data
+namespace ITGuru.FourWheels.DataLayer
 {
     public interface IDataLayer
     {
