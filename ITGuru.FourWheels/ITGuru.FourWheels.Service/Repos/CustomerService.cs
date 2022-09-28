@@ -29,6 +29,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.AddCustomer(entity.MapToInternal()))
                 {
+                    result.Succeeded = false;
                     result.Message = "Customer couldn't be added";
                 }
             }
@@ -48,6 +49,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.UpdateCustomer(entity.MapToInternal()))
                 {
+                    result.Succeeded = false;
                     result.Message = "Customer couldn't be updated";
                 }
             }
@@ -67,6 +69,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.SoftDeleteCustomer(entity.Id))
                 {
+                    result.Succeeded = false;
                     result.Message = "Customer couldn't be removed";
                 }
             }

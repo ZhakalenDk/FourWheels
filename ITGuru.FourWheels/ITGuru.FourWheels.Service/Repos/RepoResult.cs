@@ -10,6 +10,6 @@
 
         public Exception Exception { get; set; } = null;
 
-        public bool Succeeded => Exception == null;
+        public bool Succeeded { get; internal set; } = true;
     }
 }

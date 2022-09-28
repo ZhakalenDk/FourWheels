@@ -18,6 +18,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.AddVehicle(entity.MapToInternal()))
                 {
+                    result.Succeeded = false;
                     result.Message = "Vehicle couldn't be added";
                 }
             }
@@ -49,6 +50,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.SoftDeleteVehicle(entity.Id))
                 {
+                    result.Succeeded = false;
                     result.Message = "Vehicle couldn't be removed";
                 }
             }
@@ -68,6 +70,7 @@ namespace ITGuru.FourWheels.Service
             {
                 if (!_context.UpdateVehicle(entity.MapToInternal()))
                 {
+                    result.Succeeded = false;
                     result.Message = "Vehicle couldn't be updated";
                 }
             }
