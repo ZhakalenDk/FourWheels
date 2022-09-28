@@ -10,34 +10,63 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class VehicleRepositoryTests
     {
-        private static readonly Guid _DEFAULT_ID = Guid.NewGuid();
+        private static readonly Guid _DEFAULT_VEHICLE_ID = Guid.NewGuid();
+
+        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Customer",
+            LastName = "0",
+            Phone = "00000000",
+            Email = "test@itguru.com"
+        };
+        private static readonly ICustomer _DEFAULT_CUSTOMER_1 = new CustomerDTO
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Customer",
+            LastName = "1",
+            Phone = "11111111",
+            Email = "test@itguru.com"
+        };
+
         private static readonly IVehicle _DEFAULT_VEHICLE = new VehicleDTO
         {
-            Id = _DEFAULT_ID,
+            Id = _DEFAULT_VEHICLE_ID,
             Brand = "Lucid",
             Model = "Air",
-            LicensePlate = "AA 69 420"
+            LicensePlate = "AA 69 420",
+            CustomerId = _DEFAULT_CUSTOMER.Id
         };
         private static readonly IVehicle _DEFAULT_VEHICLE_EDITED = new VehicleDTO
         {
-            Id = _DEFAULT_ID,
+            Id = _DEFAULT_VEHICLE_ID,
             Brand = "Tesla",
             Model = "Model Y",
-            LicensePlate = "BB 96 024"
+            LicensePlate = "BB 96 024",
+            CustomerId = _DEFAULT_CUSTOMER_1.Id
         };
         private static readonly IVehicle _DEFAULT_VEHICLE_1 = new VehicleDTO
         {
             Id = Guid.NewGuid(),
             Brand = "Volkswagen",
             Model = "ID.3",
-            LicensePlate = "CC 12 345"
+            LicensePlate = "CC 12 345",
+            CustomerId = _DEFAULT_CUSTOMER.Id
         };
         private static readonly IVehicle _DEFAULT_VEHICLE_2 = new VehicleDTO
         {
             Id = Guid.NewGuid(),
             Brand = "Tesla",
             Model = "Model S",
-            LicensePlate = "DD 22 222"
+            LicensePlate = "DD 22 222",
+            CustomerId = _DEFAULT_CUSTOMER_1.Id
+        };
+
+        private static readonly List<IVehicle> _VEHICLES = new()
+        {
+            _DEFAULT_VEHICLE,
+            _DEFAULT_VEHICLE_1,
+            _DEFAULT_VEHICLE_2
         };
 
         private VehicleService _vehicleRepository;
@@ -181,6 +210,29 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
             // Assert
             Assert.False(result.Succeeded);
+        }
+
+        [Fact]
+        public void GetVehiclesThroughCustomerTest()
+        {
+            // Arrange
+            var customer0Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER.Id);
+            var customer1Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER_1.Id);
+
+            // Act
+            var retrievedCustomer0Vehicles = _DEFAULT_CUSTOMER.GetVehicles();
+            var retrievedCustomer1Vehicles = _DEFAULT_CUSTOMER_1.GetVehicles();
+
+            // Assert
+            Assert.NotNull(retrievedCustomer0Vehicles);
+            Assert.NotNull(retrievedCustomer1Vehicles);
+
+            foreach(var actualVehicle in retrievedCustomer0Vehicles)
+            {
+                var expectedVehicle = customer0Vehicles.Where(v => v.Id == actualVehicle.Id).FirstOrDefault();
+                Assert.NotNull(expectedVehicle);
+                AssertAllVehicleProperties(expectedVehicle, actualVehicle);
+            }
         }
 
         private void AssertAllVehicleProperties(IVehicle exptectedVehicle, IVehicle actualVehicle)
