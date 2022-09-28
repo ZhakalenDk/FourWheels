@@ -25,3 +25,13 @@ _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the pro
      - Nothing
    - **Fixed**
      - Nothing
+ - **[v0.1.3-dev]https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.2-Dev)**: Interface construction and sharing
+   - **Added**
+     - Ctreaed Vehice Class
+     - Created VehicleDTO class
+     - Created IVehicle Interface
+     - Created IVehicleService Interface
+   - **Modified**
+     - Changed MapToPublic
+   - **Fixed**
+     - Updateded IDataLayer
