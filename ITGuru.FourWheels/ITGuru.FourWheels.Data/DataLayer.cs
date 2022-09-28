@@ -1,9 +1,4 @@
 ﻿using ITGuru.FourWheels.Data.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ITGuru.FourWheels.Data
 {
@@ -14,6 +9,13 @@ namespace ITGuru.FourWheels.Data
         public List<Customer> Customers
         {
             get { return _customers; }
+        }
+
+        private List<Vehicle> _vehicles = new();
+
+        public List<Vehicle> Vehicles
+        {
+            get { return _vehicles; }
         }
 
         public DataLayer()
@@ -81,20 +83,42 @@ namespace ITGuru.FourWheels.Data
 
         public List<Customer> GetAllCustomers()
         {
-            return Customers.ToList();
+            List<Customer> CustomerList = Customers.Where(x => x.Deleted != true).ToList();
+            return CustomerList;
+        }
+        public List<Customer> GetAllDeletedCustomers()
+        {
+            List<Customer> DeletedList = Customers.Where(x => x.Deleted == true).ToList();
+            return DeletedList;
         }
 
+        /// <summary>
+        /// Add a single Customer to the list
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Return true if customer is added its NOT already in the list</returns>
         public bool AddCustomer(Customer customer)
         {
-
-            Customers.Add(customer);
-            return true;
+            int index = Customers.FindIndex(x => x.Id == customer.Id);
+            if (index >= 0)
+            {
+                return false;
+            }
+            else
+            {
+                Customers.Add(customer);
+                return true;
+            }
         }
-
+        /// <summary>
+        /// Update a single customer
+        /// </summary>
+        /// <param name="changed_customer"></param>
+        /// <returns> Return true if Customer is succesfully updated</returns>
         public bool UpdateCustomer(Customer changed_customer)
         {
             Customer customer = Customers.Where(x => x.Id == changed_customer.Id).FirstOrDefault();
-            
+
             if (customer != null)
             {
                 customer.FirstName = changed_customer.FirstName;
@@ -102,17 +126,32 @@ namespace ITGuru.FourWheels.Data
                 customer.Email = changed_customer.Email;
                 customer.Phone = changed_customer.Phone;
                 customer.Deleted = changed_customer.Deleted;
+                return true;
             }
-            return true;
+            return false;
         }
 
+        /// <summary>
+        /// Remove a single customer
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns>Return true if Customer is PERMENENTLY removed</returns>
         public bool HardDeleteCustomer(Guid customerID)
         {
             int index = Customers.FindIndex(x => x.Id == customerID);
-            Customers.RemoveAt(index);
-            return true;
+            if (index >= 0)
+            {
+                Customers.RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
+        /// <summary>
+        /// Removes a single customer
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns>Return true if customer is there and IsDeleted is set</returns>
         public bool SoftDeleteCustomer(Guid customerID)
         {
             Customer customer = Customers.Where(x => x.Id == customerID).FirstOrDefault();
@@ -120,33 +159,98 @@ namespace ITGuru.FourWheels.Data
             if (customer != null)
             {
                 customer.Deleted = true;
+                return true;
             }
-            return true;
+            return false;
         }
 
         public List<Vehicle> GetAllVehicles()
         {
-            throw new NotImplementedException();
+            List<Vehicle> VehicleList = Vehicles.Where(x => x.IsDeleted != true).ToList();
+            return VehicleList;
+        }
+        public List<Vehicle> GetAllDeletedVehicles()
+        {
+            List<Vehicle> VehicleList = Vehicles.Where(x => x.IsDeleted == true).ToList();
+            return VehicleList;
         }
 
+        /// <summary>
+        /// Add a single Vehicle
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns>Return true if Vehicle is added and no Dublecate is added</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool AddVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            int index = Vehicles.FindIndex(x => x.Id == vehicle.Id);
+            if (index >= 0)
+            {
+                return false;
+            }
+            else
+            {
+                Vehicles.Add(vehicle);
+                return true;
+            }
         }
 
-        public bool UpdateVehicle(Vehicle vehicle)
+        /// <summary>
+        /// Updates a single vehicle
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns>Return true if Vehicle is updated</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public bool UpdateVehicle(Vehicle _vehicle)
         {
-            throw new NotImplementedException();
+            Vehicle vehicle = Vehicles.Where(x => x.Id == _vehicle.Id).FirstOrDefault();
+
+            if (vehicle != null)
+            {
+                vehicle.LicensePlate = _vehicle.LicensePlate;
+                vehicle.IsDeleted = _vehicle.IsDeleted;
+                vehicle.Model = _vehicle.Model;
+                vehicle.Brand = _vehicle.Brand;
+                vehicle.CustomerId = _vehicle.CustomerId;
+                return true;
+            }
+            return false;
         }
 
+        /// <summary>
+        /// Removes a single vehicle
+        /// </summary>
+        /// <param name="vehicleID"></param>
+        /// <returns>Return true if vehicle is PERMENENTLY removed</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool HardDeleteVehicle(Guid vehicleID)
         {
-            throw new NotImplementedException();
+            int index = Vehicles.FindIndex(x => x.Id == vehicleID);
+            if (index >= 0)
+            {
+                Vehicles.RemoveAt(index);
+                return true;
+            }
+            return false;
         }
 
+        /// <summary>
+        /// Sets the vehicle's IsDeleted
+        /// </summary>
+        /// <param name="vehicleID"></param>
+        /// <returns>Return true if vehicle is there and IsDeleted is set</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool SoftDeleteVehicle(Guid vehicleID)
         {
-            throw new NotImplementedException();
+
+            Vehicle vehicle = Vehicles.Where(x => x.Id == vehicleID).FirstOrDefault();
+
+            if (vehicle != null)
+            {
+                vehicle.IsDeleted = true;
+                return true;
+            }
+            return false;
         }
     }
 }
