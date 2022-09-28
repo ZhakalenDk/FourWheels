@@ -7,23 +7,27 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
 {
     public class SearchPageModel : PageModel
     {
+        public SearchPageModel(ICustomerService customerService, IVehicleService vehicleService)
+        {
+            _customerService = customerService;
+            _vehicleService = vehicleService;
+        }
+
         private readonly ICustomerService _customerService;
+        private readonly IVehicleService _vehicleService;
 
         [BindProperty]
         public IReadOnlyList<ICustomer> Customers { get; set; }
 
         [BindProperty]
         public CustomerDTO Customer { get; set; }
+        [BindProperty]
+        public VehicleDTO Vehicle { get; set; }
 
         [BindProperty]
         public string Message { get; set; }
         [BindProperty]
-        public MessageStatus MessageStatus { get; set; }
-
-        public SearchPageModel(ICustomerService customerService)
-        {
-            _customerService = customerService;
-        }
+        public MessageStatus MessageStatus { get; set; }        
 
         public void OnGet()
         {
@@ -36,10 +40,13 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
             {
                 Customer.Id = Guid.NewGuid();
                 Customer.Phone = Customer.Phone.Replace(" ", string.Empty);
-                var result = _customerService.Add(Customer);
-                if (result.Succeeded)
+                var customerResult = _customerService.Add(Customer);
+                Vehicle.Id = Guid.NewGuid();
+                Vehicle.CustomerId = Customer.Id;
+                var vehicleResult = _vehicleService.Add(Vehicle);
+                if (customerResult.Succeeded && vehicleResult.Succeeded)
                 {
-                    Message = $"Successfully created a new customer!";
+                    Message = $"Successfully created a new customer with a vehicle!";
                     MessageStatus = MessageStatus.Success;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
@@ -47,7 +54,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 }
                 else
                 {
-                    Message = $"There was a mistake trying to add a customer: {result.Message}";
+                    Message = $"There was a mistake trying to add a customer with their vehicle.";
                     MessageStatus = MessageStatus.Failed;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;

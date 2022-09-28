@@ -1,4 +1,4 @@
-﻿using ITGuru.FourWheels.Data.Interfaces;
+﻿using ITGuru.FourWheels.Data;
 
 namespace ITGuru.FourWheels.Service
 {
@@ -59,7 +59,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult(string.Empty);
             try
             {
-                _context.DeleteCustomer(entity.Id);
+                _context.HardDeleteCustomer(entity.Id);
             }
             catch (Exception e)
             {

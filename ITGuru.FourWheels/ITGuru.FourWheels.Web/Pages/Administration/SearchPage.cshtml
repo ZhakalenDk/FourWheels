@@ -111,6 +111,35 @@
                             <span class="text-danger" asp-validation-for="@Model.Customer.Email"></span>
                         </div>
                     </div>
+                    <h5 class="modal-title">Vehicle information:</h5>
+                    <hr />
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>License plate:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.LicensePlate" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.LicensePlate"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Brand:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.Brand" type="text" placeholder="Enter vehicle's brand..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Brand"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Model:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Vehicle.Model" type="text" placeholder="Enter vehicle's model..." />
+                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Model"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
