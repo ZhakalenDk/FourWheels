@@ -70,40 +70,6 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 OnGet();
                 return Page();
             }
-        }
-
-        public IActionResult OnPostUpdateCustomer()
-        {
-            if (ModelState.IsValid)
-            {
-                if (Customer != null)
-                {
-                    _customerService.Update(Customer);
-                    Message = $"Successfully updated the customer: {Customer.FirstName} {Customer.LastName}";
-                    MessageStatus = MessageStatus.Success;
-                    TempData["Message"] = Message;
-                    TempData["MessageStatus"] = MessageStatus;
-                    return RedirectToPage("/Administration/SearchPage");
-                }
-                else
-                {
-                    return Page();
-                }
-            }
-            else
-            {
-                Message = $"Couldn't update customer: {Customer.FirstName} {Customer.LastName}";
-                MessageStatus = MessageStatus.Failed;
-                TempData["Message"] = Message;
-                TempData["MessageStatus"] = MessageStatus;
-                OnGet();
-                return Page();
-            }
-        }
-
-        public void OnPostDeleteCustomer()
-        {
-            //TODO: Delete Customer
-        }
+        }        
     }
 }

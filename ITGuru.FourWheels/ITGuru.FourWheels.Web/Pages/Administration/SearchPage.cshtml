@@ -16,16 +16,15 @@
             else if (Model.MessageStatus == MessageStatus.Failed)
             {
                 <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
-            }
-
-            
+            }            
         }
     </div>
+    <h3 class="text-center">List of Customers:</h3>
     <div class="row mb-2">
-        <div class="col-9">
+        <div class="col-10">
             <input class="form-control" type="text" id="SearchInput" onkeyup="Search()" placeholder="Search for names..">
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createCustomer"><i class="fa-solid fa-plus"></i> New customer</button>
         </div>
     </div>
@@ -146,11 +145,8 @@
         </div>
     </div>
 </form>
-
-
-
-
 <!-- #endregion -->
+
 @section Scripts{
     <script src="~/js/SearchPageScript.js"></script>
 }
