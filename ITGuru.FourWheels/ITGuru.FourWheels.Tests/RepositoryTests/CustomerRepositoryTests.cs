@@ -211,7 +211,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         private CustomerService GetCustomerRepository()
         {
             // Simple class instance
-            IData data = new ITGuru.FourWheels.Data.Data();
+            IDataLayer data = new ITGuru.FourWheels.Data.DataLayer();
             return new CustomerService(data);
 
             // EF Core
