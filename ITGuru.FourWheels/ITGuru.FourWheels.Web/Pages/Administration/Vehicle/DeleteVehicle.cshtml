@@ -1,27 +1,24 @@
-﻿@page "{CustomerId}"
-@model ITGuru.FourWheels.Web.Pages.Administration.Customer.DeleteCustomerModel
+﻿@page "{VehicleId}"
+@model ITGuru.FourWheels.Web.Pages.Administration.Vehicle.DeleteVehicleModel
 
 <div class="container">
-    <h3 class="text-center">You are about to delete: @Model.Customer.FirstName @Model.Customer.LastName</b></h3>
+    <h3 class="text-center">You are about to delete: @Model.Vehicle.Brand @Model.Vehicle.Model</b></h3>
     <div class="row">
         <div class="col-3"></div>
         <form method="post" class="card border col-6">
             <div class="" id="deleteCustomer" aria-hidden="true">
-                <input type="hidden" asp-for="@Model.Customer.Id" />
+                <input type="hidden" asp-for="@Model.Vehicle.Id" />
                 <div class="">
-                    <div class="">
-                        <div class="mt-4">
+                    <div class="mt-4">
+                        <div class="">
                             <h5 class="" id="deleteCustomerLabel">
-                                Delete @Model.Customer.FirstName @Model.Customer.LastName
+                                Delete @Model.Vehicle.Brand @Model.Vehicle.Model
                             </h5>
                         </div>
                         <div class="">
                             <div class="row mb-2">
-                                <p>Are you sure you want to delete @Model.Customer.FirstName @Model.Customer.LastName from the list?</p>
+                                <p>Are you sure you want to delete @Model.Vehicle.Brand @Model.Vehicle.Model with License Plate: (@Model.Vehicle.LicensePlate) from the list?</p>
                             </div>
-                        </div>
-                        <div class="row mt-3">
-                            <hr />
                         </div>
                         <div class="row mb-3">
                             <div class="d-flex flex-row justify-content-center">
@@ -29,7 +26,7 @@
                                     <button type="submit" class="btn btn-danger" id="btnDelete">Delete</button>
                                 </div>
                                 <div class="ms-4">
-                                    <a asp-page="/Administration/SearchPage" class="btn btn-success">Cancel</a>
+                                    <a asp-page="/Administration/Vehicle/CustomerVehicles" asp-route-CustomerId="@Model.Vehicle.CustomerId" class="btn btn-success">Cancel</a>
                                 </div>
                             </div>
                         </div>
