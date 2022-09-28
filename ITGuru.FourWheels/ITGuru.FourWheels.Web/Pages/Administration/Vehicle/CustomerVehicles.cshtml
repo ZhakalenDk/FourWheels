@@ -1,30 +1,56 @@
 ﻿@page "{CustomerId}"
+@using ITGuru.FourWheels.Web.Enums
 @model ITGuru.FourWheels.Web.Pages.Administration.Vehicle.CustomerVehiclesModel
-<table class="table table-striped" id="SearchTable">
-    <tr class="header">
-        <th class="col-4">#</th>
-        <th class="col-2">License Plate</th>
-        <th class="col-4">Brand</th>
-        <th class="col-2">Options</th>
-    </tr>
-    @foreach (var vehicle in Model.Vehicles)
-    {
-        <tr>
-            <td>@vehicle.Id </td>
-            <td>@vehicle.LicensePlate</td>
-            <td>@vehicle.Brand</td>
-            <td>
-                <div class="row">
-                    <div class="col-6">
-                        <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
-                    </div>
-                    <div class="col-6">
-                        <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-trash"></i>Delete</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    }
-</table>
-@{
+
+<div>
+    <div class="row mb-2">
+        @if (TempData.Peek("Message") != null)
+        {
+            Model.Message = TempData["Message"].ToString();
+            Model.MessageStatus = (MessageStatus)TempData["MessageStatus"];
+
+            @if (Model.MessageStatus == MessageStatus.Success)
+            {
+                <div class="alert alert-success rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+            else if (Model.MessageStatus == MessageStatus.Failed)
+            {
+                <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+        }
+    </div>
+    <div class="row mb-2">
+        <table class="table table-striped" id="SearchTable">
+            <tr class="header">
+                <th class="col-2">#</th>
+                <th class="col-2">License Plate</th>
+                <th class="col-4">Brand</th>
+                <th class="col-2">Model</th>
+                <th class="col-2">Options</th>
+            </tr>
+            @foreach (var vehicle in Model.Vehicles)
+            {
+                <tr>
+                    <td>@vehicle.Id </td>
+                    <td>@vehicle.LicensePlate</td>
+                    <td>@vehicle.Model</td>
+                    <td>@vehicle.Brand</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-6">
+                                <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
+                            </div>
+                            <div class="col-6">
+                                <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-CustomerId="@vehicle.Id"><i class="fa-solid fa-trash"></i>Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/CustomerVehiclesScript.js"></script>
 }

@@ -1,5 +1,6 @@
 using ITGuru.FourWheels.Data.DataModels;
 using ITGuru.FourWheels.Service;
+using ITGuru.FourWheels.Web.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,6 +19,11 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
 
         [BindProperty]
         public ICustomer Customer { get; set; }
+
+        [BindProperty]
+        public string Message { get; set; }
+        [BindProperty]
+        public MessageStatus MessageStatus { get; set; }
 
         public void OnGet(string CustomerId)
         {
