@@ -37,6 +37,7 @@ namespace ITGuru.FourWheels.Service
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;
@@ -57,6 +58,7 @@ namespace ITGuru.FourWheels.Service
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;
@@ -77,6 +79,7 @@ namespace ITGuru.FourWheels.Service
             {
                 result.Exception = e;
                 result.Message = e.Message;
+                result.Succeeded = false;
             }
 
             return result;
