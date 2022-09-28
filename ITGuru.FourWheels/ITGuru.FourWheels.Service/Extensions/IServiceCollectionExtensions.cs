@@ -14,5 +14,20 @@ namespace ITGuru.FourWheels.Service
         {
             return services.AddSingleton<IDataLayer, Data.DataLayer>();
         }
+
+        /// <summary>
+        /// Add <see cref="ICustomerService"/> and <see cref="IVehicleService"/> as <strong>scoped</strong> services
+        /// </summary>
+        /// <param name="service"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddServices(this IServiceCollection service)
+        {
+            service.AddScoped<ICustomerService, CustomerService>();
+            service.AddScoped<IVehicleService, VehicleService>();
+
+            ServiceDefinitions.Services = service.BuildServiceProvider();   //  Collecting provider for use in non-service access points
+
+            return service;
+        }
     }
 }
