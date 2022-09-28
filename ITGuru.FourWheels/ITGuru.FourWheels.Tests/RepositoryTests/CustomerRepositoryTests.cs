@@ -9,7 +9,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class CustomerRepositoryTests
     {
-        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO {
+        private readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+        {
             Id = Guid.NewGuid(),
             FirstName = "Test",
             LastName = "Customer",
@@ -17,18 +18,24 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             Email = "test@itguru.com"
         };
 
+        private CustomerService _customerRepository;
+
+        public CustomerRepositoryTests()
+        {
+            _customerRepository = GetCustomerRepository();
+        }
+
         [Fact]
         public void CreateAndGetCustomerTest()
         {
             // Arrange
-            var customerRepository = GetCustomerRepository();
 
             // Act
             // Save customer in repository.
-            var addResult = customerRepository.Add(_DEFAULT_CUSTOMER);
+            var addResult = _customerRepository.Add(_DEFAULT_CUSTOMER);
 
             // Retrieve the newly created customer from the repository.
-            var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
+            var createdCustomer = _customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
@@ -41,11 +48,10 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         {
             // 1. Create
             // Arrange
-            var customerRepository = GetCustomerRepository();
 
             // Act
-            var addResult = customerRepository.Add(_DEFAULT_CUSTOMER);
-            var createdCustomer = customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
+            var addResult = _customerRepository.Add(_DEFAULT_CUSTOMER);
+            var createdCustomer = _customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
@@ -54,8 +60,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
             // 2. Delete
             // Act
-            var removeResult = customerRepository.Remove(createdCustomer);
-            var deletedCustomer = customerRepository.GetById(createdCustomer.Id);
+            var removeResult = _customerRepository.Remove(createdCustomer);
+            var deletedCustomer = _customerRepository.GetById(createdCustomer.Id);
 
             // Assert
             Assert.True(removeResult.Succeeded);
@@ -67,8 +73,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         {
             // 1. Create
             // Arrange
-            var customerRepository = GetCustomerRepository();
-
             var customerIdentity = Guid.NewGuid();
             var createCustomer = new CustomerDTO
             {
@@ -88,8 +92,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             };
 
             // Act
-            var addResult = customerRepository.Add(createCustomer);
-            var createdCustomer = customerRepository.GetById(createCustomer.Id);
+            var addResult = _customerRepository.Add(createCustomer);
+            var createdCustomer = _customerRepository.GetById(createCustomer.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
@@ -98,8 +102,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
             // 2. Update
             // Act
-            var updateResult = customerRepository.Update(editCustomer);
-            var editedCustomer = customerRepository.GetById(createdCustomer.Id);
+            var updateResult = _customerRepository.Update(editCustomer);
+            var editedCustomer = _customerRepository.GetById(createdCustomer.Id);
 
             // Assert
             Assert.True(updateResult.Succeeded);
@@ -108,12 +112,27 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         }
 
         [Fact]
+        public void AddDublicateCustomerTest()
+        {
+            // Arrange
+
+            // Act
+            _customerRepository.Add(_DEFAULT_CUSTOMER);
+            _customerRepository.Add(_DEFAULT_CUSTOMER);
+            _customerRepository.Add(_DEFAULT_CUSTOMER);
+
+            var allCustomers = _customerRepository.GetAll();
+
+            // Assert
+            var returnedCustomers = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id);
+            Assert.NotNull(returnedCustomers.FirstOrDefault());
+            Assert.Single(returnedCustomers);
+        }
+
+        [Fact]
         public void GetAllCustomers()
         {
-            // 1. Create
             // Arrange
-            var customerRepository = GetCustomerRepository();
-
             var customersToCreate = new List<CustomerDTO>()
             {
                 new CustomerDTO
@@ -145,11 +164,11 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             bool addAllSuccess = true;
             foreach (var customer in customersToCreate)
             {
-                addAllSuccess = customerRepository.Add(customer).Succeeded && addAllSuccess;
+                addAllSuccess = _customerRepository.Add(customer).Succeeded && addAllSuccess;
             }
 
             // Act
-            var retrievedCustomers = customerRepository.GetAll();
+            var retrievedCustomers = _customerRepository.GetAll();
 
             // Assert
             Assert.True(addAllSuccess);
@@ -167,32 +186,12 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         }
 
         [Fact]
-        public void AddDublicateCustomerTest()
-        {
-            // Arrange
-            var customerRepository = GetCustomerRepository();
-
-            // Act
-            customerRepository.Add(_DEFAULT_CUSTOMER);
-            customerRepository.Add(_DEFAULT_CUSTOMER);
-            customerRepository.Add(_DEFAULT_CUSTOMER);
-
-            var allCustomers = customerRepository.GetAll();
-
-            // Assert
-            var returnedCustomers = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id);
-            Assert.NotNull(returnedCustomers.FirstOrDefault());
-            Assert.Single(returnedCustomers);
-        }
-
-        [Fact]
         public void DeleteNonExistingCustomerTest()
         {
             // Arrange
-            var customerRepository = GetCustomerRepository();
 
             // Act
-            var result = customerRepository.Remove(_DEFAULT_CUSTOMER);
+            var result = _customerRepository.Remove(_DEFAULT_CUSTOMER);
 
             // Assert
             Assert.False(result.Succeeded);
