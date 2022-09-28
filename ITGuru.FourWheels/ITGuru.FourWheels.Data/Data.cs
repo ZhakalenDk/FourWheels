@@ -10,7 +10,7 @@ namespace ITGuru.FourWheels.Data
 {
     public class Data : IData
     {
-        private List<Customer> _customers = new List<Customer>();
+        private List<Customer> _customers;
 
         public List<Customer> Customers
         {
