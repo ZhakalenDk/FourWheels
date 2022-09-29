@@ -1,4 +1,5 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
+﻿using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.Data.DataModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Service
@@ -51,9 +52,8 @@ namespace ITGuru.FourWheels.Service
         /// <returns>The retrieved <see cref="IReadOnlyList{T}"/> containing the associated <see cref="IVehicle"/> <see langword="object"/></returns>
         public static IReadOnlyList<IVehicle> GetVehicles(this ICustomer customer)
         {
-            var service = ServiceDefinitions.Services.GetService<IVehicleService>();
-
-            var customerVehicles = service.GetAll().Where(v => v.CustomerId == customer.Id)
+            var customerVehicles = DataLayer.Data.GetAllVehicles().Where(v => v.CustomerId == customer.Id)
+                .MapToPublic()
                 .ToList();
 
             return customerVehicles;

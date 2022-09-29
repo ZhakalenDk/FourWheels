@@ -4,6 +4,25 @@ namespace ITGuru.FourWheels.Data
 {
     public class DataLayer : IDataLayer
     {
+        private DataLayer()
+        {
+            GenerateList();
+        }
+
+        public static IDataLayer Data
+        {
+            get
+            {
+                if (data == null)
+                {
+                    data = new DataLayer();
+                }
+
+                return data;
+            }
+        }
+        private static IDataLayer data;
+
         private List<Customer> _customers = new();
 
         public List<Customer> Customers
@@ -18,10 +37,6 @@ namespace ITGuru.FourWheels.Data
             get { return _vehicles; }
         }
 
-        public DataLayer()
-        {
-            GenerateList();
-        }
         public void GenerateVehicleList(Guid customerID, string brand, string model, string licensePlate)
         {
             Guid guid = Guid.NewGuid();

@@ -10,7 +10,9 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class CustomerRepositoryTests
     {
+#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case
         private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+#pragma warning restore IDE1006 // Naming Styles
         {
             Id = Guid.NewGuid(),
             FirstName = "Test",
@@ -24,7 +26,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public CustomerRepositoryTests()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddContext();
             serviceCollection.AddServices();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();

@@ -10,7 +10,6 @@ namespace ITGuru.FourWheels.Tests
         {
             // Arrange
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddContext();
             serviceCollection.AddServices();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
@@ -18,7 +17,7 @@ namespace ITGuru.FourWheels.Tests
             // Act
             var customerService = serviceProvider.GetService<ICustomerService>();
             var vehicleService = serviceProvider.GetService<IVehicleService>();
-            
+
             // Assert
             Assert.NotNull(customerService);
             Assert.NotNull(vehicleService);

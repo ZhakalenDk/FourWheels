@@ -4,19 +4,12 @@ namespace ITGuru.FourWheels.Service
 {
     public class VehicleService : IVehicleService
     {
-        public VehicleService(IDataLayer context)
-        {
-            _context = context;
-        }
-
-        private readonly IDataLayer _context;
-
         public RepoResult Add(IVehicle entity)
         {
             RepoResult result = new RepoResult("Vehicle added");
             try
             {
-                if (!_context.AddVehicle(entity.MapToInternal()))
+                if (!DataLayer.Data.AddVehicle(entity.MapToInternal()))
                 {
                     result.Succeeded = false;
                     result.Message = "Vehicle couldn't be added";
@@ -34,7 +27,7 @@ namespace ITGuru.FourWheels.Service
 
         public IReadOnlyList<IVehicle> GetAll()
         {
-            return _context.GetAllVehicles()
+            return DataLayer.Data.GetAllVehicles()
                 .MapToPublic()
                 .ToList();
         }
@@ -49,7 +42,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult("Vehicle Removed");
             try
             {
-                if (!_context.SoftDeleteVehicle(entity.Id))
+                if (!DataLayer.Data.SoftDeleteVehicle(entity.Id))
                 {
                     result.Succeeded = false;
                     result.Message = "Vehicle couldn't be removed";
@@ -70,7 +63,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult("Vehicle Updated");
             try
             {
-                if (!_context.UpdateVehicle(entity.MapToInternal()))
+                if (!DataLayer.Data.UpdateVehicle(entity.MapToInternal()))
                 {
                     result.Succeeded = false;
                     result.Message = "Vehicle couldn't be updated";

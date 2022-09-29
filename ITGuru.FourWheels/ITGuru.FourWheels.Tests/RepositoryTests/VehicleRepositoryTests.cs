@@ -74,7 +74,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public VehicleRepositoryTests()
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddContext();
             serviceCollection.AddServices();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
