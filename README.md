@@ -15,26 +15,7 @@ _Add bullet points with the initial features that defines the core of the applic
 
 ## Change Log
 _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the project WiKi Page._
- - **[v0.1.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.0-Dev)**: Administration af kundder
-   - **Added**
-     - Add customer
-     - Update Customer
-     - Hard/Soft Delete customer
-     - Get a list of all customers
-   - **Modified**
-     - Nothing
-   - **Fixed**
-     - Nothing
- - **[v0.1.3-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.2-Dev)**: Interface construction and sharing
-   - **Added**
-     - Created Vehice Class
-     - Created VehicleDTO class
-     - Created IVehicle Interface
-     - Created IVehicleService Interface
-   - **Modified**
-     - Changed MapToPublic
-   - **Fixed**
-     - Updateded IDataLayer
+
  - **[v0.2.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.2.0-Dev)**: Vehicle adminitration Implementation
    - **Added**
      - Created VehiclesDTO class and interface
@@ -46,3 +27,23 @@ _`Classes`, `structs`, `interfaces` and `enums` etc. are to be linked to the pro
      - Refactoring of Customer tests
    - **Fixed**
      - Fixed wrong checking variable (multi) on tests
+ - **[v0.1.3-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.2-Dev)**: Interface construction and sharing
+   - **Added**
+     - Created Vehice Class
+     - Created VehicleDTO class
+     - Created IVehicle Interface
+     - Created IVehicleService Interface
+   - **Modified**
+     - Changed MapToPublic
+   - **Fixed**
+     - Updateded IDataLayer
+ - **[v0.1.0-dev](https://github.com/ZhakalenDk/FourWheels/releases/tag/v0.1.0-Dev)**: Administration af kundder
+   - **Added**
+     - Add customer
+     - Update Customer
+     - Hard/Soft Delete customer
+     - Get a list of all customers
+   - **Modified**
+     - Nothing
+   - **Fixed**
+     - Nothing
