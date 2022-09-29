@@ -1,8 +1,10 @@
 using ITGuru.FourWheels.Data.DataModels;
 using ITGuru.FourWheels.Service;
 using ITGuru.FourWheels.Web.Enums;
+using ITGuru.FourWheels.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.WebSockets;
 
 namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
 {
@@ -20,10 +22,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
         public IReadOnlyList<IVehicle> Vehicles { get; set; }
 
         [BindProperty]
-        public CustomerDTO Customer { get; set; }
-
-        [BindProperty]
-        public VehicleDTO Vehicle { get; set; }
+        public CustomerVehiclesVM CustomerVehicle { get; set; }
 
         [BindProperty]
         public string Message { get; set; }
@@ -32,24 +31,37 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
 
         public void OnGet(string CustomerId)
         {
-            Customer = _customerService.GetById(new Guid(CustomerId)) as CustomerDTO;
+            CustomerVehicle = new();
+
+            var Customer = _customerService.GetById(new Guid(CustomerId)) as CustomerDTO;
             Vehicles = Customer.GetVehicles();
+
+            CustomerVehicle.FirstName = Customer.FirstName;
+            CustomerVehicle.LastName = Customer.LastName;
+            CustomerVehicle.CustomerId = Customer.Id;
         }
 
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                Vehicle.Id = Guid.NewGuid();
-                Vehicle.CustomerId = Customer.Id;
-                var vehicleResult = _vehicleService.Add(Vehicle);
+                CustomerVehicle.VehicleId = Guid.NewGuid();
+                VehicleDTO vehicle = new VehicleDTO
+                {
+                    Id = CustomerVehicle.VehicleId,
+                    Brand = CustomerVehicle.Brand,
+                    Model = CustomerVehicle.Model,
+                    LicensePlate = CustomerVehicle.LicensePlate,
+                    CustomerId = CustomerVehicle.CustomerId
+                };
+                var vehicleResult = _vehicleService.Add(vehicle);
                 if (vehicleResult.Succeeded)
                 {
                     Message = vehicleResult.Message;
                     MessageStatus = MessageStatus.Success;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
-                    return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                    return RedirectToPage("/Administration/Vehicle/CustomerVehicles", CustomerVehicle.CustomerId);
                 }
                 else
                 {
@@ -57,7 +69,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
                     MessageStatus = MessageStatus.Failed;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
-                    return RedirectToPage("/Administration/Vehicle/CustomerVehicles", Vehicle.CustomerId);
+                    return RedirectToPage("/Administration/Vehicle/CustomerVehicles", CustomerVehicle.CustomerId);
                 }
             }
             else
@@ -66,7 +78,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
                 MessageStatus = MessageStatus.Failed;
                 TempData["Message"] = Message;
                 TempData["MessageStatus"] = MessageStatus;
-                OnGet(Customer.Id.ToString()); ;
+                OnGet(CustomerVehicle.CustomerId.ToString()); ;
                 return Page();
             }
         }
