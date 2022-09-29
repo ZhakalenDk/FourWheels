@@ -21,12 +21,6 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
         [BindProperty]
         public IReadOnlyList<IVehicle> Vehicles { get; set; }
 
-        //[BindProperty]
-        //public CustomerDTO Customer { get; set; }
-
-        //[BindProperty]
-        //public VehicleDTO Vehicle { get; set; }
-
         [BindProperty]
         public CustomerVehiclesVM CustomerVehicle { get; set; }
 
