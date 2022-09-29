@@ -22,7 +22,7 @@
     
     <div class="row mb-2">
         <div class="col-10">
-            <h3>List of @Model.Customer.FirstName @Model.Customer.LastName vehicles:</h3>
+            <h3>List of @Model.CustomerVehicle.FirstName @Model.CustomerVehicle.LastName vehicles:</h3>
         </div>
         <div class="col-2">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createVehicle"><i class="fa-solid fa-plus"></i> New vehicle</button>
@@ -62,7 +62,7 @@
 
 <!-- #region Modals -->
 <form method="post" id="createForm">
-    <input type="hidden" asp-for="@Model.Customer" />
+    <input type="hidden" asp-for="@Model.CustomerVehicle.CustomerId" />
     <div class="modal fade" id="createVehicle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createVehicleLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,8 +76,8 @@
                             <label>License plate:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Vehicle.LicensePlate" type="text" placeholder="Enter vehicle's license plate..." />
-                            <span class="text-danger" asp-validation-for="@Model.Vehicle.LicensePlate"></span>
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.LicensePlate" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.LicensePlate"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -85,8 +85,8 @@
                             <label>Brand:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Vehicle.Brand" type="text" placeholder="Enter vehicle's brand..." />
-                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Brand"></span>
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.Brand" type="text" placeholder="Enter vehicle's brand..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.Brand"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -94,8 +94,8 @@
                             <label>Model:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Vehicle.Model" type="text" placeholder="Enter vehicle's model..." />
-                            <span class="text-danger" asp-validation-for="@Model.Vehicle.Model"></span>
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.Model" type="text" placeholder="Enter vehicle's model..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.Model"></span>
                         </div>
                     </div>
                 </div>

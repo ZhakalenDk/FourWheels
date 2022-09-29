@@ -8,9 +8,9 @@ namespace ITGuru.FourWheels.Service
         public Guid Id { get; set; }
         [Required, MaxLength(7)]
         public string LicensePlate { get; set; }
-        [MaxLength(25)]
+        [MaxLength(60)]
         public string Brand { get; set; }
-        [Required, MaxLength(25)]
+        [Required, MaxLength(60)]
         public string Model { get; set; }
         [Required]
         public Guid CustomerId { get; set; }
