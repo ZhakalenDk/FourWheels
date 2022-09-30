@@ -64,12 +64,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <!-- Customer -->
                     <h5 class="modal-title" id="createCustomerLabel">Create a new Customer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                @{
-                    // TODO: Modal stays open if validation is invalid.
-                }
                 <div class="modal-body">
                     <div class="row mb-2">
                         <div class="col-4">
@@ -107,6 +105,7 @@
                             <span class="text-danger" asp-validation-for="@Model.Customer.Email"></span>
                         </div>
                     </div>
+                    <!-- Vehicle -->
                     <h5 class="modal-title">Vehicle information:</h5>
                     <hr />
                     <div class="row mb-2">
@@ -136,8 +135,40 @@
                             <span class="text-danger" asp-validation-for="@Model.Vehicle.Model"></span>
                         </div>
                     </div>
+                    <div class="row mb-2" id="taskCreationDiv" hidden>
+                        <h5 class="modal-title">Task information:</h5>
+                        <hr />
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <label>Order Number:</label>
+                            </div>
+                            <div class="col-8">
+                                <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter vehicle's license plate..." />
+                                <span class="text-danger" asp-validation-for="@Model.Task.OrderNumber"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <label>Order Date:</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="datetime" class="form-control" asp-for="@Model.Task.OrderDate" type="text" placeholder="Enter vehicle's brand..." />
+                                <span class="text-danger" asp-validation-for="@Model"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <label>Description:</label>
+                            </div>
+                            <div class="col-8">
+                                <textarea class="form-control" asp-for="@Model.Task." type="text" placeholder="Enter vehicle's model..." />
+                                <span class="text-danger" asp-validation-for="@Model"></span>
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
                 <div class="modal-footer">
+                    <input class="form-chek-input" type="checkbox" id="showTaskCheckbox" onchange="showTaskCreation()" />
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success" id="btnCreate">Create</button>
                 </div>

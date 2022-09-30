@@ -23,6 +23,8 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
         public CustomerDTO Customer { get; set; }
         [BindProperty]
         public VehicleDTO Vehicle { get; set; }
+        [BindProperty]
+        public TaskDTO Task { get; set; }
 
         [BindProperty]
         public string Message { get; set; }
