@@ -31,6 +31,3 @@ function Search() {
     }
 }
 
-$("createForm").validate({
-
-})

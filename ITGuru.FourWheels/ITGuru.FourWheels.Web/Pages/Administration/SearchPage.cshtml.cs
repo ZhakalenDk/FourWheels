@@ -7,14 +7,16 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
 {
     public class SearchPageModel : PageModel
     {
-        public SearchPageModel(ICustomerService customerService, IVehicleService vehicleService)
+        public SearchPageModel(ICustomerService customerService, IVehicleService vehicleService, ITaskService taskService)
         {
             _customerService = customerService;
             _vehicleService = vehicleService;
+            _taskService = taskService;
         }
 
         private readonly ICustomerService _customerService;
         private readonly IVehicleService _vehicleService;
+        private readonly ITaskService _taskService;
 
         [BindProperty]
         public IReadOnlyList<ICustomer> Customers { get; set; }
@@ -23,11 +25,16 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
         public CustomerDTO Customer { get; set; }
         [BindProperty]
         public VehicleDTO Vehicle { get; set; }
+        [BindProperty]
+        public TaskDTO Task { get; set; }
 
         [BindProperty]
         public string Message { get; set; }
         [BindProperty]
-        public MessageStatus MessageStatus { get; set; }        
+        public MessageStatus MessageStatus { get; set; }
+
+        [BindProperty]
+        public bool ShowTaskCreation { get; set; }
 
         public void OnGet()
         {
@@ -41,12 +48,19 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 Customer.Id = Guid.NewGuid();
                 Customer.Phone = Customer.Phone.Replace(" ", string.Empty);
                 var customerResult = _customerService.Add(Customer);
+
                 Vehicle.Id = Guid.NewGuid();
                 Vehicle.CustomerId = Customer.Id;
                 var vehicleResult = _vehicleService.Add(Vehicle);
-                if (customerResult.Succeeded && vehicleResult.Succeeded)
+
+                Task.Id = Guid.NewGuid();
+                Task.OrderNumber = $"FW{Task.OrderNumber}";
+                Task.AssociatedVehicleId = Vehicle.Id;
+                Task.Notes = "";
+                var taskResult = _taskService.Add(Task);
+                if (customerResult.Succeeded && vehicleResult.Succeeded && taskResult.Succeeded)
                 {
-                    Message = $"Successfully created a new customer with a vehicle!";
+                    Message = $"Successfully created a new customer with a vehicle and a task!";
                     MessageStatus = MessageStatus.Success;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
@@ -54,7 +68,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 }
                 else
                 {
-                    Message = $"There was a mistake trying to add a customer with their vehicle.";
+                    Message = $"There was a mistake trying to add a customer with their vehicle and a task.";
                     MessageStatus = MessageStatus.Failed;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
@@ -70,6 +84,6 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 OnGet();
                 return Page();
             }
-        }        
+        }
     }
 }
