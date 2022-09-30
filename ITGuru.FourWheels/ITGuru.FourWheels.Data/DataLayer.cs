@@ -38,7 +38,7 @@ namespace ITGuru.FourWheels.Data
             get { return _vehicles; }
         }
 
-        private List<DataModels.Task> _tasks;
+        private List<DataModels.Task> _tasks = new();
         public List<DataModels.Task> Tasks
         {
             get { return _tasks; }
@@ -73,9 +73,10 @@ namespace ITGuru.FourWheels.Data
         }
         private void GenerateTask(string _orderNum, DateTime _OrderDate, Guid _VehicleId, DateTime _StartDate, DateTime _FinishDate, string _Descroption, string _Note)
         {
-            Guid guid = new();
+            Guid guid = Guid.NewGuid();
             DataModels.Task task = new()
             {
+                Id = guid,
                 IsDeleted = false,
                 OrderNum = _orderNum,
                 OrderDate = _OrderDate,

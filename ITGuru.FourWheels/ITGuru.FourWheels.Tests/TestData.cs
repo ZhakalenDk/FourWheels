@@ -9,6 +9,11 @@ namespace ITGuru.FourWheels.Tests
 {
     internal static class TestData
     {
+        // IDs
+        private static readonly Guid DEFAULT_CUSTOMER_ID = Guid.NewGuid();
+        private static readonly Guid DEFAULT_VEHICLE_ID = Guid.NewGuid();
+        private static readonly Guid DEFAULT_TASK_ID = Guid.NewGuid();
+
 #pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case.
         // Customers
         public static readonly ICustomer DEFAULT_CUSTOMER = new CustomerDTO
@@ -144,10 +149,7 @@ namespace ITGuru.FourWheels.Tests
             DEFAULT_TASK_2
         };
 
-        // IDs
-        private static readonly Guid DEFAULT_CUSTOMER_ID = Guid.NewGuid();
-        private static readonly Guid DEFAULT_VEHICLE_ID = Guid.NewGuid();
-        private static readonly Guid DEFAULT_TASK_ID = Guid.NewGuid();
+        
 #pragma warning restore IDE1006 // Naming Styles
     }
 }
