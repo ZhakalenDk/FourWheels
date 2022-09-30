@@ -3,8 +3,9 @@
     public class Task
     {
         public Guid Id;
+        public bool IsDeleted;
         //public Guid AssignedMechanic; Left in for later use
-        public uint OrderNum;
+        public string OrderNum;
         public DateTime OrderDate;
         public Guid VehicleId;
         //public List<Part> parts; Left in for later use

@@ -26,18 +26,23 @@ namespace ITGuru.FourWheels.Data
         private static IDataLayer _data;
 
         private List<Customer> _customers = new();
-
         public List<Customer> Customers
         {
             get { return _customers; }
         }
 
         private List<Vehicle> _vehicles = new();
-
         public List<Vehicle> Vehicles
         {
             get { return _vehicles; }
         }
+        
+        private List<DataModels.Task> _tasks;
+        public List<DataModels.Task> Tasks
+        {
+            get { return _tasks; }
+        }
+
 
         public static void WipeData()
         {
@@ -63,6 +68,10 @@ namespace ITGuru.FourWheels.Data
                 IsDeleted = false
             };
             Vehicles.Add(vehicle);
+        }
+        private void GenerateTask()
+        {
+            
         }
         public void GenerateList()
         {
@@ -289,26 +298,83 @@ namespace ITGuru.FourWheels.Data
 
         public List<DataModels.Task> GetAllTasks(bool includeDeleted = false)
         {
-            return new List<DataModels.Task>();
+            List<DataModels.Task> TaskList = Tasks.Where(x => x.IsDeleted == includeDeleted).ToList();
+            return TaskList;
         }
 
+        /// <summary>
+        /// Add a single Task to the list
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns>True of Task succefully added</returns>
         public bool AddTask(DataModels.Task task)
         {
-            return false;
+            int index = Tasks.FindIndex(x => x.Id == task.Id);
+            if (index >= 0)
+            {
+                return false;
+            }
+            else
+            {
+                Tasks.Add(task);
+                return true;
+            }
         }
 
+        /// <summary>
+        /// Update a single Task
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns>True if succefully found and changed a task</returns>
         public bool UpdateTask(DataModels.Task task)
         {
+            DataModels.Task taskNew = Tasks.Where(x => x.Id == task.Id).FirstOrDefault();
+
+            if (taskNew != null)
+            {
+                taskNew.OrderNum = task.OrderNum;
+                taskNew.OrderDate = task.OrderDate;
+                taskNew.VehicleId = task.VehicleId;
+                taskNew.StartDate = task.StartDate;
+                taskNew.FinishDate = task.FinishDate;
+                taskNew.Description = task.Description;
+                taskNew.Note = task.Note;
+                
+                return true;
+            }
             return false;
         }
 
+        /// <summary>
+        /// PERMENENTLY remove a Task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if Task found and removed from list</returns>
         public bool HardDeleteTask(Guid taskID)
         {
+            int index = Tasks.FindIndex(x => x.Id == taskID);
+            if (index >= 0)
+            {
+                Tasks.RemoveAt(index);
+                return true;
+            }
             return false;
         }
 
+        /// <summary>
+        /// Soft removes a task from the list
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if task found and IsDeleted changed to true </returns>
         public bool SoftDeleteTask(Guid taskID)
         {
+            DataModels.Task taskToDelete = Tasks.Where(x => x.Id == taskID).FirstOrDefault();
+
+            if (taskToDelete != null)
+            {
+                taskToDelete.IsDeleted = true;
+                return true;
+            }
             return false;
         }
     }
