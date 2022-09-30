@@ -16,8 +16,6 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Tasks
         [BindProperty]
         public TaskDTO Task { get; set; }
 
-
-
         public void OnGet(string taskId)
         {
             Task = _taskService.GetById(new Guid(taskId)) as TaskDTO;
