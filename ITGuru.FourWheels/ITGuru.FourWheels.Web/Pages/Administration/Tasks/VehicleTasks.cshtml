@@ -1,4 +1,114 @@
-﻿@page
+﻿@page "{VehicleId}"
+@using ITGuru.FourWheels.Web.Enums
 @model ITGuru.FourWheels.Web.Pages.Administration.Tasks.VehicleTasksModel
-@{
+
+<div>
+    <div class="row mb-2">
+        @if (TempData.Peek("Message") != null)
+        {
+            Model.Message = TempData["Message"].ToString();
+            Model.MessageStatus = (MessageStatus)TempData["MessageStatus"];
+
+            @if (Model.MessageStatus == MessageStatus.Success)
+            {
+                <div class="alert alert-success rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+            else if (Model.MessageStatus == MessageStatus.Failed)
+            {
+                <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+        }
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-10">
+            <h3>List of @Model.Vehicle.Brand @Model.Vehicle.Model tasks:</h3>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTask"><i class="fa-solid fa-plus"></i> New vehicle</button>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <table class="table table-striped" id="SearchTable">
+            <tr class="header">
+                <th class="col-2">#</th>
+                <th class="col-2">Description</th>
+                <th class="col-4">Notes</th>
+                <th class="col-2">StartDate</th>
+                <th class="col-2">FinishDate</th>
+            </tr>
+            @foreach (var task in Model.Tasks)
+            {
+                <tr>
+                    <td>@task.Id </td>
+                    <td>@task.Description </td>
+                    <td>@task.Notes </td>
+                    <td>@task.StartDate </td>
+                    <td>@task.FinishDate </td>
+                    <td>
+                        <div class="row">
+                            <div class="col-6">
+                                <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-VehicleId="@task.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
+                            </div>
+                            <div class="col-6">
+                                <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-VehicleId="@task.Id"><i class="fa-solid fa-trash"></i>Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<!-- #region Modals -->
+<form method="post" id="createForm">
+    <input type="hidden" asp-for="@Model.Task.Id" />
+    <div class="modal fade" id="createTask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createVehicleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTaskLabel">Create a new Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Task Description</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Task.Description" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.Task.Description"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Task OrderDate</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Task.OrderDate" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.Task.OrderDate"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Task OrderNumber</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.Task.OrderNumber"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="btnCreate">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- #endregion -->
+@section Scripts{
+    <script src="~/js/CustomerVehiclesScript.js"></script>
 }
