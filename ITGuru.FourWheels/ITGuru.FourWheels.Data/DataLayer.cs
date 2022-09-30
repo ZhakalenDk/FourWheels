@@ -286,5 +286,30 @@ namespace ITGuru.FourWheels.Data
             }
             return false;
         }
+
+        public List<DataModels.Task> GetAllTasks(bool includeDeleted = false)
+        {
+            return new List<DataModels.Task>();
+        }
+
+        public bool AddTask(DataModels.Task task)
+        {
+            return false;
+        }
+
+        public bool UpdateTask(DataModels.Task task)
+        {
+            return false;
+        }
+
+        public bool HardDeleteTask(Guid taskID)
+        {
+            return false;
+        }
+
+        public bool SoftDeleteTask(Guid taskID)
+        {
+            return false;
+        }
     }
 }
