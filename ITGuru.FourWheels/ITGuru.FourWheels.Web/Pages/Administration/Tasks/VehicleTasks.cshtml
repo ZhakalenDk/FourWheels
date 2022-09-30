@@ -1,4 +1,113 @@
-﻿@page
+﻿@page "{VehicleId}"
+@using ITGuru.FourWheels.Web.Enums
 @model ITGuru.FourWheels.Web.Pages.Administration.Tasks.VehicleTasksModel
-@{
+
+<div>
+    <div class="row mb-2">
+        @if (TempData.Peek("Message") != null)
+        {
+            Model.Message = TempData["Message"].ToString();
+            Model.MessageStatus = (MessageStatus)TempData["MessageStatus"];
+
+            @if (Model.MessageStatus == MessageStatus.Success)
+            {
+                <div class="alert alert-success rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+            else if (Model.MessageStatus == MessageStatus.Failed)
+            {
+                <div class="alert alert-danger rounded col-md-12 text-center" role="alert" id="PopupBox">@Model.Message</div>
+            }
+        }
+    </div>
+
+@*    <div class="row mb-2">
+        <div class="col-10">
+            <h3>List of @Model.CustomerVehicle.FirstName @Model.CustomerVehicle.LastName vehicles:</h3>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createVehicle"><i class="fa-solid fa-plus"></i> New vehicle</button>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <table class="table table-striped" id="SearchTable">
+            <tr class="header">
+                <th class="col-2">#</th>
+                <th class="col-2">License Plate</th>
+                <th class="col-4">Brand</th>
+                <th class="col-2">Model</th>
+                <th class="col-2">Options</th>
+            </tr>
+            @foreach (var vehicle in Model.Vehicles)
+            {
+                <tr>
+                    <td>@vehicle.Id </td>
+                    <td>@vehicle.LicensePlate</td>
+                    <td>@vehicle.Brand</td>
+                    <td>@vehicle.Model</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-6">
+                                <a class="btn btn-warning" asp-page="/Administration/Vehicle/UpdateVehicle" asp-route-VehicleId="@vehicle.Id"><i class="fa-solid fa-pen-to-square"></i>Update</a>
+                            </div>
+                            <div class="col-6">
+                                <a class="btn btn-danger" asp-page="/Administration/Vehicle/DeleteVehicle" asp-route-VehicleId="@vehicle.Id"><i class="fa-solid fa-trash"></i>Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>*@
+
+<!-- #region Modals -->
+@*<form method="post" id="createForm">
+    <input type="hidden" asp-for="@Model.CustomerVehicle.CustomerId" />
+    <div class="modal fade" id="createVehicle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createVehicleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createVehicleLabel">Create a new Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>License plate:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.LicensePlate" type="text" placeholder="Enter vehicle's license plate..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.LicensePlate"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Brand:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.Brand" type="text" placeholder="Enter vehicle's brand..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.Brand"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label>Model:</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" asp-for="@Model.CustomerVehicle.Model" type="text" placeholder="Enter vehicle's model..." />
+                            <span class="text-danger" asp-validation-for="@Model.CustomerVehicle.Model"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="btnCreate">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>*@
+<!-- #endregion -->
+@section Scripts{
+    <script src="~/js/CustomerVehiclesScript.js"></script>
 }
