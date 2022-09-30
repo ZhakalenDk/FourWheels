@@ -1,4 +1,5 @@
-﻿using ITGuru.FourWheels.Data.DataModels;
+﻿using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.Data.DataModels;
 
 namespace ITGuru.FourWheels.Service
 {
@@ -45,9 +46,10 @@ namespace ITGuru.FourWheels.Service
 
         public static IReadOnlyList<ITask> GetTasks(this IVehicle vehicle)
         {
-            //  TODO: GetTasks for vehicles
-
-            return null;
+            return DataLayer.Data.GetAllTasks()
+                .Where(t => t.VehicleId == vehicle.Id)
+                .MapToPublic()
+                .ToList();
         }
     }
 }

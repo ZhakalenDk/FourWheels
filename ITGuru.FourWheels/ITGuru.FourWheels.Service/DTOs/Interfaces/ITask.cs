@@ -11,10 +11,10 @@ namespace ITGuru.FourWheels.Service
         public Guid Id { get; }
         public string OrderNumber { get; }
         //public Guid AssignedMechanicId { get; }
-        public DateTime OrderData { get; }
+        public DateTime OrderDate { get; }
         public DateTime StartDate { get; }
         public DateTime FinishDate { get; }
-        public Guid AssociatedVehicle { get; }
+        public Guid AssociatedVehicleId { get; }
         public string Description { get; }
         public string Notes { get; }
     }
