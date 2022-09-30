@@ -1,88 +1,103 @@
 using ITGuru.FourWheels.Data;
-using ITGuru.FourWheels.Data.DataModels;
 using ITGuru.FourWheels.Service;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System.ComponentModel.DataAnnotations;
-using System.Xml;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
-    public class CustomerRepositoryTests
+    public class CustomerRepositoryTests : IDisposable
     {
-#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case
-        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
-#pragma warning restore IDE1006 // Naming Styles
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Test",
-            LastName = "Customer",
-            Phone = "12345678",
-            Email = "test@itguru.com"
-        };
+//#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case.
+//        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+//        {
+//            Id = Guid.NewGuid(),
+//            FirstName = "Test",
+//            LastName = "Customer",
+//            Phone = "12345678",
+//            Email = "test@itguru.com"
+//        };
+//#pragma warning restore IDE1006 // Naming Styles
 
-        private CustomerService _customerRepository;
+        private ICustomerService _customerRepository;
+        private IVehicleService _vehicleRepository;
 
         public CustomerRepositoryTests()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddServices();
+            DataLayer.WipeData();
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            _customerRepository = new CustomerService();
+            _vehicleRepository = new VehicleService();
+        }
 
-            _customerRepository = serviceProvider.GetService<ICustomerService>() as CustomerService;
+        public void Dispose()
+        {
+            DataLayer.WipeData();
         }
 
         [Fact]
-        public void CreateAndGetCustomerTest()
+        public void AddAndGetCustomerTest()
         {
             // Arrange
+            ICustomer toAddCustomer = new CustomerDTO
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Test",
+                LastName = "Customer",
+                Phone = "12345678",
+                Email = "test@itguru.com"
+            };
 
             // Act
             // Save customer in repository.
-            var addResult = _customerRepository.Add(_DEFAULT_CUSTOMER);
+            var addResult = _customerRepository.Add(toAddCustomer);
 
             // Retrieve the newly created customer from the repository.
-            var createdCustomer = _customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
+            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
-            Assert.NotNull(createdCustomer);
-            AssertAllCustomerProperties(_DEFAULT_CUSTOMER, createdCustomer);
+            Assert.NotNull(addedCustomer);
+            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
         }
 
         [Fact]
-        public void CreateAndDeleteCustomerTest()
+        public void AddAndRemoveCustomerTest()
         {
             // 1. Create
             // Arrange
+            ICustomer toAddCustomer = new CustomerDTO
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Test",
+                LastName = "Customer",
+                Phone = "12345678",
+                Email = "test@itguru.com"
+            };
 
             // Act
-            var addResult = _customerRepository.Add(_DEFAULT_CUSTOMER);
-            var createdCustomer = _customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
+            var addResult = _customerRepository.Add(toAddCustomer);
+            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
-            Assert.NotNull(createdCustomer);
-            AssertAllCustomerProperties(_DEFAULT_CUSTOMER, createdCustomer);
+            Assert.NotNull(addedCustomer);
+            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
 
             // 2. Delete
             // Act
-            var removeResult = _customerRepository.Remove(createdCustomer);
-            var deletedCustomer = _customerRepository.GetById(createdCustomer.Id);
+            var removeResult = _customerRepository.Remove(addedCustomer);
+            var removedCustomer = _customerRepository.GetById(addedCustomer.Id);
 
             // Assert
             Assert.True(removeResult.Succeeded);
-            Assert.Null(deletedCustomer);
+            Assert.Null(removedCustomer);
         }
 
         [Fact]
-        public void CreateAndUpdateCustomerTest()
+        public void AddAndUpdateCustomerTest()
         {
             // 1. Create
             // Arrange
             var customerIdentity = Guid.NewGuid();
-            var createCustomer = new CustomerDTO
+            var toAddCustomer = new CustomerDTO
             {
                 Id = customerIdentity,
                 FirstName = "Created",
@@ -90,7 +105,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
                 Phone = "99999999",
                 Email = "test@itguru.com"
             };
-            var editCustomer = new CustomerDTO
+            var afterEditCustomer = new CustomerDTO
             {
                 Id = customerIdentity,
                 FirstName = "Edited",
@@ -100,40 +115,49 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             };
 
             // Act
-            var addResult = _customerRepository.Add(createCustomer);
-            var createdCustomer = _customerRepository.GetById(createCustomer.Id);
+            var addResult = _customerRepository.Add(toAddCustomer);
+            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
-            Assert.NotNull(createdCustomer);
-            AssertAllCustomerProperties(createCustomer, createdCustomer);
+            Assert.NotNull(addedCustomer);
+            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
 
             // 2. Update
             // Act
-            var updateResult = _customerRepository.Update(editCustomer);
-            var editedCustomer = _customerRepository.GetById(createdCustomer.Id);
+            var updateResult = _customerRepository.Update(afterEditCustomer); // TODO: Customer hasn't even been added when inspecting the data layer???
+            var editedCustomer = _customerRepository.GetById(addedCustomer.Id);
 
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedCustomer);
-            AssertAllCustomerProperties(editCustomer, editedCustomer);
+            AssertAllCustomerProperties(afterEditCustomer, editedCustomer);
         }
 
         [Fact]
         public void AddDublicateCustomerTest()
         {
             // Arrange
+            var toAddCustomer = new CustomerDTO
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Created",
+                LastName = "cu$t oMer",
+                Phone = "99999999",
+                Email = "test@itguru.com"
+            };
 
             // Act
-            _customerRepository.Add(_DEFAULT_CUSTOMER);
-            _customerRepository.Add(_DEFAULT_CUSTOMER);
-            _customerRepository.Add(_DEFAULT_CUSTOMER);
+            _customerRepository.Add(toAddCustomer);
+            _customerRepository.Add(toAddCustomer);
+            _customerRepository.Add(toAddCustomer);
 
             var allCustomers = _customerRepository.GetAll();
 
             // Assert
-            var returnedCustomers = allCustomers.Where(c => c.Id == _DEFAULT_CUSTOMER.Id);
+            var returnedCustomers = allCustomers.Where(c => c.Id == toAddCustomer.Id);
             Assert.NotNull(returnedCustomers.FirstOrDefault());
+            AssertAllCustomerProperties(toAddCustomer, returnedCustomers.First());
             Assert.Single(returnedCustomers);
         }
 
@@ -141,7 +165,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void GetAllCustomers()
         {
             // Arrange
-            var customersToCreate = new List<CustomerDTO>()
+            var toAddCustomers = new List<CustomerDTO>()
             {
                 new CustomerDTO
                 {
@@ -170,7 +194,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             };
 
             bool addAllSuccess = true;
-            foreach (var customer in customersToCreate)
+            foreach (var customer in toAddCustomers)
             {
                 addAllSuccess = _customerRepository.Add(customer).Succeeded && addAllSuccess;
             }
@@ -181,7 +205,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addAllSuccess);
 
-            foreach (var customer in customersToCreate)
+            foreach (var customer in toAddCustomers)
             {
                 // Assert: Customer is present and data is correct.
                 var retrievedCustomer = retrievedCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();
@@ -197,13 +221,131 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void DeleteNonExistingCustomerTest()
         {
             // Arrange
+            ICustomer nonExistingCustomer = new CustomerDTO
+            {
+                Id = Guid.NewGuid()
+            };
 
             // Act
-            var result = _customerRepository.Remove(_DEFAULT_CUSTOMER);
+            var result = _customerRepository.Remove(nonExistingCustomer);
 
             // Assert
             Assert.False(result.Succeeded);
         }
+
+        //[Fact]
+        //public void GetVehiclesThroughCustomerTest()
+        //{
+        //    Guid _DEFAULT_VEHICLE_ID = Guid.NewGuid();
+
+        //    ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        FirstName = "Customer",
+        //        LastName = "0",
+        //        Phone = "00000000",
+        //        Email = "test@itguru.com"
+        //    };
+        //    ICustomer _DEFAULT_CUSTOMER_1 = new CustomerDTO
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        FirstName = "Customer",
+        //        LastName = "1",
+        //        Phone = "11111111",
+        //        Email = "test@itguru.com"
+        //    };
+
+        //    IVehicle _DEFAULT_VEHICLE = new VehicleDTO
+        //    {
+        //        Id = _DEFAULT_VEHICLE_ID,
+        //        Brand = "Lucid",
+        //        Model = "Air",
+        //        LicensePlate = "AA 69 420",
+        //        CustomerId = _DEFAULT_CUSTOMER.Id
+        //    };
+        //    IVehicle _DEFAULT_VEHICLE_EDITED = new VehicleDTO
+        //    {
+        //        Id = _DEFAULT_VEHICLE_ID,
+        //        Brand = "Tesla",
+        //        Model = "Model Y",
+        //        LicensePlate = "BB 96 024",
+        //        CustomerId = _DEFAULT_CUSTOMER_1.Id
+        //    };
+        //    IVehicle _DEFAULT_VEHICLE_1 = new VehicleDTO
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Brand = "Volkswagen",
+        //        Model = "ID.3",
+        //        LicensePlate = "CC 12 345",
+        //        CustomerId = _DEFAULT_CUSTOMER.Id
+        //    };
+        //    IVehicle _DEFAULT_VEHICLE_2 = new VehicleDTO
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Brand = "Tesla",
+        //        Model = "Model S",
+        //        LicensePlate = "DD 22 222",
+        //        CustomerId = _DEFAULT_CUSTOMER_1.Id
+        //    };
+
+        //    List<IVehicle> _VEHICLES = new()
+        //    {
+        //        _DEFAULT_VEHICLE,
+        //        _DEFAULT_VEHICLE_1,
+        //        _DEFAULT_VEHICLE_2
+        //    };
+
+        //    // Arrange
+        //    var customer0Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER.Id);
+        //    var customer1Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER_1.Id);
+
+        //    var customerAddResult = true;
+        //    customerAddResult = _customerRepository.Add(_DEFAULT_CUSTOMER).Succeeded && customerAddResult;
+        //    customerAddResult = _customerRepository.Add(_DEFAULT_CUSTOMER_1).Succeeded && customerAddResult;
+
+        //    var vehicleAddResult = true;
+        //    foreach (var vehicle in customer0Vehicles)
+        //    {
+        //        vehicleAddResult = _vehicleRepository.Add(vehicle).Succeeded && vehicleAddResult;
+        //    }
+
+        //    foreach (var vehicle in customer1Vehicles)
+        //    {
+        //        vehicleAddResult = _vehicleRepository.Add(vehicle).Succeeded && vehicleAddResult;
+        //    }
+
+        //    var customer0 = _customerRepository.GetById(_DEFAULT_CUSTOMER.Id);
+        //    var customer1 = _customerRepository.GetById(_DEFAULT_CUSTOMER_1.Id);
+
+        //    //var test = DataLayer.Data.GetAllCustomers();
+
+        //    // Act
+        //    var retrievedCustomer0Vehicles = customer0.GetVehicles();
+        //    var retrievedCustomer1Vehicles = customer1.GetVehicles();
+
+        //    // Assert
+        //    Assert.True(customerAddResult);
+        //    Assert.True(vehicleAddResult);
+
+        //    Assert.NotNull(retrievedCustomer0Vehicles);
+        //    Assert.NotNull(retrievedCustomer1Vehicles);
+        //    Assert.NotEmpty(retrievedCustomer0Vehicles);
+        //    Assert.NotEmpty(retrievedCustomer1Vehicles);
+
+        //    foreach (var actualVehicle in retrievedCustomer0Vehicles)
+        //    {
+        //        var expectedVehicle = customer0Vehicles.Where(v => v.Id == actualVehicle.Id).FirstOrDefault();
+        //        Assert.NotNull(expectedVehicle);
+        //        AssertAllVehicleProperties(expectedVehicle, actualVehicle);
+        //    }
+
+        //    foreach (var actualVehicle in retrievedCustomer1Vehicles)
+        //    {
+        //        var expectedVehicle = customer1Vehicles.Where(v => v.Id == actualVehicle.Id).FirstOrDefault();
+        //        Assert.NotNull(expectedVehicle);
+        //        AssertAllVehicleProperties(expectedVehicle, actualVehicle);
+        //    }
+        //}
 
         private void AssertAllCustomerProperties(ICustomer exptectedCustomer, ICustomer actualCustomer)
         {

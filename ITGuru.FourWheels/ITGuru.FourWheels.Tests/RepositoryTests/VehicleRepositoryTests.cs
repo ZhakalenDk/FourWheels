@@ -1,127 +1,140 @@
 ﻿using ITGuru.FourWheels.Data;
 using ITGuru.FourWheels.Service;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System.ComponentModel.DataAnnotations;
-using System.Xml;
-using ITGuru.FourWheels.Data.DataModels;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
-    public class VehicleRepositoryTests
+    public class VehicleRepositoryTests : IDisposable
     {
-        private static readonly Guid _DEFAULT_VEHICLE_ID = Guid.NewGuid();
+//#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case.
+//        private static readonly Guid _DEFAULT_VEHICLE_ID = Guid.NewGuid();
 
-        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Customer",
-            LastName = "0",
-            Phone = "00000000",
-            Email = "test@itguru.com"
-        };
-        private static readonly ICustomer _DEFAULT_CUSTOMER_1 = new CustomerDTO
-        {
-            Id = Guid.NewGuid(),
-            FirstName = "Customer",
-            LastName = "1",
-            Phone = "11111111",
-            Email = "test@itguru.com"
-        };
+//        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
+//        {
+//            Id = Guid.NewGuid(),
+//            FirstName = "Customer",
+//            LastName = "0",
+//            Phone = "00000000",
+//            Email = "test@itguru.com"
+//        };
+//        private static readonly ICustomer _DEFAULT_CUSTOMER_1 = new CustomerDTO
+//        {
+//            Id = Guid.NewGuid(),
+//            FirstName = "Customer",
+//            LastName = "1",
+//            Phone = "11111111",
+//            Email = "test@itguru.com"
+//        };
 
-        private static readonly IVehicle _DEFAULT_VEHICLE = new VehicleDTO
-        {
-            Id = _DEFAULT_VEHICLE_ID,
-            Brand = "Lucid",
-            Model = "Air",
-            LicensePlate = "AA 69 420",
-            CustomerId = _DEFAULT_CUSTOMER.Id
-        };
-        private static readonly IVehicle _DEFAULT_VEHICLE_EDITED = new VehicleDTO
-        {
-            Id = _DEFAULT_VEHICLE_ID,
-            Brand = "Tesla",
-            Model = "Model Y",
-            LicensePlate = "BB 96 024",
-            CustomerId = _DEFAULT_CUSTOMER_1.Id
-        };
-        private static readonly IVehicle _DEFAULT_VEHICLE_1 = new VehicleDTO
-        {
-            Id = Guid.NewGuid(),
-            Brand = "Volkswagen",
-            Model = "ID.3",
-            LicensePlate = "CC 12 345",
-            CustomerId = _DEFAULT_CUSTOMER.Id
-        };
-        private static readonly IVehicle _DEFAULT_VEHICLE_2 = new VehicleDTO
-        {
-            Id = Guid.NewGuid(),
-            Brand = "Tesla",
-            Model = "Model S",
-            LicensePlate = "DD 22 222",
-            CustomerId = _DEFAULT_CUSTOMER_1.Id
-        };
+//        private static readonly IVehicle _DEFAULT_VEHICLE = new VehicleDTO
+//        {
+//            Id = _DEFAULT_VEHICLE_ID,
+//            Brand = "Lucid",
+//            Model = "Air",
+//            LicensePlate = "AA 69 420",
+//            CustomerId = _DEFAULT_CUSTOMER.Id
+//        };
+//        private static readonly IVehicle _DEFAULT_VEHICLE_EDITED = new VehicleDTO
+//        {
+//            Id = _DEFAULT_VEHICLE_ID,
+//            Brand = "Tesla",
+//            Model = "Model Y",
+//            LicensePlate = "BB 96 024",
+//            CustomerId = _DEFAULT_CUSTOMER_1.Id
+//        };
+//        private static readonly IVehicle _DEFAULT_VEHICLE_1 = new VehicleDTO
+//        {
+//            Id = Guid.NewGuid(),
+//            Brand = "Volkswagen",
+//            Model = "ID.3",
+//            LicensePlate = "CC 12 345",
+//            CustomerId = _DEFAULT_CUSTOMER.Id
+//        };
+//        private static readonly IVehicle _DEFAULT_VEHICLE_2 = new VehicleDTO
+//        {
+//            Id = Guid.NewGuid(),
+//            Brand = "Tesla",
+//            Model = "Model S",
+//            LicensePlate = "DD 22 222",
+//            CustomerId = _DEFAULT_CUSTOMER_1.Id
+//        };
 
-        private static readonly List<IVehicle> _VEHICLES = new()
-        {
-            _DEFAULT_VEHICLE,
-            _DEFAULT_VEHICLE_1,
-            _DEFAULT_VEHICLE_2
-        };
+//        private static readonly List<IVehicle> _VEHICLES = new()
+//        {
+//            _DEFAULT_VEHICLE,
+//            _DEFAULT_VEHICLE_1,
+//            _DEFAULT_VEHICLE_2
+//        };
+//#pragma warning restore IDE1006 // Naming Styles
 
-        private VehicleService _vehicleRepository;
+        private IVehicleService _vehicleRepository;
 
         public VehicleRepositoryTests()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddServices();
+            DataLayer.WipeData();
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            _vehicleRepository = new VehicleService();
+        }
 
-            _vehicleRepository = serviceProvider.GetService<IVehicleService>() as VehicleService;
+        public void Dispose()
+        {
+            DataLayer.WipeData();
         }
 
         [Fact]
         public void AddAndGetVehicleTest()
         {
             // Arrange
+            IVehicle toAddVehicle = new VehicleDTO
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Lucid",
+                Model = "Air",
+                LicensePlate = "AA 69 420"
+            };
 
             // Act
             // Save vehicle in repository.
-            var addResult = _vehicleRepository.Add(_DEFAULT_VEHICLE);
+            var addResult = _vehicleRepository.Add(toAddVehicle);
 
             // Retrieve the newly created vehicle from the repository.
-            var createdVehicle = _vehicleRepository.GetById(_DEFAULT_VEHICLE.Id);
+            var addedVehicle = _vehicleRepository.GetById(toAddVehicle.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
-            Assert.NotNull(createdVehicle);
-            AssertAllVehicleProperties(_DEFAULT_VEHICLE, createdVehicle);
+            Assert.NotNull(addedVehicle);
+            AssertAllVehicleProperties(toAddVehicle, addedVehicle);
         }
 
         [Fact]
-        public void AddAndDeleteVehicleTest()
+        public void AddAndRemoveVehicleTest()
         {
             // 1. Create
             // Arrange
+            IVehicle toAddVehicle = new VehicleDTO
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Lucid",
+                Model = "Air",
+                LicensePlate = "AA 69 420"
+            };
 
             // Act
-            var addResult = _vehicleRepository.Add(_DEFAULT_VEHICLE);
-            var createdVehicle = _vehicleRepository.GetById(_DEFAULT_VEHICLE.Id);
+            var addResult = _vehicleRepository.Add(toAddVehicle);
+            var addedVehicle = _vehicleRepository.GetById(toAddVehicle.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
-            Assert.NotNull(createdVehicle);
-            AssertAllVehicleProperties(_DEFAULT_VEHICLE, createdVehicle);
+            Assert.NotNull(addedVehicle);
+            AssertAllVehicleProperties(toAddVehicle, addedVehicle);
 
             // 2. Delete
             // Act
-            var removeResult = _vehicleRepository.Remove(createdVehicle);
-            var deletedVehicle = _vehicleRepository.GetById(createdVehicle.Id);
+            var removeResult = _vehicleRepository.Remove(addedVehicle);
+            var removedVehicle = _vehicleRepository.GetById(addedVehicle.Id);
 
             // Assert
             Assert.True(removeResult.Succeeded);
-            Assert.Null(deletedVehicle);
+            Assert.Null(removedVehicle);
         }
 
         [Fact]
@@ -129,43 +142,63 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         {
             // 1. Create
             // Arrange
-            var createVehicle = _DEFAULT_VEHICLE;
-            var editVehicle = _DEFAULT_VEHICLE_EDITED;
+            var vehicleId = Guid.NewGuid();
+            var toAddVehicle = new VehicleDTO
+            {
+                Id = vehicleId,
+                Brand = "Lucid",
+                Model = "Air",
+                LicensePlate = "AA 69 420"
+            };
+            var toUpdateVehicle = new VehicleDTO
+            {
+                Id = vehicleId,
+                Brand = "Tesla",
+                Model = "Model Y",
+                LicensePlate = "BB 96 024",
+            };
 
             // Act
-            var addResult = _vehicleRepository.Add(createVehicle);
-            var createdVehicle = _vehicleRepository.GetById(createVehicle.Id);
+            var addResult = _vehicleRepository.Add(toAddVehicle);
+            var createdVehicle = _vehicleRepository.GetById(toAddVehicle.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(createdVehicle);
-            AssertAllVehicleProperties(createVehicle, createdVehicle);
+            AssertAllVehicleProperties(toAddVehicle, createdVehicle);
 
             // 2. Update
             // Act
-            var updateResult = _vehicleRepository.Update(editVehicle);
+            var updateResult = _vehicleRepository.Update(toUpdateVehicle);
             var editedVehicle = _vehicleRepository.GetById(createdVehicle.Id);
 
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedVehicle);
-            AssertAllVehicleProperties(editVehicle, editedVehicle);
+            AssertAllVehicleProperties(toUpdateVehicle, editedVehicle);
         }
 
         [Fact]
         public void AddDublicateVehicleTest()
         {
             // Arrange
+            var toAddVehicle = new VehicleDTO
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Lucid",
+                Model = "Air",
+                LicensePlate = "AA 69 420"
+            };
 
             // Act
-            _vehicleRepository.Add(_DEFAULT_VEHICLE);
-            _vehicleRepository.Add(_DEFAULT_VEHICLE);
-            _vehicleRepository.Add(_DEFAULT_VEHICLE);
+            _vehicleRepository.Add(toAddVehicle);
+            _vehicleRepository.Add(toAddVehicle);
+            _vehicleRepository.Add(toAddVehicle);
 
             var allVehicles = _vehicleRepository.GetAll();
 
             // Assert
-            var returnedVehicles = allVehicles.Where(c => c.Id == _DEFAULT_VEHICLE.Id);
+            var returnedVehicles = allVehicles.Where(c => c.Id == toAddVehicle.Id);
             Assert.NotNull(returnedVehicles.FirstOrDefault());
             Assert.Single(returnedVehicles);
         }
@@ -176,9 +209,27 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Arrange
             var vehiclesToCreate = new List<IVehicle>()
             {
-                _DEFAULT_VEHICLE,
-                _DEFAULT_VEHICLE_1,
-                _DEFAULT_VEHICLE_2
+                new VehicleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    Brand = "Lucid",
+                    Model = "Air",
+                    LicensePlate = "AA 69 420"
+                },
+                new VehicleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    Brand = "Volkswagen",
+                    Model = "ID.3",
+                    LicensePlate = "CC 12 345"
+                },
+                new VehicleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    Brand = "Tesla",
+                    Model = "Model S",
+                    LicensePlate = "DD 22 222"
+                }
             };
 
             bool addAllSuccess = true;
@@ -209,40 +260,28 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void DeleteNonExistingVehicleTest()
         {
             // Arrange
+            var toRemoveVehicle = new VehicleDTO
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Lucid",
+                Model = "Air",
+                LicensePlate = "AA 69 420"
+            };
 
             // Act
-            var result = _vehicleRepository.Remove(_DEFAULT_VEHICLE);
+            var result = _vehicleRepository.Remove(toRemoveVehicle);
 
             // Assert
             Assert.False(result.Succeeded);
         }
 
-        [Fact]
-        public void GetVehiclesThroughCustomerTest()
-        {
-            // Arrange
-            var customer0Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER.Id);
-            var customer1Vehicles = _VEHICLES.Where(v => v.CustomerId == _DEFAULT_CUSTOMER_1.Id);
-
-            // Act
-            var retrievedCustomer0Vehicles = _DEFAULT_CUSTOMER.GetVehicles();
-            var retrievedCustomer1Vehicles = _DEFAULT_CUSTOMER_1.GetVehicles();
-
-            // Assert
-            Assert.NotNull(retrievedCustomer0Vehicles);
-            Assert.NotNull(retrievedCustomer1Vehicles);
-
-            foreach(var actualVehicle in retrievedCustomer0Vehicles)
-            {
-                var expectedVehicle = customer0Vehicles.Where(v => v.Id == actualVehicle.Id).FirstOrDefault();
-                Assert.NotNull(expectedVehicle);
-                AssertAllVehicleProperties(expectedVehicle, actualVehicle);
-            }
-        }
-
         private void AssertAllVehicleProperties(IVehicle exptectedVehicle, IVehicle actualVehicle)
         {
             Assert.Equal(exptectedVehicle.Id, actualVehicle.Id);
+            Assert.Equal(exptectedVehicle.Brand, actualVehicle.Brand);
+            Assert.Equal(exptectedVehicle.Model, actualVehicle.Model);
+            Assert.Equal(exptectedVehicle.LicensePlate, actualVehicle.LicensePlate);
+            Assert.Equal(exptectedVehicle.CustomerId, actualVehicle.CustomerId);
         }
     }
 }
