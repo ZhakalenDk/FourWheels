@@ -56,6 +56,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 Task.Id = Guid.NewGuid();
                 Task.OrderNumber = $"FW{Task.OrderNumber}";
                 Task.AssociatedVehicleId = Vehicle.Id;
+                Task.Notes = "";
                 var taskResult = _taskService.Add(Task);
                 if (customerResult.Succeeded && vehicleResult.Succeeded && taskResult.Succeeded)
                 {
