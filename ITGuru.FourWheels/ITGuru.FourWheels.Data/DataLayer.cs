@@ -9,19 +9,21 @@ namespace ITGuru.FourWheels.Data
             GenerateList();
         }
 
+        private static readonly Object _lockObject = new Object();
+
         public static IDataLayer Data
         {
             get
             {
-                if (data == null)
+                lock(_lockObject)
                 {
-                    data = new DataLayer();
+                    _data ??= new DataLayer();
                 }
 
-                return data;
+                return _data;
             }
         }
-        private static IDataLayer data;
+        private static IDataLayer _data;
 
         private List<Customer> _customers = new();
 
@@ -35,6 +37,17 @@ namespace ITGuru.FourWheels.Data
         public List<Vehicle> Vehicles
         {
             get { return _vehicles; }
+        }
+
+        public static void WipeData()
+        {
+            lock (_lockObject)
+            {
+                if (_data != null)
+                {
+                    _data = null;
+                }
+            }
         }
 
         public void GenerateVehicleList(Guid customerID, string brand, string model, string licensePlate)
@@ -57,7 +70,7 @@ namespace ITGuru.FourWheels.Data
             Customer customer = new Customer()
             {
                 Id = g,
-                FirstName = "jens",
+                FirstName = "Jens",
                 LastName = "Neergaard",
                 Email = "jensneergaard@hotmail.com",
                 Phone = "12345678"
@@ -271,6 +284,31 @@ namespace ITGuru.FourWheels.Data
                 vehicle.IsDeleted = true;
                 return true;
             }
+            return false;
+        }
+
+        public List<DataModels.Task> GetAllTasks(bool includeDeleted = false)
+        {
+            return new List<DataModels.Task>();
+        }
+
+        public bool AddTask(DataModels.Task task)
+        {
+            return false;
+        }
+
+        public bool UpdateTask(DataModels.Task task)
+        {
+            return false;
+        }
+
+        public bool HardDeleteTask(Guid taskID)
+        {
+            return false;
+        }
+
+        public bool SoftDeleteTask(Guid taskID)
+        {
             return false;
         }
     }
