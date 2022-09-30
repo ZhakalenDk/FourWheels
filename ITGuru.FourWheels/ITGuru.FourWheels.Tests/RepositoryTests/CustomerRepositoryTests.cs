@@ -49,19 +49,19 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Save customer in repository.
             var addResult = _customerRepository.Add(toAddCustomer);
 
-            // Retrieve the newly created customer from the repository.
+            // Retrieve the newly added customer from the repository.
             var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
         }
 
         [Fact]
         public void AddAndRemoveCustomerTest()
         {
-            // 1. Create
+            // 1. Add
             // Arrange
             ICustomer toAddCustomer = new CustomerDTO
             {
@@ -79,7 +79,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
 
             // 2. Delete
             // Act
@@ -94,13 +94,13 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         [Fact]
         public void AddAndUpdateCustomerTest()
         {
-            // 1. Create
+            // 1. Add
             // Arrange
             var customerIdentity = Guid.NewGuid();
             var toAddCustomer = new CustomerDTO
             {
                 Id = customerIdentity,
-                FirstName = "Created",
+                FirstName = "Addd",
                 LastName = "cu$t oMer",
                 Phone = "99999999",
                 Email = "test@itguru.com"
@@ -121,7 +121,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertAllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
 
             // 2. Update
             // Act
@@ -131,7 +131,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedCustomer);
-            AssertAllCustomerProperties(afterEditCustomer, editedCustomer);
+            AssertMulti.AllCustomerProperties(afterEditCustomer, editedCustomer);
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             var toAddCustomer = new CustomerDTO
             {
                 Id = Guid.NewGuid(),
-                FirstName = "Created",
+                FirstName = "Addd",
                 LastName = "cu$t oMer",
                 Phone = "99999999",
                 Email = "test@itguru.com"
@@ -157,7 +157,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             var returnedCustomers = allCustomers.Where(c => c.Id == toAddCustomer.Id);
             Assert.NotNull(returnedCustomers.FirstOrDefault());
-            AssertAllCustomerProperties(toAddCustomer, returnedCustomers.First());
+            AssertMulti.AllCustomerProperties(toAddCustomer, returnedCustomers.First());
             Assert.Single(returnedCustomers);
         }
 
@@ -210,7 +210,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
                 // Assert: Customer is present and data is correct.
                 var retrievedCustomer = retrievedCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();
                 Assert.NotNull(retrievedCustomer);
-                AssertAllCustomerProperties(customer, retrievedCustomer);
+                AssertMulti.AllCustomerProperties(customer, retrievedCustomer);
 
                 // Assert: Customer is present once only.
                 Assert.Single(retrievedCustomers.Where(c => c.Id == customer.Id));
@@ -346,14 +346,5 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         //        AssertAllVehicleProperties(expectedVehicle, actualVehicle);
         //    }
         //}
-
-        private void AssertAllCustomerProperties(ICustomer exptectedCustomer, ICustomer actualCustomer)
-        {
-            Assert.Equal(exptectedCustomer.Id, actualCustomer.Id);
-            Assert.Equal(exptectedCustomer.FirstName, actualCustomer.FirstName);
-            Assert.Equal(exptectedCustomer.LastName, actualCustomer.LastName);
-            Assert.Equal(exptectedCustomer.Phone, actualCustomer.Phone);
-            Assert.Equal(exptectedCustomer.Email, actualCustomer.Email);
-        }
     }
 }

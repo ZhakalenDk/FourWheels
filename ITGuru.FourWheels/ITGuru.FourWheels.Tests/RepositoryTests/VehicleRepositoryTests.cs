@@ -5,67 +5,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
     public class VehicleRepositoryTests : IDisposable
     {
-//#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case.
-//        private static readonly Guid _DEFAULT_VEHICLE_ID = Guid.NewGuid();
-
-//        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
-//        {
-//            Id = Guid.NewGuid(),
-//            FirstName = "Customer",
-//            LastName = "0",
-//            Phone = "00000000",
-//            Email = "test@itguru.com"
-//        };
-//        private static readonly ICustomer _DEFAULT_CUSTOMER_1 = new CustomerDTO
-//        {
-//            Id = Guid.NewGuid(),
-//            FirstName = "Customer",
-//            LastName = "1",
-//            Phone = "11111111",
-//            Email = "test@itguru.com"
-//        };
-
-//        private static readonly IVehicle _DEFAULT_VEHICLE = new VehicleDTO
-//        {
-//            Id = _DEFAULT_VEHICLE_ID,
-//            Brand = "Lucid",
-//            Model = "Air",
-//            LicensePlate = "AA 69 420",
-//            CustomerId = _DEFAULT_CUSTOMER.Id
-//        };
-//        private static readonly IVehicle _DEFAULT_VEHICLE_EDITED = new VehicleDTO
-//        {
-//            Id = _DEFAULT_VEHICLE_ID,
-//            Brand = "Tesla",
-//            Model = "Model Y",
-//            LicensePlate = "BB 96 024",
-//            CustomerId = _DEFAULT_CUSTOMER_1.Id
-//        };
-//        private static readonly IVehicle _DEFAULT_VEHICLE_1 = new VehicleDTO
-//        {
-//            Id = Guid.NewGuid(),
-//            Brand = "Volkswagen",
-//            Model = "ID.3",
-//            LicensePlate = "CC 12 345",
-//            CustomerId = _DEFAULT_CUSTOMER.Id
-//        };
-//        private static readonly IVehicle _DEFAULT_VEHICLE_2 = new VehicleDTO
-//        {
-//            Id = Guid.NewGuid(),
-//            Brand = "Tesla",
-//            Model = "Model S",
-//            LicensePlate = "DD 22 222",
-//            CustomerId = _DEFAULT_CUSTOMER_1.Id
-//        };
-
-//        private static readonly List<IVehicle> _VEHICLES = new()
-//        {
-//            _DEFAULT_VEHICLE,
-//            _DEFAULT_VEHICLE_1,
-//            _DEFAULT_VEHICLE_2
-//        };
-//#pragma warning restore IDE1006 // Naming Styles
-
         private IVehicleService _vehicleRepository;
 
         public VehicleRepositoryTests()
@@ -102,13 +41,13 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedVehicle);
-            AssertAllVehicleProperties(toAddVehicle, addedVehicle);
+            AssertMulti.AllVehicleProperties(toAddVehicle, addedVehicle);
         }
 
         [Fact]
         public void AddAndRemoveVehicleTest()
         {
-            // 1. Create
+            // 1. Add
             // Arrange
             IVehicle toAddVehicle = new VehicleDTO
             {
@@ -125,7 +64,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedVehicle);
-            AssertAllVehicleProperties(toAddVehicle, addedVehicle);
+            AssertMulti.AllVehicleProperties(toAddVehicle, addedVehicle);
 
             // 2. Delete
             // Act
@@ -140,7 +79,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         [Fact]
         public void AddAndUpdateVehicleTest()
         {
-            // 1. Create
+            // 1. Add
             // Arrange
             var vehicleId = Guid.NewGuid();
             var toAddVehicle = new VehicleDTO
@@ -165,7 +104,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(createdVehicle);
-            AssertAllVehicleProperties(toAddVehicle, createdVehicle);
+            AssertMulti.AllVehicleProperties(toAddVehicle, createdVehicle);
 
             // 2. Update
             // Act
@@ -175,7 +114,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedVehicle);
-            AssertAllVehicleProperties(toUpdateVehicle, editedVehicle);
+            AssertMulti.AllVehicleProperties(toUpdateVehicle, editedVehicle);
         }
 
         [Fact]
@@ -207,7 +146,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void GetAllVehicles()
         {
             // Arrange
-            var vehiclesToCreate = new List<IVehicle>()
+            var vehiclesToAdd = new List<IVehicle>()
             {
                 new VehicleDTO
                 {
@@ -233,7 +172,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             };
 
             bool addAllSuccess = true;
-            foreach (var vehicle in vehiclesToCreate)
+            foreach (var vehicle in vehiclesToAdd)
             {
                 addAllSuccess = _vehicleRepository.Add(vehicle).Succeeded && addAllSuccess;
             }
@@ -244,12 +183,12 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addAllSuccess);
 
-            foreach (var vehicle in vehiclesToCreate)
+            foreach (var vehicle in vehiclesToAdd)
             {
                 // Assert: Vehicle is present and data is correct.
                 var retrievedVehicle = retrievedVehicles.Where(c => c.Id == vehicle.Id).FirstOrDefault();
                 Assert.NotNull(retrievedVehicle);
-                AssertAllVehicleProperties(vehicle, retrievedVehicle);
+                AssertMulti.AllVehicleProperties(vehicle, retrievedVehicle);
 
                 // Assert: Vehicle is present once only.
                 Assert.Single(retrievedVehicles.Where(c => c.Id == vehicle.Id));
@@ -273,15 +212,6 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
 
             // Assert
             Assert.False(result.Succeeded);
-        }
-
-        private void AssertAllVehicleProperties(IVehicle exptectedVehicle, IVehicle actualVehicle)
-        {
-            Assert.Equal(exptectedVehicle.Id, actualVehicle.Id);
-            Assert.Equal(exptectedVehicle.Brand, actualVehicle.Brand);
-            Assert.Equal(exptectedVehicle.Model, actualVehicle.Model);
-            Assert.Equal(exptectedVehicle.LicensePlate, actualVehicle.LicensePlate);
-            Assert.Equal(exptectedVehicle.CustomerId, actualVehicle.CustomerId);
         }
     }
 }
