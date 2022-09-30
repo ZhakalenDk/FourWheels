@@ -1,4 +1,5 @@
 ﻿using ITGuru.FourWheels.Data.DataModels;
+using System.Runtime.CompilerServices;
 
 namespace ITGuru.FourWheels.Data
 {
@@ -15,7 +16,7 @@ namespace ITGuru.FourWheels.Data
         {
             get
             {
-                lock(_lockObject)
+                lock (_lockObject)
                 {
                     _data ??= new DataLayer();
                 }
@@ -26,18 +27,23 @@ namespace ITGuru.FourWheels.Data
         private static IDataLayer _data;
 
         private List<Customer> _customers = new();
-
         public List<Customer> Customers
         {
             get { return _customers; }
         }
 
         private List<Vehicle> _vehicles = new();
-
         public List<Vehicle> Vehicles
         {
             get { return _vehicles; }
         }
+
+        private List<DataModels.Task> _tasks;
+        public List<DataModels.Task> Tasks
+        {
+            get { return _tasks; }
+        }
+
 
         public static void WipeData()
         {
@@ -50,7 +56,7 @@ namespace ITGuru.FourWheels.Data
             }
         }
 
-        public void GenerateVehicleList(Guid customerID, string brand, string model, string licensePlate)
+        private Guid GenerateVehicleList(Guid customerID, string brand, string model, string licensePlate)
         {
             Guid guid = Guid.NewGuid();
             Vehicle vehicle = new()
@@ -63,6 +69,23 @@ namespace ITGuru.FourWheels.Data
                 IsDeleted = false
             };
             Vehicles.Add(vehicle);
+            return guid;
+        }
+        private void GenerateTask(string _orderNum, DateTime _OrderDate, Guid _VehicleId, DateTime _StartDate, DateTime _FinishDate, string _Descroption, string _Note)
+        {
+            Guid guid = new();
+            DataModels.Task task = new()
+            {
+                IsDeleted = false,
+                OrderNum = _orderNum,
+                OrderDate = _OrderDate,
+                VehicleId = _VehicleId,
+                StartDate = _StartDate,
+                FinishDate = _FinishDate,
+                Description = _Descroption,
+                Note = _Note
+            };
+            Tasks.Add(task);
         }
         public void GenerateList()
         {
@@ -75,7 +98,23 @@ namespace ITGuru.FourWheels.Data
                 Email = "jensneergaard@hotmail.com",
                 Phone = "12345678"
             };
-            GenerateVehicleList(g, "Rolls-Royce", "Rolls-Royce Spectre (electric)", "RR66449");
+            Guid vehicleId1 = GenerateVehicleList(g, "Rolls-Royce", "Rolls-Royce Spectre (electric)", "RR66449");
+            GenerateTask(
+                "FW1000",
+                DateTime.Today.AddDays(-5),
+                vehicleId1,
+                DateTime.Today.AddDays(-4),
+                DateTime.Today,
+                "funny sound from the right side",
+                "Changed the Breaks and added oil");
+            GenerateTask(
+                "FW1001",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId1,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
             Customers.Add(customer);
 
             Guid g2 = Guid.NewGuid();
@@ -87,8 +126,25 @@ namespace ITGuru.FourWheels.Data
                 Email = "MikeMortensen@hotmail.com",
                 Phone = "23456789"
             };
-            GenerateVehicleList(g2, "Volkswagen", "GOLF", "VW45697");
-            GenerateVehicleList(g2, "Cadilac", "XT5", "CC12345");
+            Guid vehicleId2_1 = GenerateVehicleList(g2, "Volkswagen", "GOLF", "VW45697");
+
+            GenerateTask(
+                "FW1002",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId2_1,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+            Guid vehicleId2_2 = GenerateVehicleList(g2, "Cadilac", "XT5", "CC12345");
+            GenerateTask(
+                "FW1003",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId2_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong but a bird hade made its home in the back of the car. ");
             Customers.Add(customer2);
 
             Guid g3 = Guid.NewGuid();
@@ -100,8 +156,126 @@ namespace ITGuru.FourWheels.Data
                 Email = "LukasPederson@hotmail.com",
                 Phone = "34567890"
             };
-            GenerateVehicleList(g3, "BMW", "1 Series (F52)", "The Boss 2");
-            GenerateVehicleList(g3, "BMW", "5 Series", "The Boss");
+            Guid vehicleId3_1 = GenerateVehicleList(g3, "BMW", "1 Series (F52)", "The Boss 2");
+
+            GenerateTask(
+                "FW1004",
+                DateTime.Today.AddMonths(-4).AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddMonths(-4).AddDays(-4),
+                DateTime.Today.AddMonths(-4),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1005",
+                DateTime.Today.AddMonths(-3).AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddMonths(-3).AddDays(-4),
+                DateTime.Today.AddMonths(-3),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1006",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1007",
+                DateTime.Today.AddMonths(-1).AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddMonths(-1).AddDays(-4),
+                DateTime.Today.AddMonths(-1),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1008",
+                DateTime.Today.AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddDays(-4),
+                DateTime.Today,
+                "Checkup",
+                "Changed the oil, Changed the breaks, polished the mirrors");
+
+            Guid vehicleId3_2 = GenerateVehicleList(g3, "BMW", "5 Series", "The Boss");
+
+            GenerateTask(
+                "FW1009",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1010",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1011",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1012",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1013",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1014",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1015",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+
+            GenerateTask(
+                "FW1016",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_2,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
             Customers.Add(customer3);
 
             Guid g4 = Guid.NewGuid();
@@ -113,9 +287,27 @@ namespace ITGuru.FourWheels.Data
                 Email = "SimonAndreassen@hotmail.com",
                 Phone = "23456789"
             };
-            GenerateVehicleList(g4, "Cadilac", "XT6", "CC34598");
-            GenerateVehicleList(g4, "Cadilac", "CT4", "CC23584");
-            GenerateVehicleList(g4, "Cadilac", "ESCALADE ESV", "CC98765");
+            Guid vehicleId4_1 = GenerateVehicleList(g4, "Cadilac", "XT6", "CC34598");
+
+            GenerateTask(
+                "FW1017",
+                DateTime.Today.AddMonths(-2).AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddMonths(-2).AddDays(-4),
+                DateTime.Today.AddMonths(-2),
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+            Guid vehicleId4_2 = GenerateVehicleList(g4, "Cadilac", "CT4", "CC23584");
+
+            GenerateTask(
+                "FW1018",
+                DateTime.Today.AddDays(-5),
+                vehicleId3_1,
+                DateTime.Today.AddDays(-4),
+                DateTime.Today,
+                "Checkup",
+                "Changed the oil, looked at the engion nothing seemed to be wrong");
+            Guid vehicleId4_3 = GenerateVehicleList(g4, "Cadilac", "ESCALADE ESV", "CC98765");
             Customers.Add(customer4);
 
             Guid g5 = Guid.NewGuid();
@@ -289,26 +481,83 @@ namespace ITGuru.FourWheels.Data
 
         public List<DataModels.Task> GetAllTasks(bool includeDeleted = false)
         {
-            return new List<DataModels.Task>();
+            List<DataModels.Task> TaskList = Tasks.Where(x => x.IsDeleted == includeDeleted).ToList();
+            return TaskList;
         }
 
+        /// <summary>
+        /// Add a single Task to the list
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns>True of Task succefully added</returns>
         public bool AddTask(DataModels.Task task)
         {
-            return false;
+            int index = Tasks.FindIndex(x => x.Id == task.Id);
+            if (index >= 0)
+            {
+                return false;
+            }
+            else
+            {
+                Tasks.Add(task);
+                return true;
+            }
         }
 
+        /// <summary>
+        /// Update a single Task
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns>True if succefully found and changed a task</returns>
         public bool UpdateTask(DataModels.Task task)
         {
+            DataModels.Task taskNew = Tasks.Where(x => x.Id == task.Id).FirstOrDefault();
+
+            if (taskNew != null)
+            {
+                taskNew.OrderNum = task.OrderNum;
+                taskNew.OrderDate = task.OrderDate;
+                taskNew.VehicleId = task.VehicleId;
+                taskNew.StartDate = task.StartDate;
+                taskNew.FinishDate = task.FinishDate;
+                taskNew.Description = task.Description;
+                taskNew.Note = task.Note;
+
+                return true;
+            }
             return false;
         }
 
+        /// <summary>
+        /// PERMENENTLY remove a Task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if Task found and removed from list</returns>
         public bool HardDeleteTask(Guid taskID)
         {
+            int index = Tasks.FindIndex(x => x.Id == taskID);
+            if (index >= 0)
+            {
+                Tasks.RemoveAt(index);
+                return true;
+            }
             return false;
         }
 
+        /// <summary>
+        /// Soft removes a task from the list
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if task found and IsDeleted changed to true </returns>
         public bool SoftDeleteTask(Guid taskID)
         {
+            DataModels.Task taskToDelete = Tasks.Where(x => x.Id == taskID).FirstOrDefault();
+
+            if (taskToDelete != null)
+            {
+                taskToDelete.IsDeleted = true;
+                return true;
+            }
             return false;
         }
     }

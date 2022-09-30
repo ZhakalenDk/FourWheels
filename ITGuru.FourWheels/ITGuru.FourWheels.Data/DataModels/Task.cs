@@ -3,6 +3,7 @@
     public class Task
     {
         public Guid Id;
+        public bool IsDeleted;
         //public Guid AssignedMechanic; Left in for later use
         public string OrderNum;
         public DateTime OrderDate;
