@@ -135,16 +135,19 @@
                             <span class="text-danger" asp-validation-for="@Model.Vehicle.Model"></span>
                         </div>
                     </div>
-                    <div class="row mb-2" id="taskCreationDiv" hidden>
+                    <!-- Task -->                    
+                    <div>
                         <h5 class="modal-title">Task information:</h5>
                         <hr />
                         <div class="row mb-2">
                             <div class="col-4">
                                 <label>Order Number:</label>
                             </div>
-                            <div class="col-8">
+                            <div class="col-1 pt-2 ps-4">
                                 <span><b>FW</b></span>
-                                <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter vehicle's license plate..." />
+                            </div>
+                            <div class="col-7">                                
+                                <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter Order number..." />
                                 <span class="text-danger" asp-validation-for="@Model.Task.OrderNumber"></span>
                             </div>
                         </div>
@@ -153,8 +156,8 @@
                                 <label>Order Date:</label>
                             </div>
                             <div class="col-8">
-                                <input type="datetime" class="form-control" asp-for="@Model.Task" type="text" placeholder="Enter vehicle's brand..." />
-                                <span class="text-danger" asp-validation-for="@Model"></span>
+                                <input type="datetime" class="form-control" asp-for="@Model.Task.OrderDate" type="text" value="@DateTime.Now" placeholder="@DateTime.Now" />
+                                <span class="text-danger" asp-validation-for="@Model.Task.OrderDate"></span>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -162,14 +165,15 @@
                                 <label>Description:</label>
                             </div>
                             <div class="col-8">
-                                <textarea class="form-control" asp-for="@Model.Task.Description" type="text" placeholder="Enter vehicle's model..." />
-                                <span class="text-danger" asp-validation-for="@Model"></span>
+                                <textarea class="form-control" asp-for="@Model.Task.Description" placeholder="Enter the task problem..." >
+
+                                </textarea>
+                                <span class="text-danger" asp-validation-for="@Model.Task.Description"></span>
                             </div>
                         </div>
                     </div>                    
                 </div>
-                <div class="modal-footer">
-                    <input class="form-chek-input" type="checkbox" name="showTaskCheckbox" id="showTaskCheckbox" onchange="showTaskCreation()" />
+                <div class="modal-footer">                    
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success" id="btnCreate">Create</button>
                 </div>

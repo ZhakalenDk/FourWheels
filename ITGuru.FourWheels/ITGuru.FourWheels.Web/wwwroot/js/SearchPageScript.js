@@ -31,11 +31,3 @@ function Search() {
     }
 }
 
-function showTaskCreation() {
-    if ($('#showTaskCheckbox'.is(":checked")) {
-        $('#taskCreationDiv').removeAtrr('hidden');
-    }
-    else {
-        $('#taskCreationDiv').prop('hidden', true);
-    }
-}

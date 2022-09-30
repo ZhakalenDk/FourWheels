@@ -31,47 +31,35 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
         [BindProperty]
         public string Message { get; set; }
         [BindProperty]
-        public MessageStatus MessageStatus { get; set; }        
+        public MessageStatus MessageStatus { get; set; }
+
+        [BindProperty]
+        public bool ShowTaskCreation { get; set; }
 
         public void OnGet()
         {
             Customers = _customerService.GetAll();
         }
 
-        public IActionResult OnPostCreateCustomer(bool showTaskCheckbox)
+        public IActionResult OnPostCreateCustomer()
         {
             if (ModelState.IsValid)
-            {                
+            {
                 Customer.Id = Guid.NewGuid();
                 Customer.Phone = Customer.Phone.Replace(" ", string.Empty);
                 var customerResult = _customerService.Add(Customer);
+
                 Vehicle.Id = Guid.NewGuid();
                 Vehicle.CustomerId = Customer.Id;
                 var vehicleResult = _vehicleService.Add(Vehicle);
-                if (showTaskCheckbox)
+
+                Task.Id = Guid.NewGuid();
+                Task.OrderNumber = $"FW{Task.OrderNumber}";
+                Task.AssociatedVehicleId = Vehicle.Id;
+                var taskResult = _taskService.Add(Task);
+                if (customerResult.Succeeded && vehicleResult.Succeeded && taskResult.Succeeded)
                 {
-                    Task.OrderNumber = $"FW{Task.OrderNumber}";
-                    var taskResult = _taskService.Add(Task);
-                    if (taskResult.Succeeded)
-                    {
-                        Message = $"Successfully created a new customer with a vehicle and a task!"; ;
-                        MessageStatus = MessageStatus.Success;
-                        TempData["Message"] = Message;
-                        TempData["MessageStatus"] = MessageStatus;
-                        return RedirectToPage("/Administration/SearchPage");
-                    }
-                    else
-                    {
-                        Message = $"There was an issue trying to add a customer with their vehicle and task.";
-                        MessageStatus = MessageStatus.Failed;
-                        TempData["Message"] = Message;
-                        TempData["MessageStatus"] = MessageStatus;
-                        return RedirectToPage("/Administration/SearchPage");
-                    }
-                }
-                else if (customerResult.Succeeded && vehicleResult.Succeeded)
-                {
-                    Message = $"Successfully created a new customer with a vehicle!";
+                    Message = $"Successfully created a new customer with a vehicle and a task!";
                     MessageStatus = MessageStatus.Success;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
@@ -79,7 +67,7 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 }
                 else
                 {
-                    Message = $"There was a mistake trying to add a customer with their vehicle.";
+                    Message = $"There was a mistake trying to add a customer with their vehicle and a task.";
                     MessageStatus = MessageStatus.Failed;
                     TempData["Message"] = Message;
                     TempData["MessageStatus"] = MessageStatus;
@@ -95,6 +83,6 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
                 OnGet();
                 return Page();
             }
-        }        
+        }
     }
 }
