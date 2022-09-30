@@ -9,43 +9,49 @@ namespace ITGuru.FourWheels.Service
 {
     public static class ITaskExtensions
     {
-        //#region Mappers
-        //private static readonly Mapper<ITask, Task> _internalMapper = new((t, f) =>
-        //{
-        //    t.Email = f.Email;
-        //    t.FirstName = f.FirstName;
-        //    t.Id = f.Id;
-        //    t.LastName = f.LastName;
-        //    t.Phone = f.Phone;
+        #region Mappers
+        private static readonly Mapper<ITask, Data.DataModels.Task> _internalMapper = new((t, f) =>
+        {
+            t.Description = f.Description;
+            t.FinishDate = f.FinishDate;
+            t.Id = f.Id;
+            t.Note = f.Notes;
+            t.OrderDate = f.OrderDate;
+            t.OrderNum = f.OrderNumber;
+            t.StartDate = f.StartDate;
+            t.VehicleId = f.AssociatedVehicleId;
 
-        //    return t;
-        //});
+            return t;
+        });
 
-        //private static readonly Mapper<Task, TaskDTO> _publicMapper = new((t, f) =>
-        //{
-        //    t.Email = f.Email;
-        //    t.FirstName = f.FirstName;
-        //    t.Id = f.Id;
-        //    t.LastName = f.LastName;
-        //    t.Phone = f.Phone;
+        private static readonly Mapper<Data.DataModels.Task, TaskDTO> _publicMapper = new((t, f) =>
+        {
+            t.Description = f.Description;
+            t.FinishDate = f.FinishDate;
+            t.Id = f.Id;
+            t.Notes = f.Note;
+            t.OrderDate = f.OrderDate;
+            t.OrderNumber = f.OrderNum;
+            t.StartDate = f.StartDate;
+            t.AssociatedVehicleId = f.VehicleId;
 
-        //    return t;
-        //});
-        //#endregion
+            return t;
+        });
+        #endregion
 
-        //internal static Task MapToInternal(this ITask task)
-        //{
-        //    return _internalMapper.FromSingle(task);
-        //}
+        internal static Data.DataModels.Task MapToInternal(this ITask task)
+        {
+            return _internalMapper.FromSingle(task);
+        }
 
-        //internal static ITask MapToPublic(this Task task)
-        //{
-        //    return _publicMapper.FromSingle(task);
-        //}
+        internal static ITask MapToPublic(this Data.DataModels.Task task)
+        {
+            return _publicMapper.FromSingle(task);
+        }
 
-        //internal static IEnumerable<ITask> MapToPublic(this IEnumerable<Task> tasks)
-        //{
-        //    return _publicMapper.FromCollection(tasks);
-        //}
+        internal static IEnumerable<ITask> MapToPublic(this IEnumerable<Data.DataModels.Task> tasks)
+        {
+            return _publicMapper.FromCollection(tasks);
+        }
     }
 }

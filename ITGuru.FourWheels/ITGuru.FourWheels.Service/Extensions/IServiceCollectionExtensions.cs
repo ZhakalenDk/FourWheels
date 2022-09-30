@@ -1,4 +1,5 @@
 ﻿using ITGuru.FourWheels.Data;
+using ITGuru.FourWheels.Service.Repos;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ITGuru.FourWheels.Service
@@ -14,6 +15,7 @@ namespace ITGuru.FourWheels.Service
         {
             service.AddScoped<ICustomerService, CustomerService>();
             service.AddScoped<IVehicleService, VehicleService>();
+            service.AddScoped<ITaskService, TaskService>();
 
             return service;
         }
