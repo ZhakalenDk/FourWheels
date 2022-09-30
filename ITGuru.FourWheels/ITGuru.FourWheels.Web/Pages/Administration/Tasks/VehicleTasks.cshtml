@@ -22,10 +22,10 @@
 
     <div class="row mb-2">
         <div class="col-10">
-            <h3>List of @Model.Vehicle.Brand @Model.Vehicle.Model tasks:</h3>
+            <h3>List of @Model.VehicleTasksVM.Brand @Model.VehicleTasksVM.Model tasks:</h3>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTask"><i class="fa-solid fa-plus"></i> New vehicle</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTask"><i class="fa-solid fa-plus"></i> New Task</button>
         </div>
     </div>
     <div class="row mb-2">
@@ -64,7 +64,7 @@
 
 <!-- #region Modals -->
 <form method="post" id="createForm">
-    <input type="hidden" asp-for="@Model.Task.Id" />
+    <input type="hidden" asp-for="@Model.VehicleTasksVM.VehicleId" />
     <div class="modal fade" id="createTask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createVehicleLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -73,31 +73,37 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Task -->
                     <div class="row mb-2">
                         <div class="col-4">
-                            <label>Task Description</label>
+                            <label>Order Number:</label>
                         </div>
-                        <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Task.Description" type="text" placeholder="Enter vehicle's license plate..." />
-                            <span class="text-danger" asp-validation-for="@Model.Task.Description"></span>
+                        <div class="col-1 pt-2 ps-4">
+                            <span><b>FW</b></span>
+                        </div>
+                        <div class="col-7">
+                            <input class="form-control" asp-for="@Model.VehicleTasksVM.OrderNumber" type="text" placeholder="Enter Order number..." />
+                            <span class="text-danger" asp-validation-for="@Model.VehicleTasksVM.OrderNumber"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-4">
-                            <label>Task OrderDate</label>
+                            <label>Order Date:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Task.OrderDate" type="text" placeholder="Enter vehicle's license plate..." />
-                            <span class="text-danger" asp-validation-for="@Model.Task.OrderDate"></span>
+                            <input type="datetime" class="form-control" asp-for="@Model.VehicleTasksVM.OrderDate" type="text" value="@DateTime.Now" placeholder="@DateTime.Now" />
+                            <span class="text-danger" asp-validation-for="@Model.VehicleTasksVM.OrderDate"></span>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-4">
-                            <label>Task OrderNumber</label>
+                            <label>Description:</label>
                         </div>
                         <div class="col-8">
-                            <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter vehicle's license plate..." />
-                            <span class="text-danger" asp-validation-for="@Model.Task.OrderNumber"></span>
+                            <textarea class="form-control" asp-for="@Model.VehicleTasksVM.Description" placeholder="Enter the task problem...">
+
+                                </textarea>
+                            <span class="text-danger" asp-validation-for="@Model.VehicleTasksVM.Description"></span>
                         </div>
                     </div>
                 </div>
