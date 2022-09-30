@@ -3,19 +3,8 @@ using ITGuru.FourWheels.Service;
 
 namespace ITGuru.FourWheels.Tests.RepositoryTests
 {
-    public class CustomerRepositoryTests : IDisposable
+    public class CustomerRepositoryTests
     {
-//#pragma warning disable IDE1006 // Naming Styles - It doesn't make sense to use Pascal, as the member is more visible in upper case.
-//        private static readonly ICustomer _DEFAULT_CUSTOMER = new CustomerDTO
-//        {
-//            Id = Guid.NewGuid(),
-//            FirstName = "Test",
-//            LastName = "Customer",
-//            Phone = "12345678",
-//            Email = "test@itguru.com"
-//        };
-//#pragma warning restore IDE1006 // Naming Styles
-
         private ICustomerService _customerRepository;
         private IVehicleService _vehicleRepository;
 
@@ -27,35 +16,22 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             _vehicleRepository = new VehicleService();
         }
 
-        public void Dispose()
-        {
-            DataLayer.WipeData();
-        }
-
         [Fact]
         public void AddAndGetCustomerTest()
         {
             // Arrange
-            ICustomer toAddCustomer = new CustomerDTO
-            {
-                Id = Guid.NewGuid(),
-                FirstName = "Test",
-                LastName = "Customer",
-                Phone = "12345678",
-                Email = "test@itguru.com"
-            };
 
             // Act
             // Save customer in repository.
-            var addResult = _customerRepository.Add(toAddCustomer);
+            var addResult = _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
 
             // Retrieve the newly added customer from the repository.
-            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
+            var addedCustomer = _customerRepository.GetById(TestData.DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(TestData.DEFAULT_CUSTOMER, addedCustomer);
         }
 
         [Fact]
@@ -63,23 +39,15 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         {
             // 1. Add
             // Arrange
-            ICustomer toAddCustomer = new CustomerDTO
-            {
-                Id = Guid.NewGuid(),
-                FirstName = "Test",
-                LastName = "Customer",
-                Phone = "12345678",
-                Email = "test@itguru.com"
-            };
 
             // Act
-            var addResult = _customerRepository.Add(toAddCustomer);
-            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
+            var addResult = _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
+            var addedCustomer = _customerRepository.GetById(TestData.DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(TestData.DEFAULT_CUSTOMER, addedCustomer);
 
             // 2. Delete
             // Act
@@ -96,68 +64,43 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         {
             // 1. Add
             // Arrange
-            var customerIdentity = Guid.NewGuid();
-            var toAddCustomer = new CustomerDTO
-            {
-                Id = customerIdentity,
-                FirstName = "Addd",
-                LastName = "cu$t oMer",
-                Phone = "99999999",
-                Email = "test@itguru.com"
-            };
-            var afterEditCustomer = new CustomerDTO
-            {
-                Id = customerIdentity,
-                FirstName = "Edited",
-                LastName = "Customer",
-                Phone = "11111111",
-                Email = "test@itguru.dk"
-            };
 
             // Act
-            var addResult = _customerRepository.Add(toAddCustomer);
-            var addedCustomer = _customerRepository.GetById(toAddCustomer.Id);
+            var addResult = _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
+            var addedCustomer = _customerRepository.GetById(TestData.DEFAULT_CUSTOMER.Id);
 
             // Assert
             Assert.True(addResult.Succeeded);
             Assert.NotNull(addedCustomer);
-            AssertMulti.AllCustomerProperties(toAddCustomer, addedCustomer);
+            AssertMulti.AllCustomerProperties(TestData.DEFAULT_CUSTOMER, addedCustomer);
 
             // 2. Update
             // Act
-            var updateResult = _customerRepository.Update(afterEditCustomer); // TODO: Customer hasn't even been added when inspecting the data layer???
+            var updateResult = _customerRepository.Update(TestData.DEFAULT_CUSTOMER_EDITED); // TODO: Customer hasn't even been added when inspecting the data layer???
             var editedCustomer = _customerRepository.GetById(addedCustomer.Id);
 
             // Assert
             Assert.True(updateResult.Succeeded);
             Assert.NotNull(editedCustomer);
-            AssertMulti.AllCustomerProperties(afterEditCustomer, editedCustomer);
+            AssertMulti.AllCustomerProperties(TestData.DEFAULT_CUSTOMER_EDITED, editedCustomer);
         }
 
         [Fact]
         public void AddDublicateCustomerTest()
         {
             // Arrange
-            var toAddCustomer = new CustomerDTO
-            {
-                Id = Guid.NewGuid(),
-                FirstName = "Addd",
-                LastName = "cu$t oMer",
-                Phone = "99999999",
-                Email = "test@itguru.com"
-            };
 
             // Act
-            _customerRepository.Add(toAddCustomer);
-            _customerRepository.Add(toAddCustomer);
-            _customerRepository.Add(toAddCustomer);
+            _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
+            _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
+            _customerRepository.Add(TestData.DEFAULT_CUSTOMER);
 
             var allCustomers = _customerRepository.GetAll();
 
             // Assert
-            var returnedCustomers = allCustomers.Where(c => c.Id == toAddCustomer.Id);
+            var returnedCustomers = allCustomers.Where(c => c.Id == TestData.DEFAULT_CUSTOMER.Id);
             Assert.NotNull(returnedCustomers.FirstOrDefault());
-            AssertMulti.AllCustomerProperties(toAddCustomer, returnedCustomers.First());
+            AssertMulti.AllCustomerProperties(TestData.DEFAULT_CUSTOMER, returnedCustomers.First());
             Assert.Single(returnedCustomers);
         }
 
@@ -165,36 +108,8 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void GetAllCustomers()
         {
             // Arrange
-            var toAddCustomers = new List<CustomerDTO>()
-            {
-                new CustomerDTO
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Customer",
-                    LastName = "One",
-                    Phone = "11111111",
-                    Email = "test1@itguru.com"
-                },
-                new CustomerDTO
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Customer",
-                    LastName = "Two",
-                    Phone = "22222222",
-                    Email = "test2@itguru.com"
-                },
-                new CustomerDTO
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Customer",
-                    LastName = "Three",
-                    Phone = "33333333",
-                    Email = "test3@itguru.com"
-                }
-            };
-
             bool addAllSuccess = true;
-            foreach (var customer in toAddCustomers)
+            foreach (var customer in TestData.CUSTOMERS)
             {
                 addAllSuccess = _customerRepository.Add(customer).Succeeded && addAllSuccess;
             }
@@ -205,7 +120,7 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
             // Assert
             Assert.True(addAllSuccess);
 
-            foreach (var customer in toAddCustomers)
+            foreach (var customer in TestData.CUSTOMERS)
             {
                 // Assert: Customer is present and data is correct.
                 var retrievedCustomer = retrievedCustomers.Where(c => c.Id == customer.Id).FirstOrDefault();

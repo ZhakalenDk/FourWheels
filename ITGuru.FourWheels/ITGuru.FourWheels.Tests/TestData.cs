@@ -13,11 +13,19 @@ namespace ITGuru.FourWheels.Tests
         // Customers
         public static readonly ICustomer DEFAULT_CUSTOMER = new CustomerDTO
         {
-            Id = Guid.NewGuid(),
+            Id = DEFAULT_CUSTOMER_ID,
             FirstName = "Customer",
             LastName = "0",
             Phone = "00000000",
             Email = "test@itguru.com"
+        };
+        public static readonly ICustomer DEFAULT_CUSTOMER_EDITED = new CustomerDTO
+        {
+            Id = DEFAULT_CUSTOMER_ID,
+            FirstName = "Edddito",
+            LastName = "cu$t oMO",
+            Phone = "69696969",
+            Email = "yo@itgangster.com"
         };
         public static readonly ICustomer DEFAULT_CUSTOMER_1 = new CustomerDTO
         {
@@ -25,7 +33,15 @@ namespace ITGuru.FourWheels.Tests
             FirstName = "Customer",
             LastName = "1",
             Phone = "11111111",
-            Email = "test@itguru.com"
+            Email = "test1@itguru.com"
+        };
+        public static readonly ICustomer DEFAULT_CUSTOMER_2 = new CustomerDTO
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Customer",
+            LastName = "2",
+            Phone = "22222222",
+            Email = "test2@itguru.com"
         };
 
         // Vehicles
@@ -109,6 +125,12 @@ namespace ITGuru.FourWheels.Tests
         };
 
         // Collections
+        public static readonly List<ICustomer> CUSTOMERS = new()
+        {
+            DEFAULT_CUSTOMER,
+            DEFAULT_CUSTOMER_1,
+            DEFAULT_CUSTOMER_2
+        };
         public static readonly List<IVehicle> VEHICLES = new()
         {
             DEFAULT_VEHICLE,
@@ -123,8 +145,8 @@ namespace ITGuru.FourWheels.Tests
         };
 
         // IDs
+        private static readonly Guid DEFAULT_CUSTOMER_ID = Guid.NewGuid();
         private static readonly Guid DEFAULT_VEHICLE_ID = Guid.NewGuid();
-
         private static readonly Guid DEFAULT_TASK_ID = Guid.NewGuid();
 #pragma warning restore IDE1006 // Naming Styles
     }

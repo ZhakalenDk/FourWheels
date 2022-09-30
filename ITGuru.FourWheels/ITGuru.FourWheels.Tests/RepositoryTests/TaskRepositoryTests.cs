@@ -134,9 +134,13 @@ namespace ITGuru.FourWheels.Tests.RepositoryTests
         public void DeleteNonExistingTaskTest()
         {
             // Arrange
+            ITask nonExistingTask = new TaskDTO
+            {
+                Id = Guid.NewGuid()
+            };
 
             // Act
-            var result = _taskRepository.Remove(TestData.DEFAULT_TASK);
+            var result = _taskRepository.Remove(nonExistingTask);
 
             // Assert
             Assert.False(result.Succeeded);
