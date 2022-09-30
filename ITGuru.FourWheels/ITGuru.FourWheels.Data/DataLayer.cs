@@ -38,7 +38,7 @@ namespace ITGuru.FourWheels.Data
             get { return _vehicles; }
         }
 
-        private List<DataModels.Task> _tasks;
+        private List<DataModels.Task> _tasks = new();
         public List<DataModels.Task> Tasks
         {
             get { return _tasks; }
