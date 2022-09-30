@@ -1,5 +1,6 @@
 using ITGuru.FourWheels.Data.DataModels;
 using ITGuru.FourWheels.Service;
+using ITGuru.FourWheels.Service.Repos;
 using ITGuru.FourWheels.Web.Enums;
 using ITGuru.FourWheels.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
     {
         private readonly ICustomerService _customerService;
         private readonly IVehicleService _vehicleService;
-        public CustomerVehiclesModel(ICustomerService customerService, IVehicleService vehicleService)
+        private readonly ITaskService _taskService;
+        public CustomerVehiclesModel(ICustomerService customerService, IVehicleService vehicleService, ITaskService taskService)
         {
             _customerService = customerService;
             _vehicleService = vehicleService;
+            _taskService = taskService;
         }
 
         [BindProperty]
@@ -23,6 +26,9 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
 
         [BindProperty]
         public CustomerVehiclesVM CustomerVehicle { get; set; }
+
+        [BindProperty]
+        public TaskDTO Task { get; set; }
 
         [BindProperty]
         public string Message { get; set; }
@@ -55,7 +61,13 @@ namespace ITGuru.FourWheels.Web.Pages.Administration.Vehicle
                     CustomerId = CustomerVehicle.CustomerId
                 };
                 var vehicleResult = _vehicleService.Add(vehicle);
-                if (vehicleResult.Succeeded)
+
+                Task.Id = Guid.NewGuid();
+                Task.OrderNumber = $"FW{Task.OrderNumber}";
+                Task.AssociatedVehicleId = vehicle.Id;
+                Task.Notes = "";
+                var taskResult = _taskService.Add(Task);
+                if (vehicleResult.Succeeded && taskResult.Succeeded)
                 {
                     Message = vehicleResult.Message;
                     MessageStatus = MessageStatus.Success;
