@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITGuru.FourWheels.Data.DataModels
+﻿namespace ITGuru.FourWheels.Data.DataModels
 {
     public class Task
     {
@@ -12,7 +6,7 @@ namespace ITGuru.FourWheels.Data.DataModels
         //public Guid AssignedMechanic; Left in for later use
         public uint OrderNum;
         public DateTime OrderDate;
-        public Guid Vehicle;
+        public Guid VehicleId;
         //public List<Part> parts; Left in for later use
         public DateTime StartDate;
         public DateTime FinishDate;
