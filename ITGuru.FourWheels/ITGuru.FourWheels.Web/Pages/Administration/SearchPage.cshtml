@@ -143,6 +143,7 @@
                                 <label>Order Number:</label>
                             </div>
                             <div class="col-8">
+                                <span><b>FW</b></span>
                                 <input class="form-control" asp-for="@Model.Task.OrderNumber" type="text" placeholder="Enter vehicle's license plate..." />
                                 <span class="text-danger" asp-validation-for="@Model.Task.OrderNumber"></span>
                             </div>
@@ -152,7 +153,7 @@
                                 <label>Order Date:</label>
                             </div>
                             <div class="col-8">
-                                <input type="datetime" class="form-control" asp-for="@Model.Task.OrderDate" type="text" placeholder="Enter vehicle's brand..." />
+                                <input type="datetime" class="form-control" asp-for="@Model.Task" type="text" placeholder="Enter vehicle's brand..." />
                                 <span class="text-danger" asp-validation-for="@Model"></span>
                             </div>
                         </div>
@@ -161,14 +162,14 @@
                                 <label>Description:</label>
                             </div>
                             <div class="col-8">
-                                <textarea class="form-control" asp-for="@Model.Task." type="text" placeholder="Enter vehicle's model..." />
+                                <textarea class="form-control" asp-for="@Model.Task.Description" type="text" placeholder="Enter vehicle's model..." />
                                 <span class="text-danger" asp-validation-for="@Model"></span>
                             </div>
                         </div>
                     </div>                    
                 </div>
                 <div class="modal-footer">
-                    <input class="form-chek-input" type="checkbox" id="showTaskCheckbox" onchange="showTaskCreation()" />
+                    <input class="form-chek-input" type="checkbox" name="showTaskCheckbox" id="showTaskCheckbox" onchange="showTaskCreation()" />
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success" id="btnCreate">Create</button>
                 </div>

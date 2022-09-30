@@ -7,14 +7,16 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
 {
     public class SearchPageModel : PageModel
     {
-        public SearchPageModel(ICustomerService customerService, IVehicleService vehicleService)
+        public SearchPageModel(ICustomerService customerService, IVehicleService vehicleService, ITaskService taskService)
         {
             _customerService = customerService;
             _vehicleService = vehicleService;
+            _taskService = taskService;
         }
 
         private readonly ICustomerService _customerService;
         private readonly IVehicleService _vehicleService;
+        private readonly ITaskService _taskService;
 
         [BindProperty]
         public IReadOnlyList<ICustomer> Customers { get; set; }
@@ -36,17 +38,38 @@ namespace ITGuru.FourWheels.Web.Pages.Administration
             Customers = _customerService.GetAll();
         }
 
-        public IActionResult OnPostCreateCustomer()
+        public IActionResult OnPostCreateCustomer(bool showTaskCheckbox)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 Customer.Id = Guid.NewGuid();
                 Customer.Phone = Customer.Phone.Replace(" ", string.Empty);
                 var customerResult = _customerService.Add(Customer);
                 Vehicle.Id = Guid.NewGuid();
                 Vehicle.CustomerId = Customer.Id;
                 var vehicleResult = _vehicleService.Add(Vehicle);
-                if (customerResult.Succeeded && vehicleResult.Succeeded)
+                if (showTaskCheckbox)
+                {
+                    Task.OrderNumber = $"FW{Task.OrderNumber}";
+                    var taskResult = _taskService.Add(Task);
+                    if (taskResult.Succeeded)
+                    {
+                        Message = $"Successfully created a new customer with a vehicle and a task!"; ;
+                        MessageStatus = MessageStatus.Success;
+                        TempData["Message"] = Message;
+                        TempData["MessageStatus"] = MessageStatus;
+                        return RedirectToPage("/Administration/SearchPage");
+                    }
+                    else
+                    {
+                        Message = $"There was an issue trying to add a customer with their vehicle and task.";
+                        MessageStatus = MessageStatus.Failed;
+                        TempData["Message"] = Message;
+                        TempData["MessageStatus"] = MessageStatus;
+                        return RedirectToPage("/Administration/SearchPage");
+                    }
+                }
+                else if (customerResult.Succeeded && vehicleResult.Succeeded)
                 {
                     Message = $"Successfully created a new customer with a vehicle!";
                     MessageStatus = MessageStatus.Success;
