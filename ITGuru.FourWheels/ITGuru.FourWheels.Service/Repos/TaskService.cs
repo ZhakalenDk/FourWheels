@@ -47,9 +47,11 @@ namespace ITGuru.FourWheels.Service.Repos
 
         public ITask GetById(Guid key)
         {
-            return _data.GetAllTasks()
-                 .FirstOrDefault(t => t.Id == key)
-                 .MapToPublic();
+            var task = _data.GetAllTasks()
+                 .FirstOrDefault(t => t.Id == key);
+            if (task == null) {return null;}
+
+            return task.MapToPublic();
         }
 
         public RepoResult Remove(ITask entity)
@@ -57,7 +59,7 @@ namespace ITGuru.FourWheels.Service.Repos
             RepoResult result = new RepoResult("Task Removed");
             try
             {
-                if (!_data.AddTask(entity.MapToInternal()))
+                if (!_data.SoftDeleteTask(entity.Id))
                 {
                     result.Succeeded = false;
                     result.Message = "Task couldn't be Removed";
@@ -78,7 +80,7 @@ namespace ITGuru.FourWheels.Service.Repos
             RepoResult result = new RepoResult("Task Updated");
             try
             {
-                if (!_data.AddTask(entity.MapToInternal()))
+                if (!_data.UpdateTask(entity.MapToInternal()))
                 {
                     result.Succeeded = false;
                     result.Message = "Task couldn't be Updated";
