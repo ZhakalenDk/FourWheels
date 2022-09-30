@@ -34,17 +34,18 @@
                 <th class="col-2">#</th>
                 <th class="col-2">Description</th>
                 <th class="col-4">Notes</th>
-                <th class="col-2">StartDate</th>
-                <th class="col-2">FinishDate</th>
+                <th class="col-1">StartDate</th>
+                <th class="col-1">FinishDate</th>
+                <th class="col-2">Options</th>
             </tr>
             @foreach (var task in Model.Tasks)
             {
                 <tr>
-                    <td>@task.Id </td>
-                    <td>@task.Description </td>
-                    <td>@task.Notes </td>
-                    <td>@task.StartDate </td>
-                    <td>@task.FinishDate </td>
+                    <td>@task.Id</td>
+                    <td>@task.Description</td>
+                    <td>@task.Notes</td>
+                    <td>@task.StartDate.ToString("MM/dd/yyyy")</td>
+                    <td>@task.FinishDate.ToString("MM/dd/yyyy")</td>
                     <td>
                         <div class="row">
                             <div class="col-6">
