@@ -40,7 +40,7 @@
             @foreach (var vehicle in Model.Vehicles)
             {
                 <tr>
-                    <td>@vehicle.Id </td>
+                    <td><a asp-page="/Administration/Tasks/VehicleTasks" asp-route-VehicleId="@vehicle.Id">@vehicle.Id</a></td>
                     <td>@vehicle.LicensePlate</td>
                     <td>@vehicle.Brand</td>
                     <td>@vehicle.Model</td>
