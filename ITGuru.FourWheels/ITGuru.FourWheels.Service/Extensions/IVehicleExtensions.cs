@@ -42,5 +42,12 @@ namespace ITGuru.FourWheels.Service
         {
             return _publicMapper.FromCollection(vehicles);
         }
+
+        public static IReadOnlyList<ITask> GetTasks(this IVehicle vehicle)
+        {
+            //  TODO: GetTasks for vehicles
+
+            return null;
+        }
     }
 }
