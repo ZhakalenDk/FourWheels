@@ -4,9 +4,15 @@ namespace ITGuru.FourWheels.Service
 {
     public class CustomerService : ICustomerService
     {
+        public CustomerService()
+        {
+            _data = DataLayer.Data;
+        }
+        private IDataLayer _data;
+
         public IReadOnlyList<ICustomer> GetAll()
         {
-            return DataLayer.Data.GetAllCustomers().MapToPublic()
+            return _data.GetAllCustomers().MapToPublic()
                 .ToList();
         }
 
@@ -20,7 +26,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult("Customer Added");
             try
             {
-                if (!DataLayer.Data.AddCustomer(entity.MapToInternal()))
+                if (!_data.AddCustomer(entity.MapToInternal()))
                 {
                     result.Succeeded = false;
                     result.Message = "Customer couldn't be added";
@@ -41,7 +47,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult("Customer Updated");
             try
             {
-                if (!DataLayer.Data.UpdateCustomer(entity.MapToInternal()))
+                if (!_data.UpdateCustomer(entity.MapToInternal()))
                 {
                     result.Succeeded = false;
                     result.Message = "Customer couldn't be updated";
@@ -62,7 +68,7 @@ namespace ITGuru.FourWheels.Service
             RepoResult result = new RepoResult("Customer Removed");
             try
             {
-                if (!DataLayer.Data.SoftDeleteCustomer(entity.Id))
+                if (!_data.SoftDeleteCustomer(entity.Id))
                 {
                     result.Succeeded = false;
                     result.Message = "Customer couldn't be removed";
